@@ -1,0 +1,969 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#0B121C; --card:#111C2A; --card2:#0E1723; --line:#1F3247; --line2:#2B4360;
+  --paper:#E6EDF5; --mute:#7C93AD; --mute2:#5A7392;
+  --amber:#F0A742; --jade:#45C39B; --rose:#E4685C; --violet:#9B8CF0;
+  --r:3px;
+}
+*{box-sizing:border-box}
+#app{
+  background:var(--ink); color:var(--paper);
+  font-family:Inter,system-ui,sans-serif; font-size:14px; line-height:1.5;
+  padding:0 0 60px; margin:0;
+}
+#app h1,#app h2,#app h3{font-family:'Bricolage Grotesque',sans-serif; margin:0; line-height:1.05; letter-spacing:-.02em}
+.mono{font-family:'IBM Plex Mono',monospace}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px}
+
+/* ---------- hero: a régua de corte ---------- */
+.hero{border-bottom:1px solid var(--line);padding:26px 0 0;background:
+  radial-gradient(900px 300px at 15% -40%, rgba(240,167,66,.10), transparent 70%)}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.hero h1{font-size:clamp(26px,4.4vw,42px);font-weight:800;margin:8px 0 4px}
+.hero .sub{color:var(--mute);font-size:13px;max-width:60ch}
+
+.ruler{margin:26px 0 0;position:relative;padding-bottom:52px}
+.ruler .track{height:52px;background:var(--card2);border:1px solid var(--line);position:relative;overflow:hidden}
+.ruler .fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(228,104,92,.35),rgba(240,167,66,.45));border-right:2px solid var(--amber)}
+.ruler .cut{position:absolute;top:-8px;bottom:-8px;width:0;border-left:2px dashed var(--jade)}
+.ruler .gap{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,transparent,transparent 5px,rgba(69,195,155,.10) 5px,rgba(69,195,155,.10) 10px)}
+.tick{position:absolute;top:56px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--mute);white-space:nowrap;transform:translateX(-50%)}
+.tick b{display:block;font-size:15px;color:var(--paper);font-weight:600;margin-bottom:2px}
+.tick.j b{color:var(--jade)} .tick.a b{color:var(--amber)}
+.rulerlab{position:absolute;top:14px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em}
+
+/* ---------- counters ---------- */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin:22px 0 0}
+.cell{background:var(--card2);padding:12px 14px}
+.cell .k{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.cell .v{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:700;margin-top:3px}
+.cell .n{font-size:11.5px;color:var(--mute)}
+
+/* ---------- tabs ---------- */
+nav.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-top:24px;overflow-x:auto}
+nav.tabs button{background:none;border:0;border-bottom:2px solid transparent;color:var(--mute);
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+  padding:12px 16px;cursor:pointer;white-space:nowrap}
+nav.tabs button:hover{color:var(--paper)}
+nav.tabs button[aria-selected=true]{color:var(--amber);border-bottom-color:var(--amber)}
+nav.tabs button:focus-visible{outline:2px solid var(--violet);outline-offset:-2px}
+section[hidden]{display:none}
+section{padding-top:26px}
+
+/* ---------- blocks ---------- */
+.band{margin:0 0 30px}
+.bandhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-left:3px solid var(--l,var(--amber));padding-left:12px;margin-bottom:4px}
+.bandhead h2{font-size:19px;font-weight:700}
+.bandhead .why{color:var(--mute);font-size:12.5px;flex:1;min-width:220px}
+.bandhead .cnt{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute)}
+
+.item{display:flex;gap:12px;padding:11px 12px 11px 14px;border:1px solid var(--line);border-left:3px solid var(--m,var(--l,var(--line2)));background:var(--card2);margin-top:8px;align-items:flex-start}
+.item:hover{border-color:var(--line2)}
+.item input[type=checkbox]{appearance:none;flex:0 0 17px;width:17px;height:17px;margin-top:2px;border:1.5px solid var(--line2);background:transparent;cursor:pointer;border-radius:2px;position:relative}
+.item input[type=checkbox]:checked{background:var(--jade);border-color:var(--jade)}
+.item input[type=checkbox]:checked::after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid var(--ink);border-width:0 2px 2px 0;transform:rotate(42deg)}
+.item input[type=checkbox]:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+.item.done{opacity:.45}
+.item.done .t{text-decoration:line-through}
+.ibody{flex:1;min-width:0}
+.t{font-weight:600;font-size:14px}
+.t .tag{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mute);margin-right:7px;font-weight:500}
+.src{font-size:12px;color:var(--mute);margin-top:3px}
+.src em{color:#A9BED4;font-style:normal}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chip{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--line2);color:var(--mute);padding:2px 6px;border-radius:2px}
+.chip.hot{border-color:var(--rose);color:var(--rose)}
+.chip.w{border-color:var(--amber);color:var(--amber)}
+.chip.g{border-color:var(--jade);color:var(--jade)}
+
+/* ---------- week cards ---------- */
+.week{border:1px solid var(--line);background:var(--card2);margin-top:12px}
+.wtop{display:flex;gap:14px;align-items:baseline;padding:12px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.wnum{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--amber);letter-spacing:.1em}
+.wdate{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--paper)}
+.wtitle{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;flex:1;min-width:180px}
+.wmark{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;border:1px solid var(--rose);color:var(--rose);padding:2px 7px}
+.wmark.rest{border-color:var(--violet);color:var(--violet)}
+.wgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+@media(max-width:680px){.wgrid{grid-template-columns:1fr}}
+.slot{background:var(--card2);padding:12px 14px}
+.slot h4{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 8px;font-weight:500}
+.slot.bio h4{color:var(--jade)}
+.task{display:flex;gap:9px;align-items:flex-start;padding:4px 0;font-size:13px}
+.task input[type=checkbox]{appearance:none;flex:0 0 15px;width:15px;height:15px;margin-top:2px;border:1.5px solid var(--line2);cursor:pointer;border-radius:2px;position:relative}
+.task input[type=checkbox]:checked{background:var(--jade);border-color:var(--jade)}
+.task input[type=checkbox]:checked::after{content:"";position:absolute;left:4.5px;top:1px;width:4px;height:9px;border:solid var(--ink);border-width:0 2px 2px 0;transform:rotate(42deg)}
+.task input:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+.task.done span{opacity:.42;text-decoration:line-through}
+.wnote{padding:10px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--mute);background:var(--card)}
+.wnote b{color:var(--amber);font-weight:600}
+
+/* ---------- misc ---------- */
+.callout{border:1px solid var(--line2);border-left:3px solid var(--violet);background:var(--card);padding:13px 15px;margin:14px 0;font-size:13px;color:#BFD0E2}
+.callout b{color:var(--paper)}
+.callout.warn{border-left-color:var(--rose)}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:500}
+td.num{font-family:'IBM Plex Mono',monospace;text-align:right}
+.bar{height:5px;background:var(--line);position:relative;margin-top:5px}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--amber)}
+h3.sect{font-size:15px;font-weight:700;margin:26px 0 2px}
+p.lede{color:var(--mute);font-size:13px;margin:4px 0 0;max-width:75ch}
+.savebar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line2);
+  padding:9px 18px;display:flex;gap:14px;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute);z-index:9}
+.savebar .pg{flex:1;height:4px;background:var(--line);position:relative;max-width:320px}
+.savebar .pg i{position:absolute;inset:0 auto 0 0;background:var(--jade)}
+.savebar button{background:none;border:1px solid var(--line2);color:var(--mute);font-family:inherit;font-size:10.5px;
+  padding:4px 10px;cursor:pointer;letter-spacing:.08em;text-transform:uppercase}
+.savebar button:hover{color:var(--rose);border-color:var(--rose)}
+@media (prefers-reduced-motion:no-preference){.item,.task span{transition:opacity .18s}}
+
+/* ---------- matéria em destaque no card ---------- */
+.mbadge{display:inline-flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;
+  letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:2px 7px;border-radius:2px;
+  background:var(--m,var(--line2));color:var(--ink);margin-right:8px;vertical-align:2px}
+.item .t .tag{color:var(--m,var(--mute));opacity:.9}
+.item.done .mbadge{filter:saturate(.25)}
+.mkey{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.mkey span{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 7px;border-radius:2px;color:var(--ink);font-weight:600}
+
+/* ---------- progresso do roadmap ---------- */
+.prog{border:1px solid var(--line);background:var(--card2);padding:14px 16px;margin:0 0 22px}
+.prog .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.prog .big{font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;line-height:1;color:var(--jade)}
+.prog .lab{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.prog .sub{font-size:12.5px;color:var(--mute);margin-left:auto;text-align:right}
+.pbar{height:10px;background:var(--line);position:relative;overflow:hidden}
+.pbar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--jade),#6FE0B8)}
+@media (prefers-reduced-motion:no-preference){.pbar i{transition:width .25s ease}}
+.prows{margin-top:14px;display:grid;gap:7px}
+.prow{display:grid;grid-template-columns:190px 1fr 62px;gap:10px;align-items:center;font-size:12px}
+.prow .nm{color:var(--mute);font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .val{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute);text-align:right}
+.pbar.sm{height:6px}
+.pbar.sm i{background:var(--pc,var(--amber))}
+@media(max-width:600px){.prow{grid-template-columns:110px 1fr 54px}}
+.bandbar{flex-basis:100%;height:4px;background:var(--line);position:relative;margin-top:6px}
+.bandbar i{position:absolute;left:0;top:0;bottom:0;background:var(--l,var(--amber))}
+
+/* ---------- contraste: o visualizador injeta cor em td/b/strong ---------- */
+#app td,#app td b,#app td strong,#app td.num{color:var(--paper)}
+#app th{color:var(--mute)}
+#app h1,#app h2,#app h3{color:var(--paper)}
+#app .slot h4{color:var(--mute)}
+#app .slot.bio h4{color:var(--jade)}
+#app b,#app strong{color:inherit;font-weight:600}
+#app .callout b,#app .lede b,#app .hero .sub b,#app .tick b,#app .cell .v,#app .wtitle,#app .t,#app .task span{color:var(--paper)}
+#app .tick.j b{color:var(--jade)} #app .tick.a b{color:var(--amber)}
+#app .wnote b{color:var(--amber)}
+#app .bandhead .why b{color:var(--paper)}
+#app .item.done .t,#app .task.done span{color:var(--paper)}
+</style>
+
+<div id="app">
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">Sistemas de Informação · USP EACH noturno · carreira 322 <span style="color:var(--line2)">·</span> dados de 05/08/2026 · 492 questões, 6 simulados</div>
+  <h1>Faltam <span id="dias">92</span> dias. O corte não se move.</h1>
+  <p class="sub">A 1ª fase da FUVEST é acerto bruto — toda questão vale igual. O corte de Sistemas de Informação na ampla concorrência foi <b>56/90</b> em 2024 e <b>56/90</b> em 2026. Em 80 questões, isso é <b>50 acertos</b>.</p>
+
+  <div class="ruler">
+    <div class="track">
+      <div class="fill" id="fill"></div>
+      <div class="gap" id="gapz"></div>
+      <div class="cut" id="cut"></div>
+      <div class="rulerlab" id="lab" style="color:var(--jade)"></div>
+    </div>
+    <div class="tick a" id="t1"><b>39/80</b>48,8% · seu último simulado</div>
+    <div class="tick j" id="t2"><b>50/80</b>62,2% · corte AC histórico</div>
+    <div class="tick" id="t3" style="left:100%"><b>55/80</b>meta com folga</div>
+  </div>
+
+  <div class="strip">
+    <div class="cell"><div class="k">Distância do corte</div><div class="v" style="color:var(--rose)">+11</div><div class="n">questões brutas, sem margem</div></div>
+    <div class="cell"><div class="k">Taxa verificada</div><div class="v">48,9%</div><div class="n">132 de 270 · parada desde março</div></div>
+    <div class="cell"><div class="k">Piso com chute</div><div class="v" style="color:var(--rose)">30,3%</div><div class="n">medido só em julho · 6 dos 16 AC eram chute</div></div>
+    <div class="cell"><div class="k">Estoque de revisão</div><div class="v">138</div><div class="n">erros com aula já dada, em 176 temas</div></div>
+    <div class="cell"><div class="k">Roadmap concluído</div><div class="v" id="pctBig">0%</div><div class="n" id="pctSub">0 de 0 itens</div></div>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-t="painel">Painel</button>
+    <button role="tab" aria-selected="false" data-t="roadmap">Roadmap</button>
+    <button role="tab" aria-selected="false" data-t="crono">Cronograma</button>
+    <button role="tab" aria-selected="false" data-t="aulas">Aulas &amp; leituras</button>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<!-- ================= PAINEL ================= -->
+<section id="painel">
+  <h3 class="sect">O que este roadmap decide</h3>
+  <p class="lede"><b>Nada foi excluído, e nada foi digitado à mão.</b> As 177 linhas do roadmap saem das 492 questões dos seis simulados, agrupadas por tema. A ordem vem de três critérios: <b>recorrência</b> (em quantos simulados diferentes o mesmo tema foi errado <em>com aula já dada</em>), <b>peso</b> da matéria no caderno de 80 e <b>taxa verificada</b> da matéria. Três regras completam: pré-requisito sobe de faixa e aparece imediatamente antes do item que sustenta; o que você <b>acertou</b> não sai do plano, vai para a última faixa; e o que o <b>cursinho ainda vai dar</b> fica numa faixa própria, fora do cronograma — é aula marcada, não lacuna sua.</p>
+
+  <h3 class="sect">Onde o buraco está</h3>
+  <table>
+    <thead><tr><th>Matéria</th><th class="num">Peso</th><th class="num">Taxa</th><th class="num">EC</th><th style="width:32%">Leitura</th></tr></thead>
+    <tbody id="tbMat"></tbody>
+  </table>
+  <div class="callout"><b>A conta que importa.</b> Você acerta 48,9% do que já foi ensinado. Para chegar a 62% de acerto bruto sem contar com sorte, essa taxa precisa subir — os 138 erros com aula já dada são exatamente o estoque que faz isso. Cada item marcado aqui é um tema que já apareceu em prova e que você já teve aula.</div><div class="callout warn"><b>E 48,9% é otimista.</b> Em julho você marcou 14 acertos com componente de chute. <b>Seis deles eram acerto com aula prévia</b> — 37,5% da base verificada daquela edição. A taxa de julho cai de 48,5% para um piso de 30,3%: Química e Matemática vão a 0%. Nas outras cinco edições o chute existe e nunca foi anotado. Dois itens que constavam como fechados voltaram para a fila por causa disso: <b>Opúsculo Humanitário</b> e <b>Evolução</b>.</div>
+  <div class="callout warn"><b>Quatro matérias não têm nenhuma aula no ano:</b> Inglês (8 questões de peso, 34 já cobradas na base), Artes (4), Sociologia (2,5) e Educação Física (2). São <b>16,5 questões em risco</b> — mais que qualquer matéria isolada. Não aparecem na tabela acima porque não há nada para revisar: entram como trilha externa, com data marcada, na aba Roadmap.</div>
+
+  <div class="callout warn"><b>O que o cronograma não cobre.</b> Com exatas presas ao fim de semana e a semana limitada a flashcard de Biologia, o cronograma trabalha <b>quatro matérias</b>: Biologia, Química, Física e Matemática — 41 dos 97 pontos de peso. As sete restantes continuam no roadmap, marcáveis e sem data. Duas merecem atenção: <b>Português e Literatura</b> agora vale 21 com Artes somada, é a maior matéria do caderno e a segunda em questões em risco; e <b>Inglês</b> vale 8, tem 34 questões na base e <b>zero aula no ano, nenhuma prevista</b> — é o maior item isolado do índice de risco, e não há cursinho que vá resolver. Se aparecer qualquer janela, é para essas duas.</div>
+
+  <h3 class="sect">Nota de corte — Sistemas de Informação, EACH</h3>
+  <table>
+    <thead><tr><th>Edição</th><th class="num">Vagas AC</th><th class="num">Inscritos AC</th><th class="num">Corte AC</th><th class="num">Maior nota</th></tr></thead>
+    <tbody>
+      <tr><td>FUVEST 2026 (carreira 322)</td><td class="num">22</td><td class="num">243</td><td class="num" style="color:var(--jade)">56/90</td><td class="num">77/90</td></tr>
+      <tr><td>FUVEST 2024 (carreira 716)</td><td class="num">22</td><td class="num">280</td><td class="num" style="color:var(--jade)">56/90</td><td class="num">77/90</td></tr>
+    </tbody>
+  </table>
+  <p class="lede" style="margin-top:10px">Duas edições separadas por dois anos dão o mesmo corte: <b>62,2%</b>. Como a FUVEST 2027 tem 80 questões e não 90, o equivalente é <b>50 acertos</b> — mas trate isso como piso, não como alvo: o corte oscila e a conversão entre formatos é aproximada. O alvo de trabalho é <b>55/80</b>.</p>
+  <div class="callout">Esse corte é o da <b>1ª fase</b>, que classifica para a 2ª. A nota de entrada no curso (a que decide a matrícula) é outra conta, com a 2ª fase valendo peso maior. Passar da 1ª fase é o único problema até 01/11 — o resto é problema de dezembro.</div>
+</section>
+
+<!-- ================= ROADMAP ================= -->
+<section id="roadmap" hidden>
+  <div class="prog">
+    <div class="top">
+      <span class="big" id="rmPct">0%</span>
+      <span class="lab">do roadmap concluído</span>
+      <span class="sub" id="rmSub">0 de 0 itens marcados</span>
+    </div>
+    <div class="pbar"><i id="rmBar" style="width:0%"></i></div>
+    <div class="prows" id="rmRows"></div>
+  </div>
+  <p class="lede">Marque conforme estudar. O progresso fica gravado neste artefato — pode fechar e voltar depois. A cor da barra lateral de cada card é a matéria; a legenda está abaixo. Chip <span style="color:#8BD450">verde-limão</span> = pré-requisito, estude antes do item seguinte. Última faixa = o que você acertou, que fica no plano como manutenção.</p>
+  <div class="mkey" id="mkey"></div>
+  <div id="bands"></div>
+</section>
+
+<!-- ================= CRONOGRAMA ================= -->
+<section id="crono" hidden>
+  <p class="lede"><b>A semana é só flashcard de Biologia.</b> Cursinho todas as noites, e o que sobra é o deslocamento e os 30 minutos do almoço — nada disso comporta questão no papel, então nada disso pede questão no papel. <b>Sábado é Química e Matemática. Domingo é Física e Química.</b> Cada bloco traz <b>data · frente · professor · nome exato da aula</b>, como está no cronograma do cursinho: é assim que a gravação se acha na plataforma. Nos seis fins de semana com simulado, o sábado é do simulado e o domingo abre com a correção — simulado não corrigido não vira dado — e depois vem o bloco de Física e Química.</p>
+  <div class="callout warn"><b>O cronograma não estuda o que o cursinho vai dar.</b> Vinte e oito temas que apareceram nos simulados e você errou sem aula têm aula marcada para o 2º semestre — trabalho e energia, dinâmica, hidrostática, magnetismo, ondulatória, geometria espacial, probabilidade, estatística, botânica, fisiologia humana, Era Vargas, urbanização. Nenhum deles vira bloco de estudo aqui. Eles ficam na faixa roxa do roadmap, ordenados por número de cobranças, para você marcar quando a aula acontecer. Trabalho e energia mecânica lidera com <b>sete questões</b> em quatro provas.</div>
+  <div class="callout warn"><b>A conta dos blocos.</b> Sobram <b>6 sábados livres</b> (semanas 01, 06, 09, 10, 11 e 12) e <b>11 domingos</b> com bloco de estudo. Química cai nos 17. Física, nos 11 domingos. <b>Matemática, só nos 6 sábados</b> — e Matemática é a matéria com o maior estoque de erro do plano: 34 questões erradas em conteúdo com aula já dada. Se quiser corrigir isso sem quebrar a regra, dá para alternar os domingos: um de Física e Química, o seguinte de Matemática e Química. É uma linha e eu refaço.</div>
+  <div class="callout warn"><b>Não fixei horas.</b> Quanto tempo cabe num sábado seu não está registrado em lugar nenhum do projeto, e chutar carga horária estraga o plano inteiro. Os blocos abaixo são <em>ordens de serviço</em>, não durações. Me diga quantas horas você tem no sábado e no domingo e eu converto isso em relógio.</div>
+  <div class="callout warn"><b>O custo da regra do fim de semana.</b> Química, Física e Matemática valem <b>31 das 80 questões</b> e são onde estão suas piores taxas. Prendendo as três no fim de semana, elas ficam com <b>13 sábados e 13 domingos</b> — e seis desses sábados são simulado, um fim de semana inteiro some no simulado de 2ª fase e uma semana é recesso. Sobram, na prática, <b>7 blocos livres de sábado e 11 de domingo</b> para as três matérias. É o suficiente se nenhum for perdido, e não é o suficiente se você perder dois. Se em algum momento quiser abrir uma noite de semana para Matemática, me diga e eu remonto — o resto do plano não muda.</div>
+  <div id="weeks"></div>
+</section>
+
+<!-- ================= AULAS ================= -->
+<section id="aulas" hidden>
+  <h3 class="sect">Gravações a rever, por importância</h3>
+  <p class="lede">Data · frente · professor · nome exato da aula, como está no cronograma — é assim que a gravação se acha na plataforma. Alta importância = tema reincidente em dois ou mais simulados. Média = erro único em matéria de peso 10 ou mais.</p>
+  <div id="lessons"></div>
+
+  <h3 class="sect">Aulas de agosto a outubro</h3>
+  <div class="callout warn"><b>Esta é a lacuna que mais muda o plano.</b> O cronograma do cursinho de agosto a outubro não está no projeto — só o horário base e o calendário de simulados. Sem ele não dá para dizer quais dos temas abaixo o cursinho vai cobrir e quais você precisa buscar por fora. Traga o PDF da grade do 2º semestre e eu fecho essa coluna.</div>
+  <p class="lede">Temas cobrados nos simulados que <b>não</b> tiveram aula até 04/07 e que provavelmente entram no 2º semestre — confirme na grade semanal antes de estudar por fora:</p>
+  <table>
+    <thead><tr><th>Matéria</th><th>Temas esperados</th></tr></thead>
+    <tbody>
+      <tr><td>Biologia</td><td>Genética e heredogramas · Imunologia · Botânica · Fisiologia humana e endócrina</td></tr>
+      <tr><td>Matemática</td><td>Probabilidade · Combinatória · Geometria espacial · Estatística descritiva · Transformações isométricas · Geometria sobre a esfera</td></tr>
+      <tr><td>Física</td><td>Ondulatória · Magnetismo · Refração e reflexão total · Hidrostática · Trabalho e energia · Dinâmica</td></tr>
+      <tr><td>Química</td><td>Oxirredução e eletroquímica · Propriedades coligativas · Radioatividade · Propriedades periódicas</td></tr>
+      <tr><td>Geografia</td><td>Urbanização e indicadores sociais · Domínios morfoclimáticos · Migrações</td></tr>
+      <tr><td>História</td><td>Imperialismo · Era Vargas · Guerra Fria e Oriente Médio · Direitos civis · Reforma Protestante</td></tr><tr><td>Português</td><td>Barroco · Arcadismo · Romantismo brasileiro · Simbolismo · Variação linguística</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sect">Leituras obrigatórias — marque as que já leu</h3>
+  <p class="lede">Literatura é o único item do calendário que não se resolve em revisão de véspera. O padrão dos seus seis simulados é claro: questão que pede <b>enredo, tema ou tom</b> você acerta sem ter lido; questão que pede <b>análise de excerto</b> você erra. A FUVEST pergunta do segundo tipo.</p>
+  <div class="callout warn"><b>Fora do cronograma por decisão sua, não por engano.</b> Literatura e Inglês não entraram em nenhum bloco: obra lida não vira flashcard e texto de prova não cabe em deslocamento. A lista continua aqui porque o custo precisa ficar visível — são 9 obras e 8 questões de Inglês. Marque o que já leu; o cálculo abaixo se ajusta sozinho.</div>
+  <div id="obras"></div>
+  <div id="obrasCalc" class="callout"></div>
+</section>
+
+</div>
+
+<div class="savebar">
+  <span id="saveState">carregando…</span>
+  <div class="pg"><i id="pgbar" style="width:0%"></i></div>
+  <span id="pgtxt" class="mono">0%</span>
+  <button id="sync">sincronizar</button>
+  <button id="exp">exportar</button>
+  <button id="imp">importar</button>
+  <input type="file" id="impf" accept=".json" hidden>
+  <button id="reset">zerar progresso</button>
+</div>
+</div>
+
+<script>
+const KEY='fuvest2027-roadmap-v1';
+let state={done:{},obras:{}};
+
+/* ---------------- dados ---------------- */
+const MCOR={POR:'#E4685C',ING:'#FF8A5B',ART:'#E8C468',EDF:'#B0B7C3',HIS:'#F07EB0',GEO:'#8BD450',
+ FIL:'#C4B5FD',SOC:'#7B90E8',MAT:'#F0A742',FIS:'#56A8FF',QUI:'#A78BFA',BIO:'#45C39B'};
+const MAT={
+ POR:{n:'Português e Literatura',p:21,tx:'64%'},
+ MAT:{n:'Matemática',p:11,tx:'48%'},
+ HIS:{n:'História',p:10,tx:'44%'},
+ GEO:{n:'Geografia',p:10,tx:'53%'},
+ BIO:{n:'Biologia',p:10,tx:'41%'},
+ QUI:{n:'Química',p:10,tx:'32%'},
+ FIS:{n:'Física',p:10,tx:'52%'},
+ ING:{n:'Inglês',p:8,tx:'n/d'},
+ FIL:{n:'Filosofia',p:2.5,tx:'57%'},
+ SOC:{n:'Sociologia',p:2.5,tx:'n/d'},
+ EDF:{n:'Educação Física',p:2,tx:'n/d'}};
+
+const TB=[['POR','21','64%','17','peso 21 com Artes somada: a maior matéria do caderno. Os 64% vêm do ENEM; na FUVEST oficial é 50% em abril e 50% em julho.'],
+['MAT','11','48%','34','maior estoque de erro do plano: 34 EC. Trigonometria é o único item errado em quatro edições.'],
+['BIO','10','41%','17','17 erros com aula. Sistemática fechou; Evolução segue aberta na terceira edição.'],
+['FIS','10','52%','12','só 25 questões verificadas em seis provas. Conceito entra, conta não.'],
+['GEO','10','53%','18','38 questões verificadas, a segunda maior amostra da base. Cartografia reabriu.'],
+['HIS','10','44%','14','menor taxa entre as matérias de peso 10. Antiguidade e expansão marítima erram há três edições.'],
+['QUI','10','32%','23','pior matéria medida da base. 23 erros com aula já dada, e o piso com chute em julho foi 0%.'],
+['ING','8','n/d','0','23 acertos e 11 erros, todos sem aula. Zero questões verificáveis: a matéria nunca foi medida, e não há aula prevista.'],
+['FIL','2,5','57%','3','amostra de 7. Aristóteles saiu certo, pré-socráticos e Platão saíram errados.'],
+['SOC','2,5','n/d','0','10 acertos sem aula, nenhuma questão verificável — apesar de nove aulas do Jonathan no ano.'],
+['EDF','2','n/d','0','única matéria sem frente no Guia do cursinho. Nem aula dada, nem prevista.']];
+
+const ITEMS=[
+{f:0,tag:'MAT.TRIG',t:'Trigonometria no triângulo retângulo',m:'MAT',ed:4,nq:6,q:'Errou com aula: Unicamp Q43, Poliedro Q15, ENEM d2 Q151, FUVEST jul Q51 · Do outro lado: 2 acertos com aula',a:'23/fev · Frente 3 · Mario · Trigonometria no triângulo retângulo; 03/mar · Ângulos e triângulos; 06/abr · Semelhança de triângulos'},
+{f:1,tag:'POR.COES',t:'Coesão e referência',m:'POR',ed:3,nq:7,q:'Errou com aula: Poliedro Q8, Poliedro Q54, FUVEST abr Q13, ENEM d1 Q6, ENEM d1 Q40 · Do outro lado: 1 acerto com aula e 1 sem aula',a:'03/mar · Gramática · André Rocha · Morfologia - Classes gramaticais; 10/mar · Gramática · André Rocha · Pronomes / Entendimento de texto; 18/abr · Sintaxe'},
+{f:1,tag:'POR.INT',t:'Interpretação de texto',m:'POR',ed:3,nq:11,q:'Errou com aula: Unicamp Q56, FUVEST abr Q11, ENEM d1 Q44 · Do outro lado: 8 acertos com aula',a:'10/mar · Gramática · André Rocha · Pronomes / Entendimento de texto; 19/mai · Entendimento de texto - citação do discurso alheio; 24/fev · Figuras de linguagem'},
+{f:1,tag:'MAT.ARIT',t:'Aritmética, razões e proporções',m:'MAT',ed:3,nq:14,q:'Errou com aula: Unicamp Q51, Unicamp Q53, Poliedro Q42, ENEM d2 Q170 · Errou sem aula: Poliedro Q35, Poliedro Q61, Poliedro Q62 · Do outro lado: 6 acertos com aula e 1 sem aula',a:'15/abr · Frente 2 · Beto · Razões e proporções; 18/mar · Frente 2 · Beto · TFA e fatoração; 01/abr · Equação 1º e 2º grau'},
+{f:1,tag:'MAT.FUN',t:'Função composta, inversa e modular',m:'MAT',ed:3,nq:6,q:'Errou com aula: Unicamp Q48, ENEM d2 Q168, FUVEST jul Q61 · Do outro lado: 3 acertos com aula',a:'19/mar · Frente 1 · Fabio · Função composta e função inversa; 26/fev · Frente 1 · Fabio · Conjuntos e funções; 09/abr · Função do 2º grau'},
+{f:1,tag:'MAT.GP.POL',t:'Polígonos',m:'MAT',ed:3,nq:4,q:'Errou com aula: Unicamp Q44, Poliedro Q68, Poliedro Q80, ENEM d2 Q175',a:'09/fev · Frente 3 · Mario · Triângulos; 16/mar e 23/mar · Frente 3 · Mario · Polígonos; 16/mar · Frente 3 · Mario · Polígonos'},
+{f:1,tag:'QUI.ESTEQ',t:'Estequiometria, rendimento e pureza',m:'QUI',ed:3,nq:8,q:'Errou com aula: Poliedro Q53, FUVEST abr Q76, ENEM d2 Q98, ENEM d2 Q107, ENEM d2 Q122 · Errou sem aula: Unicamp Q69, Poliedro Q23 · Do outro lado: 1 acerto com aula',a:'11/abr · Frente 2 · Bruno Arruda · Leis das reações e cálculo estequiométrico; 09/mar · Frente 3 · Theodoro · Gases - equação de estado; 11/abr · Frente 2 · Bruno Arruda · Leis das reações'},
+{f:1,tag:'QUI.IM',t:'Forças intermoleculares e solubilidade',m:'QUI',ed:3,nq:4,q:'Errou com aula: FUVEST abr Q60, ENEM d2 Q118, FUVEST jul Q10 · Do outro lado: 1 acerto com aula',a:'08/abr · Frente 1 · Rogério · Forças intermoleculares; 22/abr · Propriedades físicas das substâncias; 25/mar · Geometria molecular'},
+{f:1,tag:'BIO.EVO',t:'Evolução, especiação e coevolução',m:'BIO',ed:3,nq:8,q:'Errou com aula: Unicamp Q40, Unicamp Q41, Poliedro Q56, ENEM d2 Q104 · Do outro lado: 4 acertos com aula — 1 desses acertos com aula era chute, e por isso o item nao fecha',a:'06/mar · Frente 02 · Renata · Teoria moderna da evolução; 30/abr · Relações ecológicas; 20/fev · Frente 02 · Renata · Evolução biológica'},
+{f:1,tag:'BIO.SIST',t:'Sistemática e cladogramas',m:'BIO',ed:3,nq:4,ok:'fechou — acertou com aula no ENEM d2',q:'Errou com aula: Unicamp Q36, Poliedro Q50, FUVEST jul Q66 · Do outro lado: 1 acerto com aula',a:'10/fev e 24/fev · Frente 03 · Tchelo · Sistemática; 10/fev · Frente 03 · Tchelo · Sistemática'},
+{f:1,tag:'HIS.ANT',t:'Antiguidade clássica e mundo grego',m:'HIS',ed:3,nq:6,q:'Errou com aula: Unicamp Q28, Poliedro Q6, Poliedro Q12, ENEM d1 Q51 · Do outro lado: 2 acertos com aula',a:'07/mar · HG · Raul · Mundo Grego (continuação); 14/mar · HG · Raul · Antiguidade Clássica; 27/fev e 07/mar · HG · Raul · Mundo Grego'},
+{f:1,tag:'HIS.EXP',t:'Expansão marítima e mercado atlântico',m:'HIS',ed:3,nq:4,q:'Errou com aula: Unicamp Q31, Poliedro Q64, ENEM d1 Q63, ENEM d1 Q74',a:'19/fev · Frente 2 · Maurinho · Formação dos reinos ibéricos e expansão; 19/mar · A montagem do sistema colonial'},
+{f:1,tag:'FIS.CALOR',t:'Calorimetria e mudanças de estado',m:'FIS',ed:3,nq:6,q:'Errou com aula: Unicamp Q14, Poliedro Q36, ENEM d2 Q124 · Do outro lado: 3 acertos com aula',a:'01/mai · Frente 3 · Gui Mourão · Processos de transferência de calor; 14/fev · Frente 3 · Gui Mourão · Temperatura, escalas e conversões; 14/mar · Calorimetria'},
+{f:1,tag:'FIS.CIN',t:'Cinemática — MU, MUV e gráficos',m:'FIS',ed:3,nq:6,q:'Errou com aula: Unicamp Q10, Poliedro Q34, ENEM d2 Q100 · Do outro lado: 3 acertos com aula',a:'07/mar · Frente 1 · Lucas Eufrásio · MUV; 18/abr · Gráficos do MU e MUV; 07/mar · Frente 1 · Lucas Eufrásio · Movimento uniformemente variado'},
+{f:1,tag:'GEO.GLOB',t:'Globalização, economia e divisão do trabalho',m:'GEO',ed:3,nq:8,q:'Errou com aula: Unicamp Q19, Unicamp Q20, Poliedro Q65, ENEM d1 Q80 · Do outro lado: 4 acertos com aula',a:'13/mar · GG · Castro · Globalização; 18/mar · Atualidades · Economia nos anos 2000/2010; 21/mar · Consequências da globalização'},
+{f:2,tag:'POR.SEM',t:'Semântica e figuras de linguagem',m:'POR',ed:2,nq:14,q:'Errou com aula: Unicamp Q55, Poliedro Q78 · Do outro lado: 12 acertos com aula',a:'10/fev · Gramática · André Rocha · Princípios orientadores e noções de semântica; 24/fev · Gramática · André Rocha · Figuras de linguagem'},
+{f:2,tag:'QUI.ATOM',t:'Atomística e modelos atômicos',m:'QUI',ed:2,nq:3,q:'Errou com aula: Unicamp Q72, ENEM d2 Q106 · Do outro lado: 1 acerto com aula',a:'11/fev · Frente 1 · Rogério · Atomística'},
+{f:2,tag:'QUI.GAS',t:'Gases e equação de estado',m:'QUI',ed:2,nq:2,q:'Errou com aula: Unicamp Q70, FUVEST jul Q9',a:'09/mar · Frente 3 · Theodoro · Gases - equação de estado'},
+{f:2,tag:'HIS.BR.COL',t:'Brasil colonial',m:'HIS',ed:2,nq:7,q:'Errou com aula: FUVEST abr Q5, ENEM d1 Q82 · Do outro lado: 5 acertos com aula',a:'07/mai · Frente 2 · Maurinho · A atividade mineradora e a crise do sistema colonial; 07/mai · Frente 2 · Maurinho · História do Brasil - a atividade mineradora e a crise do sistema colonial; 19/mar e 09/abr · Frente 2 · Maurinho · A montagem do sistema colonial'},
+{f:2,tag:'HIS.MED',t:'Idade Média e cultura medieval',m:'HIS',ed:2,nq:5,q:'Errou com aula: ENEM d1 Q69, FUVEST jul Q68 · Errou sem aula: Unicamp Q30, FUVEST abr Q31 · Do outro lado: 1 sem aula',a:'03/mar · Literatura · Cris Bastos · Teoria dos gêneros literários e Trovadorismo; 23/mai · HG · Maion · A Idade Média'},
+{f:2,tag:'FIS.ELET',t:'Eletrostática e eletrização',m:'FIS',ed:2,nq:6,base:'FIS.EDIN',q:'Errou com aula: Unicamp Q9, Poliedro Q33 · Errou sem aula: Unicamp Q8 · Do outro lado: 3 acertos com aula',a:'06/mar · Frente 2 · Gui Mourão · Processos de eletrização; 14/fev e 06/mar · Frente 2 · Gui Mourão · Eletrização; 08/mai · Condutor em equilíbrio eletrostático'},
+{f:2,tag:'FIS.EDIN',t:'Eletrodinâmica — Ohm, resistores e circuitos',m:'FIS',ed:2,nq:7,q:'Errou com aula: ENEM d2 Q97, ENEM d2 Q121, FUVEST jul Q22 · Errou sem aula: Poliedro Q26 · Do outro lado: 2 acertos com aula e 1 sem aula',a:'08/mai · Frente 2 · Gui Mourão · Introdução à eletrodinâmica; 12/jun · Análise de circuitos elétricos; 26/jun · Geradores'},
+{f:2,tag:'GEO.CART',t:'Cartografia e noções espaciais',m:'GEO',ed:2,nq:8,q:'Errou com aula: FUVEST abr Q40, ENEM d1 Q57, ENEM d1 Q70 · Do outro lado: 5 acertos com aula',a:'11/mar · GB · Léo Ribas · Representações cartográficas; 25/fev · Noções espaciais; 25/fev · GB · Léo Ribas · Noções espaciais'},
+{f:2,tag:'GEO.CLIMA',t:'Climatologia e dinâmica climática',m:'GEO',ed:2,nq:2,q:'Errou com aula: ENEM d1 Q53, FUVEST jul Q6',a:'13/mai · GB · Léo Ribas · Dinâmica climática / Climatologia do Brasil e do mundo; 22/abr · Mineração / Climatologia; 24/jun · Biogeografia mundial'},
+{f:2,tag:'FIL.ANT',t:'Pré-socráticos, Sócrates e Platão',m:'FIL',ed:2,nq:9,q:'Errou com aula: Unicamp Q23, ENEM d1 Q46, ENEM d1 Q52 · Errou sem aula: ENEM d1 Q61 · Do outro lado: 4 acertos com aula e 1 sem aula',a:'14/mai · Filosofia · Jonathan · Aristóteles; 17/abr · Filosofia · Jonathan · Platão; 26/fev · Filosofia · Jonathan · Pré-socráticos'},
+{f:2,tag:'MAT.CONJ',t:'Conjuntos e intervalos',m:'MAT',ed:2,nq:3,base:'MAT.FUN',q:'Errou com aula: Unicamp Q46, Poliedro Q46 · Do outro lado: 1 acerto com aula',a:'19/fev · Frente 1 · Fabio · Conjuntos e intervalos; 11/fev · Frente 2 · Beto · Conjuntos numéricos'},
+{f:2,tag:'BIO.CEL',t:'Célula, organelas e envoltórios',m:'BIO',ed:2,nq:3,base:'BIO.GEN',q:'Errou com aula: FUVEST abr Q66, ENEM d2 Q113 · Errou sem aula: ENEM d2 Q95',a:'13/abr · Frente 01 · Davi · Tipos celulares e organelas; 27/abr · Envoltórios celulares'},
+{f:3,tag:'LIT.OBRA',t:'Obras obrigatórias — análise de excerto',m:'POR',ed:1,nq:17,q:'Errou com aula: FUVEST abr Q4 · Errou sem aula: FUVEST abr Q1, FUVEST abr Q14, FUVEST abr Q15, FUVEST abr Q18, FUVEST abr Q43, FUVEST jul Q2 e mais 3 · Do outro lado: 1 acerto com aula e 6 sem aula — 1 desses acertos com aula era chute, e por isso o item nao fecha',a:'21/abr · Literatura · Cris Bastos · Opúsculo Humanitário; 21/abr · Literatura · Cris Bastos · Opúsculo humanitário'},
+{f:3,tag:'POR.ARG',t:'Tipologia textual e recurso argumentativo',m:'POR',ed:1,nq:1,q:'Errou com aula: ENEM d1 Q27',a:'28/abr · Gramática · André Rocha · Tipologia textual: narração, descrição e dissertação'},
+{f:3,tag:'POR.REG',t:'Pronome relativo, preposição e conjunção',m:'POR',ed:1,nq:1,q:'Errou com aula: FUVEST jul Q55',a:'17/mar · Gramática · André Rocha · Pronome relativo e interrogativo / Preposição e conjunção'},
+{f:3,tag:'POR.VERB',t:'Verbo, predicado e transitividade',m:'POR',ed:1,nq:2,q:'Errou com aula: ENEM d1 Q8 · Do outro lado: 1 acerto com aula',a:'21/abr · Gramática · André Rocha · Estudo do predicado e transitividade verbal; 12/mai · Termos relacionados ao verbo'},
+{f:3,tag:'POR.VOZ',t:'Voz passiva e agente da passiva',m:'POR',ed:1,nq:1,q:'Errou com aula: FUVEST jul Q53',a:'26/mai · Gramática · André Rocha · Agente da voz passiva'},
+{f:3,tag:'MAT.PROP',t:'Razões e proporções aplicadas',m:'MAT',ed:1,nq:6,base:'MAT.ESC e MAT.PORC',q:'Errou com aula: ENEM d2 Q149, ENEM d2 Q159, ENEM d2 Q173 · Do outro lado: 3 acertos com aula',a:'15/abr · Frente 2 · Beto · Razões e proporções'},
+{f:3,tag:'MAT.ESC',t:'Escala e razão de semelhança',m:'MAT',ed:1,nq:2,q:'Errou com aula: ENEM d2 Q147, ENEM d2 Q177',a:'06/abr · Frente 3 · Mario · Semelhança de triângulos; 15/abr · Razões e proporções; 15/abr · Frente 2 · Beto · Razões e proporções'},
+{f:3,tag:'MAT.POT',t:'Potenciação e notação científica',m:'MAT',ed:1,nq:3,base:'MAT.EXP',q:'Errou com aula: ENEM d2 Q136 · Do outro lado: 2 acertos com aula',a:'04/mar · Frente 2 · Beto · Potenciação'},
+{f:3,tag:'MAT.EXP',t:'Exponencial e logaritmo',m:'MAT',ed:1,nq:2,q:'Errou com aula: FUVEST jul Q59 · Do outro lado: 1 acerto com aula',a:'16/abr e 23/abr · Frente 1 · Fabio · Função exponencial; 30/abr e 07/mai · Logaritmo e função logarítmica'},
+{f:3,tag:'MAT.FUN2',t:'Função do 2º grau',m:'MAT',ed:1,nq:2,q:'Errou com aula: ENEM d2 Q162, ENEM d2 Q172',a:'26/mar e 09/abr · Frente 1 · Fabio · Função do 2º grau'},
+{f:3,tag:'MAT.GP.CIR',t:'Ângulos na circunferência',m:'MAT',ed:1,nq:5,q:'Errou com aula: ENEM d2 Q165 · Errou sem aula: Unicamp Q50, FUVEST abr Q37, FUVEST abr Q55 · Do outro lado: 1 acerto com aula',a:'09/mar · Frente 3 · Mario · Ângulos na circunferência e congruência de triângulos'},
+{f:3,tag:'MAT.PORC',t:'Porcentagem',m:'MAT',ed:1,nq:6,q:'Errou com aula: ENEM d2 Q141, ENEM d2 Q161 · Do outro lado: 4 acertos com aula',a:'29/abr · Frente 2 · Beto · Porcentagem com desconto; 15/abr · Razões e proporções'},
+{f:3,tag:'QUI.ACBA',t:'Ácidos, bases e pH',m:'QUI',ed:1,nq:2,q:'Errou com aula: FUVEST jul Q27 · Do outro lado: 1 acerto com aula',a:'16/mai · Frente 2 · Bruno Arruda · Ácidos e bases; 02/mai · Teoria de Arrhenius; 04/jul · Soluções'},
+{f:3,tag:'QUI.EQUI',t:'Equilíbrio químico e deslocamento',m:'QUI',ed:1,nq:3,q:'Errou com aula: FUVEST jul Q8 · Errou sem aula: FUVEST abr Q78 · Do outro lado: 1 sem aula',a:'01/jun · Frente 3 · Theodoro · Equilíbrio químico; 08/jun · Deslocamento de equilíbrio; 16/mai · Frente 2 · Bruno Arruda · Ácidos e bases'},
+{f:3,tag:'QUI.ORG',t:'Orgânica — cadeias e funções',m:'QUI',ed:1,nq:1,q:'Errou com aula: ENEM d2 Q131',a:'13/mai · Frente 1 · Rogério · Nomenclatura dos compostos orgânicos'},
+{f:3,tag:'QUI.ORG.FUNC',t:'Orgânica — nomenclatura',m:'QUI',ed:1,nq:1,q:'Errou com aula: ENEM d2 Q92',a:'13/mai · Frente 1 · Rogério · Nomenclatura dos compostos orgânicos'},
+{f:3,tag:'QUI.PROP',t:'Propriedades físicas e densidade',m:'QUI',ed:1,nq:1,q:'Errou com aula: ENEM d2 Q126',a:'22/abr · Frente 1 · Rogério · Propriedades físicas das substâncias'},
+{f:3,tag:'QUI.RAD',t:'Isótopos e radioatividade',m:'QUI',ed:1,nq:2,q:'Errou com aula: Poliedro Q43 · Errou sem aula: FUVEST jul Q23',a:'25/fev · Frente 1 · Rogério · Isótopos'},
+{f:3,tag:'QUI.SEP',t:'Separação de misturas',m:'QUI',ed:1,nq:2,q:'Errou com aula: ENEM d2 Q91, ENEM d2 Q135',a:'28/fev · Frente 2 · Bruno Arruda · Separação de misturas'},
+{f:3,tag:'BIO.ECO.AMB',t:'Ecologia — alterações ambientais',m:'BIO',ed:1,nq:3,q:'Errou com aula: FUVEST jul Q5 · Do outro lado: 1 acerto com aula e 1 sem aula',a:'22/mai · Frente 02 · Renata · Ecologia - Alterações ambientais'},
+{f:3,tag:'BIO.ECO.BIOMA',t:'Ecologia — biomas',m:'BIO',ed:1,nq:1,q:'Errou com aula: ENEM d2 Q120',a:'08/mai · Frente 02 · Renata · Ecologia - Biomas mundiais e biomas brasileiros'},
+{f:3,tag:'BIO.ECO.CICLO',t:'Ecologia — ciclos biogeoquímicos',m:'BIO',ed:1,nq:1,q:'Errou com aula: ENEM d2 Q109',a:'10/abr · Frente 02 · Renata · Ecologia - Fluxo de energia e ciclos biogeoquímicos'},
+{f:3,tag:'BIO.ECO.SUC',t:'Ecologia — sucessão',m:'BIO',ed:1,nq:1,q:'Errou com aula: ENEM d2 Q128',a:'30/abr · Frente 02 · Renata · Sucessão ecológica'},
+{f:3,tag:'BIO.MICRO',t:'Protozooses, vírus e bactérias',m:'BIO',ed:1,nq:1,q:'Errou com aula: Unicamp Q35',a:'10/mar · Frente 03 · Tchelo · Protozooses'},
+{f:3,tag:'BIO.PROT',t:'Proteínas e ácidos nucleicos',m:'BIO',ed:1,nq:3,base:'BIO.MOL',q:'Errou com aula: Unicamp Q39 · Errou sem aula: Poliedro Q39 · Do outro lado: 1 acerto com aula',a:'16/mar · Frente 01 · Davi · Proteínas e Ácidos nucleicos'},
+{f:3,tag:'BIO.MOL',t:'Síntese de proteínas',m:'BIO',ed:1,nq:1,q:'Errou com aula: ENEM d2 Q116',a:'30/mar · Frente 01 · Davi · Síntese de proteínas'},
+{f:3,tag:'HIS.MOD',t:'Idade Moderna e Estado absolutista',m:'HIS',ed:1,nq:2,q:'Errou com aula: Unicamp Q32 · Do outro lado: 1 acerto com aula',a:'19/fev · Frente 2 · Maurinho · Formação dos reinos ibéricos e expansão; 19/mar · A montagem do sistema colonial; 19/mar · Frente 2 · Maurinho · A montagem do sistema colonial'},
+{f:3,tag:'HIS.REN',t:'Renascimento e humanismo',m:'HIS',ed:1,nq:1,q:'Errou com aula: ENEM d1 Q55',a:'09/mai · HG · Maion · Renascimento cultural'},
+{f:3,tag:'FIS.OPT.RFR',t:'Refração da luz',m:'FIS',ed:1,nq:2,q:'Errou com aula: FUVEST jul Q58 · Errou sem aula: FUVEST jul Q60',a:'30/mai · Frente 3 · Gui Mourão · Introdução à óptica geométrica; 20/jun · Reflexão da luz e espelhos planos'},
+{f:3,tag:'GEO.CONF',t:'Guerras e conflitos globais',m:'GEO',ed:1,nq:2,q:'Errou com aula: FUVEST abr Q47 · Do outro lado: 1 acerto com aula',a:'01/abr · Atualidades · Matheus Cury · Disputas marítimas e rotas; 15/abr · Atualidades · Matheus Cury · Guerras e conflitos - perspectivas globais; 04/mar · Organizações internacionais'},
+{f:3,tag:'GEO.ENER',t:'Energia, terras raras e mineração',m:'GEO',ed:1,nq:1,q:'Errou com aula: FUVEST abr Q21',a:'15/abr · Atualidades · Matheus Cury · Energia e terras raras; 22/abr · GB · Léo Ribas · Mineração'},
+{f:3,tag:'GEO.GEOM',t:'Geomorfologia e intemperismo',m:'GEO',ed:1,nq:2,q:'Errou com aula: ENEM d1 Q62, ENEM d1 Q88',a:'25/mar · GB · Léo Ribas · Geologia - Geomorfologia; 08/abr · Relevo do Brasil'},
+{f:3,tag:'GEO.GEOPOL',t:'Geopolítica e organizações internacionais',m:'GEO',ed:1,nq:6,q:'Errou com aula: Poliedro Q37, Poliedro Q69 · Do outro lado: 4 acertos com aula',a:'04/mar · Atualidades · Matheus Cury · Organizações internacionais; 11/fev · Atualidades · Matheus Cury · Conceitos iniciais da geopolítica; 04/mar · Organizações internacionais'},
+{f:3,tag:'GEO.IND',t:'Indústria e desindustrialização',m:'GEO',ed:1,nq:3,q:'Errou com aula: ENEM d1 Q83, ENEM d1 Q85 · Do outro lado: 1 acerto com aula',a:'25/abr · GG · Castro · Indústria no Brasil e agropecuária; 18/mar · Economia nos anos 2000/2010'},
+{f:3,tag:'GEO.TRANSP',t:'Rede de transportes',m:'GEO',ed:1,nq:2,q:'Errou com aula: FUVEST jul Q78 · Do outro lado: 1 sem aula',a:'27/jun · GG · Castro · Rede de transportes / Rede de transportes no Brasil'},
+{f:3,tag:'LIT.TROV',t:'Gêneros literários e Trovadorismo',m:'POR',ed:1,nq:1,base:'HIS.MED',q:'Errou com aula: Poliedro Q2',a:'03/mar · Literatura · Cris Bastos · Teoria dos gêneros literários e Trovadorismo'},
+{f:3,tag:'POR.MORF',t:'Morfologia e classes gramaticais',m:'POR',ed:1,nq:7,base:'POR.COES e POR.REG',q:'Errou com aula: Poliedro Q9 · Errou sem aula: Unicamp Q65 · Do outro lado: 5 acertos com aula',a:'03/mar · Gramática · André Rocha · Morfologia - classes gramaticais; 07/abr · Gramática · André Rocha · Processos de formação de palavras; 10/mar · Gramática · André Rocha · Pronomes / Entendimento de texto'},
+{f:3,tag:'MAT.FUN1',t:'Conjuntos e funções — introdução e gráficos',m:'MAT',ed:1,nq:1,base:'MAT.FUN e MAT.FUN2',q:'Errou com aula: Poliedro Q24',a:'26/fev · Frente 1 · Fabio · Conjuntos e funções'},
+{f:3,tag:'MAT.GP.AREA',t:'Áreas de figuras planas',m:'MAT',ed:1,nq:2,base:'MAT.GE',q:'Errou com aula: ENEM d2 Q145, ENEM d2 Q160',a:'18/mai · Frente 3 · Mario · Área de círculos e suas partes; 27/abr · Frente 3 · Mario · Quadriláteros notáveis; 11/mai · Área de triângulos'},
+{f:3,tag:'MAT.GP.SEM',t:'Semelhança de triângulos e Pitágoras',m:'MAT',ed:1,nq:1,base:'MAT.TRIG',q:'Errou com aula: ENEM d2 Q178',a:'06/abr · Frente 3 · Mario · Semelhança de triângulos; 23/fev · Trigonometria no triângulo retângulo'},
+{f:3,tag:'MAT.GP.TRI',t:'Ângulos e triângulos',m:'MAT',ed:1,nq:2,base:'MAT.GP.POL',q:'Errou com aula: Unicamp Q49 · Do outro lado: 1 acerto com aula',a:'03/mar · Frente 3 · Mario · Ângulos e triângulos; 09/fev · Frente 3 · Mario · Triângulos; 03/mar · Ângulos e triângulos'},
+{f:3,tag:'QUI.EST',t:'Estados físicos e mudanças de estado',m:'QUI',ed:1,nq:1,base:'FIS.CALOR',q:'Errou com aula: ENEM d2 Q112',a:'14/fev · Frente 2 · Bruno Arruda · Estado físico e suas mudanças; 28/mar · Frente 3 · Gui Mourão · Mudanças de estado físico'},
+{f:3,tag:'QUI.GEOM',t:'Geometria molecular e polaridade',m:'QUI',ed:1,nq:1,base:'QUI.IM',q:'Errou com aula: FUVEST jul Q11',a:'25/mar · Frente 1 · Rogério · Geometria molecular (data corrigida)'},
+{f:3,tag:'QUI.LIG',t:'Ligações químicas',m:'QUI',ed:1,nq:1,base:'QUI.IM',q:'Errou com aula: Poliedro Q19',a:'11/mar · Frente 1 · Rogério · Ligações químicas'},
+{f:3,tag:'BIO.BIOQ',t:'Composição química dos seres vivos',m:'BIO',ed:1,nq:2,base:'BIO.PROT',q:'Errou com aula: Unicamp Q37 · Do outro lado: 1 acerto com aula',a:'02/mar · Frente 01 · Davi · Composição química dos seres vivos'},
+{f:4,tag:'ART.PRE',t:'Arte pré-histórica',m:'POR',nq:1,q:'Errou sem aula: ENEM d1 Q19',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'LIT.ARC',t:'Arcadismo e literatura colonial',m:'POR',nq:1,q:'Errou sem aula: ENEM d1 Q32',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'LIT.MOD',t:'Modernismo',m:'POR',nq:1,q:'Errou sem aula: ENEM d1 Q7',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'LIT.REAL',t:'Realismo e Naturalismo',m:'POR',nq:2,q:'Errou sem aula: ENEM d1 Q16 · Do outro lado: 1 sem aula',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'LIT.ROM.BR',t:'Romantismo brasileiro',m:'POR',nq:4,q:'Errou sem aula: ENEM d1 Q11, ENEM d1 Q20 · Do outro lado: 2 sem aula',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'LIT.TEORIA',t:'Teoria literária e formas poéticas',m:'POR',nq:3,q:'Errou sem aula: FUVEST jul Q42 · Do outro lado: 2 acertos com aula',a:'03/mar · Literatura · Cris Bastos · Teoria dos gêneros literários e Trovadorismo; 03/mar · Literatura · Cris Bastos · Teoria dos gêneros literários; 10/fev e 24/fev · Introdução aos estudos literários'},
+{f:4,tag:'POR.VAR',t:'Variação linguística',m:'POR',nq:5,q:'Errou sem aula: Unicamp Q64, ENEM d1 Q14 · Do outro lado: 3 sem aula',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'MAT.GA',t:'Geometria analítica',m:'MAT',nq:1,q:'Errou sem aula: FUVEST abr Q48',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'MAT.LOG',t:'Logaritmo aplicado — escala e decibel',m:'MAT',nq:3,q:'Errou sem aula: FUVEST abr Q26, FUVEST abr Q27 · Do outro lado: 1 acerto com aula — 1 desses acertos com aula era chute, e por isso o item nao fecha',a:'30/abr e 07/mai · Frente 1 · Fabio · Logaritmo e função logarítmica; 03/jun · Frente 2 · Beto · Progressões geométricas'},
+{f:4,tag:'MAT.SEQ',t:'Sequências, PA e PG',m:'MAT',nq:2,q:'Errou sem aula: FUVEST abr Q56 · Do outro lado: 1 acerto com aula — 1 desses acertos com aula era chute, e por isso o item nao fecha',a:'20/mai · Frente 2 · Beto · Sequências e progressão aritmética; 03/jun · Soma de P.A. e progressões geométricas'},
+{f:4,tag:'QUI.PERI',t:'Propriedades periódicas',m:'QUI',nq:3,base:'QUI.LIG e QUI.IM',q:'Errou sem aula: Unicamp Q71, Poliedro Q27, Poliedro Q51',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'QUI.SOL',t:'Soluções e concentração',m:'QUI',nq:2,base:'QUI.ACBA e QUI.EQUI',q:'Errou sem aula: FUVEST abr Q59 · Do outro lado: 1 sem aula',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'BIO.ECO.REL',t:'Ecologia — relações interespecíficas',m:'BIO',nq:4,q:'Errou sem aula: FUVEST abr Q69 · Do outro lado: 2 acertos com aula e 1 sem aula',a:'30/abr · Frente 02 · Renata · Ecologia - dinâmica populacional, relações ecológicas e sucessão ecológica; 30/abr · Frente 02 · Renata · Relações ecológicas'},
+{f:4,tag:'BIO.FOTO',t:'Fotossíntese e bioenergética',m:'BIO',nq:1,q:'Errou sem aula: ENEM d2 Q108',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'BIO.GEN',t:'Genética e heredogramas',m:'BIO',nq:3,q:'Errou sem aula: FUVEST jul Q31, FUVEST jul Q52 · Do outro lado: 1 sem aula',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'BIO.IMUN',t:'Imunologia e vacinas',m:'BIO',nq:3,q:'Errou sem aula: FUVEST abr Q63, ENEM d2 Q123 · Do outro lado: 1 sem aula',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'HIS.IND',t:'Revolução Industrial e Iluminismo',m:'HIS',nq:2,q:'Errou sem aula: Poliedro Q70 · Do outro lado: 1 acerto com aula',a:'27/jun · HG · Maion · Revolução Industrial'},
+{f:4,tag:'HIS.REF',t:'Reforma Protestante',m:'HIS',nq:1,q:'Errou sem aula: ENEM d1 Q87',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'FIS.TRANSF',t:'Transferência de calor',m:'FIS',nq:2,q:'Errou sem aula: Poliedro Q40 · Do outro lado: 1 sem aula',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'GEO.AGRO',t:'Geografia agrária',m:'GEO',nq:2,q:'Errou sem aula: FUVEST jul Q3 · Do outro lado: 1 sem aula',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'GEO.BIOMA',t:'Biogeografia e domínios morfoclimáticos',m:'GEO',nq:1,q:'Errou sem aula: FUVEST jul Q4',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'GEO.GEOL',t:'Geologia e tipos de rocha',m:'GEO',nq:2,q:'Errou sem aula: Unicamp Q16 · Do outro lado: 1 acerto com aula',a:'25/mar · GB · Léo Ribas · Geologia - Geomorfologia'},
+{f:4,tag:'SOC.BR',t:'Pensamento social brasileiro',m:'SOC',nq:1,q:'Errou sem aula: FUVEST jul Q44',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'SOC.CIEN',t:'Sociologia como ciência',m:'SOC',nq:1,q:'Errou sem aula: ENEM d1 Q76',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'SOC.CULT',t:'Cultura, etnocentrismo e antropologia',m:'SOC',nq:7,q:'Errou sem aula: Unicamp Q27, FUVEST abr Q16 · Do outro lado: 5 sem aula',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:4,tag:'SOC.DESIG',t:'Desigualdade e estratificação social',m:'SOC',nq:2,q:'Errou sem aula: ENEM d1 Q59 · Do outro lado: 1 sem aula',a:'AULA JA EXISTE, DATA NAO REGISTRADA. Na data da prova o cursinho ainda nao tinha dado; o Guia de 04/08 marca este topico, entao a aula veio entre 05/07 e 04/08. Falta o cronograma desse mes para citar data, frente e professor — procure pelo nome do topico na plataforma.'},
+{f:5,tag:'FIS.TRAB',t:'Trabalho e energia mecânica',m:'FIS',nq:7,q:'Errou sem aula: Poliedro Q32, FUVEST abr Q52, ENEM d2 Q119 · Do outro lado: 4 sem aula',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'ART.CONT',t:'Arte contemporânea e indústria cultural',m:'POR',nq:4,q:'Errou sem aula: FUVEST jul Q50 · Do outro lado: 3 sem aula',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'MAT.GE',t:'Geometria espacial',m:'MAT',nq:4,q:'Errou sem aula: FUVEST jul Q13 · Do outro lado: 3 sem aula',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'GEO.URB',t:'Urbanização e problemas urbanos',m:'GEO',nq:4,q:'Errou sem aula: FUVEST jul Q17 · Do outro lado: 3 sem aula',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'LIT.CONT',t:'Literatura contemporânea',m:'POR',nq:3,q:'Errou sem aula: Unicamp Q61 · Do outro lado: 2 sem aula',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'MAT.PROB',t:'Probabilidade',m:'MAT',nq:2,q:'Errou sem aula: FUVEST jul Q57 · Do outro lado: 1 sem aula',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'BIO.FIS.HUM',t:'Fisiologia humana',m:'BIO',nq:2,q:'Errou sem aula: Poliedro Q45, FUVEST abr Q74',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'FIS.OND',t:'Ondulatória e efeito Doppler',m:'FIS',nq:2,q:'Errou sem aula: FUVEST abr Q25 · Do outro lado: 1 sem aula',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'HIS.BR.VAR',t:'Era Vargas e Revolução de 1932',m:'HIS',nq:2,q:'Errou sem aula: FUVEST abr Q44 · Do outro lado: 1 sem aula',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'HIS.XX.CONT',t:'Mundo contemporâneo',m:'HIS',nq:2,q:'Errou sem aula: FUVEST jul Q37 · Do outro lado: 1 sem aula',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'QUI.COLIG',t:'Propriedades coligativas',m:'QUI',nq:2,q:'Errou sem aula: FUVEST abr Q80, ENEM d2 Q129',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'SOC.CONT',t:'Sociologias contemporâneas',m:'SOC',nq:2,q:'Errou sem aula: Unicamp Q33 · Do outro lado: 1 sem aula',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'MAT.EST',t:'Estatística descritiva',m:'MAT',nq:1,q:'Errou sem aula: ENEM d2 Q163',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'BIO.BOT',t:'Botânica',m:'BIO',nq:1,q:'Errou sem aula: FUVEST abr Q73',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'BIO.FIS.END',t:'Sistema endócrino',m:'BIO',nq:1,q:'Errou sem aula: FUVEST jul Q12',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'BIO.FIS.NER',t:'Sistema nervoso',m:'BIO',nq:1,q:'Errou sem aula: FUVEST abr Q61',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'FIS.DIN',t:'Dinâmica — atrito e força centrípeta',m:'FIS',nq:1,base:'FIS.TRAB',q:'Errou sem aula: ENEM d2 Q133',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'FIS.HID',t:'Hidrostática — Stevin, Pascal e empuxo',m:'FIS',nq:1,q:'Errou sem aula: ENEM d2 Q94',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'FIS.MAG',t:'Magnetismo e campo magnético',m:'FIS',nq:1,q:'Errou sem aula: FUVEST abr Q38',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'HIS.IMP',t:'Imperialismo e o longo século XIX',m:'HIS',nq:1,q:'Errou sem aula: FUVEST abr Q36',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'HIS.XX.FRIA',t:'Guerra Fria e Oriente Médio',m:'HIS',nq:1,q:'Errou sem aula: FUVEST abr Q46',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'QUI.ORG.REA',t:'Reações orgânicas',m:'QUI',nq:1,q:'Errou sem aula: FUVEST abr Q58',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'QUI.REDOX',t:'Oxirredução e eletroquímica',m:'QUI',nq:1,q:'Errou sem aula: FUVEST abr Q79',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'FIL.CONT',t:'Filosofia contemporânea',m:'FIL',nq:1,q:'Errou sem aula: FUVEST abr Q2',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:5,tag:'FIL.HEL',t:'Helenismo — estoicismo, epicurismo, ceticismo',m:'FIL',nq:1,q:'Errou sem aula: ENEM d1 Q66',a:'AULA AINDA POR VIR. O cursinho dá no 2º semestre — não estude por fora, marque quando a aula acontecer.'},
+{f:6,tag:'ING.INF',t:'Inglês — inferência e leitura de prova',m:'ING',nq:28,q:'Errou sem aula: Poliedro Q3, Poliedro Q58, ENEM d1 Q2, FUVEST jul Q29, FUVEST jul Q30, FUVEST jul Q48 e mais 2 · Do outro lado: 20 sem aula',a:'SEM AULA E SEM PREVISÃO. A frente de Inglês do Guia nao e da sua turma. Zero aula no ano e nenhuma prevista: 34 questoes na base, todas sem aula. Maior item isolado do indice de risco, 8 questoes de peso.'},
+{f:6,tag:'ING.VOCAB',t:'Inglês — vocabulário e sentido',m:'ING',nq:4,q:'Errou sem aula: Poliedro Q71, FUVEST abr Q34 · Do outro lado: 2 sem aula',a:'SEM AULA E SEM PREVISÃO. Sem aula e sem previsao — a frente de Ingles do Guia nao e da sua turma.'},
+{f:6,tag:'HIS.HISTORIOG',t:'Historiografia, fontes e escrita da história',m:'HIS',nq:3,q:'Errou sem aula: Unicamp Q34, FUVEST abr Q50, ENEM d1 Q60',a:'SEM AULA E SEM PREVISÃO. Nao aparece em nenhuma frente do Guia — a confirmar no cursinho. Inclui as duas questoes que estavam sob a tag provisoria TAG.NOVA.'},
+{f:6,tag:'EDF.SOC',t:'Esporte e sociedade',m:'EDF',nq:3,q:'Errou sem aula: FUVEST jul Q35 · Do outro lado: 2 sem aula',a:'SEM AULA E SEM PREVISÃO. Educação Física não aparece no Guia: nem frente, nem tópico'},
+{f:6,tag:'FIS.MOD',t:'Física moderna',m:'FIS',nq:2,q:'Errou sem aula: Poliedro Q18 · Do outro lado: 1 sem aula',a:'SEM AULA E SEM PREVISÃO. Nao aparece em nenhuma frente do Guia. Voce vai confirmar no cursinho — ate la fica aqui, porque presumir que a aula vem faria voce nao estudar um tema que ja caiu duas vezes.'},
+{f:6,tag:'ING.GRAM',t:'Inglês — gramática e conectivos',m:'ING',nq:2,q:'Errou sem aula: ENEM d1 Q3 · Do outro lado: 1 sem aula',a:'SEM AULA E SEM PREVISÃO. Sem aula e sem previsao — a frente de Ingles do Guia nao e da sua turma.'},
+{f:6,tag:'EDF.TREINO',t:'Princípios do treinamento',m:'EDF',nq:1,q:'Errou sem aula: FUVEST abr Q77',a:'SEM AULA E SEM PREVISÃO. Educação Física não aparece no Guia: nem frente, nem tópico'},
+{f:7,tag:'ART.ANT',t:'Arte na Antiguidade',m:'POR',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q35',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'ART.BR',t:'Arte brasileira e indígena',m:'POR',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: FUVEST abr Q3',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'ART.HIST',t:'História da arte e intertextualidade',m:'POR',nq:2,ac:'acertou 2 de 2',q:'Acertou sem aula: Poliedro Q4, Poliedro Q5',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'ART.MED',t:'Arte medieval',m:'POR',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q43',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'ART.PATR',t:'Patrimônio cultural',m:'POR',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q25',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'LIT.BAR',t:'Barroco',m:'POR',nq:2,ac:'acertou 2 de 2',q:'Acertou sem aula: Poliedro Q72, ENEM d1 Q15',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'POR.DISC',t:'Discurso direto e indireto',m:'POR',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q13',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'MAT.COMB',t:'Análise combinatória',m:'MAT',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: FUVEST jul Q16',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'MAT.EQ',t:'Equações e modelagem algébrica',m:'MAT',nq:2,ac:'acertou 2 de 2',q:'Acertou com aula: ENEM d2 Q139, ENEM d2 Q174',a:'01/abr · Frente 2 · Beto · Equação de 1º e 2º grau; 15/abr · Razões e proporções'},
+{f:7,tag:'MAT.NUM',t:'Conjuntos numéricos e frações',m:'MAT',nq:1,ac:'acertou 1 de 1',q:'Acertou com aula: ENEM d2 Q137',a:'11/fev e 12/fev · Frentes 1 e 2 · Conjuntos numéricos'},
+{f:7,tag:'MAT.PA',t:'Progressão aritmética',m:'MAT',nq:1,ac:'acertou 1 de 1',q:'Acertou com aula: ENEM d2 Q148',a:'20/mai · Frente 2 · Beto · Sequências e progressão aritmética'},
+{f:7,tag:'MAT.PG',t:'Progressão geométrica',m:'MAT',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d2 Q167',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'MAT.RLOG',t:'Raciocínio lógico e malha quadriculada',m:'MAT',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d2 Q138',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'MAT.SIST',t:'Sistemas lineares',m:'MAT',nq:1,ac:'acertou 1 de 1',q:'Acertou com aula: ENEM d2 Q156',a:'01/abr · Frente 2 · Beto · Equação de 1º e 2º grau'},
+{f:7,tag:'QUI.CIN',t:'Cinética química',m:'QUI',nq:3,ac:'acertou 3 de 3',q:'Acertou com aula: ENEM d2 Q102, FUVEST jul Q26 · Acertou sem aula: FUVEST abr Q62 — 1 desses acertos com aula era chute, e por isso o item nao fecha',a:'11/mai · Frente 3 · Theodoro · Fatores que influenciam a velocidade das reações; 11/mai · Frente 3 · Theodoro · Velocidade média e teoria das colisões / Fatores que influenciam a velocidade'},
+{f:7,tag:'QUI.FORM',t:'Determinação de fórmulas',m:'QUI',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: Unicamp Q66',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'QUI.MIST',t:'Misturas e processos de separação',m:'QUI',nq:3,ac:'acertou 3 de 3',q:'Acertou com aula: Unicamp Q67, Unicamp Q68, Poliedro Q52',a:'14/fev · Frente 2 · Bruno Arruda · Estado físico e suas mudanças; 28/fev · Frente 2 · Bruno Arruda · Separação de misturas'},
+{f:7,tag:'QUI.TERMO',t:'Termoquímica e entalpia',m:'QUI',nq:2,ac:'acertou 2 de 2',q:'Acertou com aula: ENEM d2 Q127, FUVEST jul Q7 — 1 desses acertos com aula era chute, e por isso o item nao fecha',a:'06/abr · Frente 3 · Theodoro · Termoquímica - Lei de Hess; 20/abr · Entalpia de formação; 20/abr · Frente 3 · Theodoro · Entalpia de formação / Energia de ligação química'},
+{f:7,tag:'BIO.BIOTEC',t:'Biotecnologia',m:'BIO',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: Poliedro Q48',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'BIO.FIS',t:'Fisiologia — cálcio e ossos',m:'BIO',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d2 Q99',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'BIO.PARAS',t:'Parasitoses e verminoses',m:'BIO',nq:2,ac:'acertou 2 de 2',q:'Acertou com aula: ENEM d2 Q132, ENEM d2 Q134',a:'07/abr · Frente 03 · Tchelo · Vermes e verminoses I e II; 30/abr · Frente 02 · Renata · Relações ecológicas'},
+{f:7,tag:'HIS.AFR',t:'África e diáspora',m:'HIS',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q79',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'HIS.AMER',t:'América colonial e crônicas',m:'HIS',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q77',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'HIS.BR.DEM',t:'República democrática 1946-64',m:'HIS',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: FUVEST jul Q43',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'HIS.BR.IMP',t:'Brasil Império',m:'HIS',nq:1,ac:'acertou 1 de 1',q:'Acertou com aula: FUVEST jul Q79',a:'25/jun · Frente 2 · Maurinho · Política interna e economia do 2º Reinado; 11/jun · O Primeiro Reinado e o Período Regencial'},
+{f:7,tag:'HIS.BR.IND',t:'Independências na América',m:'HIS',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: FUVEST abr Q6',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'HIS.BR.MIN',t:'Mineração e crise colonial',m:'HIS',nq:1,ac:'acertou 1 de 1',q:'Acertou com aula: FUVEST jul Q80',a:'07/mai · Frente 2 · Maurinho · A atividade mineradora e a crise do sistema colonial'},
+{f:7,tag:'HIS.XX.GUE',t:'Nazifascismo e Segunda Guerra',m:'HIS',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: FUVEST jul Q32',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'HIS.XX.RUS',t:'Revolução Russa e URSS',m:'HIS',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: FUVEST jul Q38',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'FIS.EST',t:'Estática e equilíbrio de corpos',m:'FIS',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: FUVEST jul Q15',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'FIS.LANC',t:'Movimento circular e rotação',m:'FIS',nq:1,ac:'acertou 1 de 1',q:'Acertou com aula: FUVEST abr Q54',a:'24/abr · Frente 1 · Lucas Eufrásio · Movimento circular uniforme'},
+{f:7,tag:'FIS.QMOV',t:'Quantidade de movimento',m:'FIS',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: FUVEST jul Q24',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'FIS.TERM',t:'Termometria e escalas',m:'FIS',nq:1,ac:'acertou 1 de 1',q:'Acertou com aula: Unicamp Q13',a:'14/fev · Frente 3 · Gui Mourão · Temperatura, escalas e conversões'},
+{f:7,tag:'GEO.ECON',t:'Economia e crédito',m:'GEO',nq:1,ac:'acertou 1 de 1',q:'Acertou com aula: ENEM d1 Q78',a:'18/mar · Atualidades · Matheus Cury · Economia nos anos 2000 / Economia nos anos 2010; 21/fev · GG · Castro · A geografia e o capitalismo'},
+{f:7,tag:'GEO.HIDRO',t:'Hidrografia',m:'GEO',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: Poliedro Q59',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'GEO.MIN',t:'Mineração e garimpo',m:'GEO',nq:1,ac:'acertou 1 de 1',q:'Acertou com aula: ENEM d1 Q68',a:'22/abr · GB · Léo Ribas · Mineração / Climatologia'},
+{f:7,tag:'GEO.ORG',t:'Organizações internacionais',m:'GEO',nq:1,ac:'acertou 1 de 1',q:'Acertou com aula: ENEM d1 Q73',a:'04/mar · Atualidades · Matheus Cury · Organizações internacionais'},
+{f:7,tag:'GEO.POP',t:'Demografia e população',m:'GEO',nq:2,ac:'acertou 2 de 2',q:'Acertou com aula: ENEM d1 Q48 · Acertou sem aula: Poliedro Q13',a:'29/abr · Atualidades · Matheus Cury · Refugiados'},
+{f:7,tag:'GEO.SOLO',t:'Solos e degradação',m:'GEO',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q65',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'GEO.TEC',t:'Tecnologia, dados e big techs',m:'GEO',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q75',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'FIL.LING',t:'Filosofia da linguagem',m:'FIL',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q71',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'FIL.MOD',t:'Filosofia moderna e da ciência',m:'FIL',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: FUVEST jul Q19',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'SOC.EDU',t:'Educação e instituições',m:'SOC',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q49',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'SOC.PODER',t:'Poder, Estado e dominação',m:'SOC',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q64',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'SOC.REL',t:'Religião e sociedade',m:'SOC',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q86',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'},
+{f:7,tag:'EDF.SAUDE',t:'Atividade física e saúde',m:'EDF',nq:1,ac:'acertou 1 de 1',q:'Acertou sem aula: ENEM d1 Q18',a:'Acerto sem aula prévia — crédito frágil, pode não se repetir.'}
+];
+
+const BANDS=[
+ {f:0,c:'var(--rose)',h:'Reincidente em quatro simulados',w:'Um único item chegou aqui: o mesmo tema errado em quatro provas diferentes, com aula antes das quatro. Rever a aula já falhou três vezes. Precisa de questão refeita no papel, sem gabarito, e uma segunda passada com data marcada. O pré-requisito dele entra logo antes, marcado como base.'},
+ {f:1,c:'#E4855C',h:'Reincidente em três simulados',w:'Mesmo tema, três provas, aula já dada. Ordenados por peso da matéria no caderno e depois pela taxa verificada da matéria. Cada pré-requisito aparece imediatamente antes do item que sustenta.'},
+ {f:2,c:'var(--amber)',h:'Reincidente em dois simulados',w:'Duas provas, aula já dada. É a faixa onde estão os itens que ainda dá tempo de fechar sem virar crônico.'},
+ {f:3,c:'var(--line2)',h:'Erro único com aula dada',w:'Uma edição cada, às vezes com várias questões no mesmo caderno. Vale menos por item, mas é o volume daqui que separa 50 de 55 acertos.'},
+ {f:4,c:'#56A8FF',h:'Errou sem aula — mas a aula já aconteceu',w:'Na data da prova o cursinho ainda não tinha dado. Deu depois: o Guia de 04/08 marca todos estes. Deixaram de ser adiantamento e viraram revisão comum — existe gravação para rever, e por isso entram no cronograma.'},
+ {f:5,c:'var(--violet)',h:'Errou sem aula — e a aula ainda vem',w:'O cursinho vai dar isto no 2º semestre. <b>Não estude por fora e não procure no cronograma:</b> estes itens existem aqui só para você marcar quando a aula acontecer. Ordenados por número de vezes que já foram cobrados, para você saber quais assistir com atenção redobrada.'},
+ {f:6,c:'#FF8A5B',h:'Sem aula e sem previsão',w:'Não aparecem em nenhuma frente do Guia — nem dados, nem programados. Só estes precisam mesmo de fonte externa. São poucos, e a lista encolheu muito depois que o Guia entrou.'},
+ {f:7,c:'var(--jade)',h:'Caiu e você acertou — manutenção',w:'Nada foi excluído do plano: o que já saiu certo continua na lista, só que por último. Aqui a ordem é uma passada e segue. Repare em quantos são AS — acerto em conteúdo sem aula prévia, que é crédito que pode não renovar.'}
+];
+
+const WEEKS=[
+{n:1,d:'03 – 09/ago',t:'Trigonometria e estequiometria — único fim de semana livre',
+bio:[
+'Cards novos · 20/fev, 06/mar e 20/mar · Frente 02 · Renata · Evolução biológica / Teoria moderna da evolução / Formação de novas espécies — errada em Unicamp, Poliedro e ENEM d2, e o acerto de julho era chute',
+'Foco dos cards: mecanismo, não definição. Deriva genética × seleção, especiação simpátrica × alopátrica, homologia × analogia',
+'Meta: 25 a 30 cards novos por dia, no deslocamento'],
+sab:[
+'QUÍMICA · 11/abr · Frente 2 · Bruno Arruda · Leis das reações e cálculo estequiométrico → 25/abr · Rendimento, excesso, limitante e pureza. Cinco erros com aula: Poliedro Q53, FUVEST abr Q76, ENEM d2 Q98, Q107 e Q122',
+'QUÍMICA · 28/fev · Frente 2 · Bruno Arruda · Separação de misturas — ENEM d2 Q91 e Q135. Conceito básico, resolve rápido',
+'MATEMÁTICA · 09/fev e 06/abr · Frente 3 · Mario · Triângulos e Semelhança de triângulos (base) → 23/fev · Trigonometria no triângulo retângulo → 20/abr · Leis do seno e do cosseno',
+'MATEMÁTICA · refazer Q151 e Q169 do ENEM d2 lado a lado, cronometrado. Você errou uma e acertou a outra no mesmo caderno: é execução, não teoria',
+'MATEMÁTICA · 18/mar · Frente 2 · Beto · Teorema fundamental da aritmética e fatoração → 15/abr · Razões e proporções. Unicamp Q51 e Q53, Poliedro Q42, ENEM d2 Q170'],
+dom:[
+'FÍSICA · execução, não teoria: refazer as três contas perdidas por unidade — coeficiente do CO₂, km/h em m/s, A·h em W·h. Cronometrado, com a checagem no fim',
+'FÍSICA · 21/fev e 07/mar · Frente 1 · Lucas Eufrásio · Movimento uniforme e MUV → 18/abr · Gráficos do MU e MUV. Unicamp Q10, Poliedro Q34, ENEM d2 Q100',
+'QUÍMICA · 11/mar · Frente 1 · Rogério · Ligações químicas → 25/mar · Geometria molecular (bases) → 08/abr · Forças intermoleculares → 22/abr · Propriedades físicas. A cadeia inteira: FUVEST abr Q60, jul Q10 e ENEM d2 Q118'],
+note:'O edital sai em <b>03/08</b>. Confirme número de questões e datas — o calendário do cursinho é previsão, não documento oficial. Como 15/08 é simulado, este é o <b>único fim de semana completo de exatas até setembro</b>.'},
+
+{n:2,d:'10 – 16/ago',t:'S-4 ENEM · Dia 1',mark:'Simulado sáb',
+bio:[
+'Cards novos · 10/fev e 24/fev · Frente 03 · Tchelo · Sistemática / Protozoários — item que fechou (acertou com aula no ENEM d2). Uma passada no cladograma e segue',
+'Cards novos · 02/mar · Frente 01 · Davi · Composição química dos seres vivos — Unicamp Q37',
+'Sexta: só revisão, véspera de simulado'],
+sab:[
+'SIMULADO 14h30–20h',
+'Marcar cada questão: em branco, chutada ou respondida com confiança',
+'Anotar o horário ao terminar cada bloco — Linguagens, Redação, Humanas',
+'Guardar o caderno com as marcações'],
+dom:[
+'Correção completa do simulado, tema a tema, inclusive nos acertos',
+'FÍSICA · 14/fev e 06/mar · Frente 2 · Gui Mourão · Carga elétrica e processos de eletrização — Unicamp Q9 e Poliedro Q33. É a base da eletrodinâmica',
+'QUÍMICA · 11/fev · Frente 1 · Rogério · Atomística — Unicamp Q72 e ENEM d2 Q106',
+'Enviar caderno, gabarito, marcações de chute e horários por bloco'],
+note:'<b>Agora existe medida do estrago do chute.</b> Em julho, 6 dos 16 acertos com aula prévia foram chutados — a taxa daquela edição cai de 48,5% para um piso de 30,3%. Nas outras cinco edições o dado não existe. Anote nesta.'},
+
+{n:3,d:'17 – 23/ago',t:'S-4 ENEM · Dia 2',mark:'Simulado sáb',
+bio:[
+'Cards novos · 16/mar · Frente 01 · Davi · Proteínas e Ácidos nucleicos (base) → 30/mar · Síntese de proteínas. Unicamp Q39 e ENEM d2 Q116',
+'Revisão espaçada · Evolução e Sistemática',
+'Sexta: só revisão, véspera de simulado'],
+sab:['SIMULADO 14h30–19h30 — mesmo registro de chute e tempo por bloco'],
+dom:[
+'Correção do simulado',
+'FÍSICA · 14/mar · Frente 3 · Gui Mourão · Calorimetria e sistemas termicamente isolados → 28/mar · Mudanças de estado físico → Transferência de calor. Unicamp Q14, Poliedro Q36, ENEM d2 Q124',
+'QUÍMICA · 14/fev · Frente 2 · Bruno Arruda · Estado físico e suas mudanças e 22/abr · Frente 1 · Rogério · Propriedades físicas das substâncias — ENEM d2 Q112 e Q126. Mesmo assunto da Física acima, pelo outro lado'],
+note:'Inscrições da FUVEST abrem <b>17/08</b>. Guia de Provas sai no mesmo dia. Este é o dia 2 do ENEM: Natureza e Matemática, exatamente onde Química deu 21%.'},
+
+{n:4,d:'24 – 30/ago',t:'S-3 Fuvest 1ª fase — a medição que vale',mark:'Simulado sáb',
+bio:[
+'Cards novos · 13/abr · Frente 01 · Davi · Tipos celulares e organelas → 27/abr · Envoltórios celulares → 22/jun · Núcleo celular / Mitose. FUVEST abr Q66 e ENEM d2 Q113',
+'Revisão espaçada · Proteínas, Síntese de proteínas e Composição química',
+'Sexta: só revisão, véspera de simulado'],
+sab:[
+'SIMULADO FUVEST 1ª FASE 14h30–19h30 — formato mais próximo do real antes da prova',
+'Cronometrar por bloco. Registrar branco e chute questão a questão.'],
+dom:[
+'Correção completa + reclassificar cada questão em AC/AS/EC/ES contra o cronograma',
+'FÍSICA · 08/mai · Frente 2 · Gui Mourão · Introdução à eletrodinâmica → 22/mai · Leis de Ohm / Associação de resistores. FUVEST jul Q22 e ENEM d2 Q97 e Q121',
+'QUÍMICA · 09/mar · Frente 3 · Theodoro · Gases - equação de estado — Unicamp Q70 e FUVEST jul Q9, que era Boyle puro: 500·P = 375·1'],
+note:'<b>Este é o marco.</b> É o único simulado do formato FUVEST 1ª fase antes de novembro, e o único comparável com abril e julho. Se os itens vermelhos não caírem aqui, o método de revisão está errado — não a quantidade de horas.'},
+
+{n:5,d:'31/ago – 06/set',t:'Simulado 2ª fase — o fim de semana some inteiro',mark:'Sáb + dom',
+bio:[
+'Cards novos · 10/abr · Frente 02 · Renata · Ecologia - Fluxo de energia e ciclos biogeoquímicos → 30/abr · Sucessão e relações ecológicas',
+'Revisão espaçada · Célula e organelas',
+'Semana pesada e fim de semana tomado: se tiver que cortar, corte os cards novos e mantenha a revisão'],
+sab:['SIMULADO 2ª FASE Dia 1 · 14h30–18h30 — Português e Redação'],
+dom:['SIMULADO 2ª FASE Dia 2 · 8h30–12h30 — Específicas'],
+note:'<b>Semana sem nenhuma sessão de exatas.</b> Fim de semana inteiro tomado pelo simulado e semana só de flashcard de Biologia: Química, Física e Matemática ficam sete dias parados. É o pior buraco do semestre e não tem solução dentro das regras atuais.'},
+
+{n:6,d:'07 – 13/set',t:'Recesso — a única janela livre do semestre',mark:'Recesso',markc:'rest',
+bio:[
+'Cards novos · 08/mai · Frente 02 · Renata · Biomas mundiais e brasileiros → 22/mai · Alterações ambientais → Interações ecológicas. Fecha o bloco de Ecologia, que tem quatro tags erradas',
+'Revisão espaçada · Ecologia parte 1, Célula, Evolução',
+'Semana sem cursinho: dá para dobrar o volume se quiser'],
+sab:[
+'QUÍMICA · Propriedades periódicas — errada em três provas sem aula, e a aula já aconteceu: o Guia de 04/08 marca Tabela periódica. Rever a gravação e refazer Unicamp Q71, Poliedro Q27 e Q51',
+'QUÍMICA · 04/jul · Frente 2 · Bruno Arruda · Soluções — base de pH e equilíbrio, dada depois de todos os simulados',
+'MATEMÁTICA · 19/fev · Frente 1 · Fabio · Conjuntos e intervalos → 26/fev · Conjunto e funções (bases) → 19/mar · Função composta e inversa → 14/mai · Função modular. Unicamp Q46 e Q48, Poliedro Q24 e Q46, ENEM d2 Q168, FUVEST jul Q61',
+'MATEMÁTICA · 04/mar · Frente 2 · Beto · Potenciação (base) → 16/abr e 23/abr · Exponencial → 30/abr e 07/mai · Frente 1 · Fabio · Logaritmo. FUVEST jul Q59 e os dois erros de abril'],
+dom:[
+'FÍSICA · Física moderna — único bloco de Física que não aparece em nenhuma frente do Guia. Sem aula passada e sem aula futura: é o único que exige fonte externa',
+'FÍSICA · 30/mai · Frente 3 · Gui Mourão · Introdução à óptica geométrica → 20/jun · Reflexão da luz → Refração. FUVEST jul Q58',
+'QUÍMICA · 06/abr · Frente 3 · Theodoro · Termoquímica - Lei de Hess → 20/abr · Entalpia de formação. Você acertou as duas questões do tema, mas uma foi chute: refazer sem gabarito'],
+note:'Semana sem aula e sem simulado. <b>Atenção ao que mudou:</b> trabalho e energia, dinâmica, hidrostática, magnetismo e ondulatória saíram desta semana. O cursinho vai dar os cinco no 2º semestre — estão no roadmap, faixa roxa, para marcar quando a aula acontecer. Física moderna ficou, porque não aparece em nenhuma frente do Guia.'},
+
+{n:7,d:'14 – 20/set',t:'Revisão Vunesp · S-5 ENEM Dia 1',mark:'Simulado sáb',
+bio:[
+'Cards novos · 10/mar · Frente 03 · Tchelo · Protozooses, 12/jun · Frente 02 · Renata · Vírus e 26/jun · Procariontes. Unicamp Q35',
+'Revisão espaçada · Ecologia completa',
+'Sexta: só revisão, véspera de simulado'],
+sab:['SIMULADO ENEM Dia 1 · 14h30–20h'],
+dom:[
+'Correção do simulado',
+'FÍSICA · 12/jun · Frente 2 · Gui Mourão · Análise de circuitos elétricos / Medidores → 26/jun · Geradores. Fecha a eletrodinâmica, que é 16% da Física da FUVEST',
+'QUÍMICA · 02/mai · Frente 2 · Bruno Arruda · Teoria de Arrhenius → 16/mai · Ácidos e bases. FUVEST jul Q27: diluir ácido não faz o pH passar de 7, e você marcou 8,0'],
+note:'A Revisão Vunesp roda de 14 a 18/09 em horário diferenciado — confira a grade da semana antes de planejar.'},
+
+{n:8,d:'21 – 27/set',t:'S-5 ENEM Dia 2',mark:'Simulado sáb',
+bio:[
+'Cards novos · Imunologia — errou sem aula em duas provas, mas a aula já aconteceu: Circulação e imunidade está marcada no Guia. Rever a gravação da Frente 03',
+'Revisão espaçada · Microbiologia e Ecologia',
+'Sexta: só revisão, véspera de simulado'],
+sab:['SIMULADO ENEM Dia 2 · 14h30–19h30'],
+dom:[
+'Correção do simulado',
+'FÍSICA · revisão espaçada de cinemática, calorimetria e eletrostática — só questão nova, sem reler aula',
+'QUÍMICA · 25/mai, 01/jun e 08/jun · Frente 3 · Theodoro · Lei da ação das massas → Equilíbrio químico → Deslocamento de equilíbrio. FUVEST jul Q8, depois de Soluções e Ácidos e bases'],
+note:'Último simulado oficial do cursinho antes do período de revisão. Depois daqui, simulado cronometrado é por sua conta.'},
+
+{n:9,d:'28/set – 04/out',t:'Fechar a geometria plana e a orgânica',
+bio:[
+'Cards novos · Genética e heredogramas — Introdução à Genética já foi dada (Frente 01). Alelos múltiplos, 2ª lei e ligação gênica vêm depois: não adiante, marque quando a aula acontecer',
+'Revisão espaçada · Imunologia e Microbiologia',
+'Fotossíntese e bioenergética: cards da Frente 01, aula já marcada no Guia'],
+sab:[
+'QUÍMICA · 13/mai · Frente 1 · Rogério · Nomenclatura dos compostos orgânicos — ENEM d2 Q92 e Q131. Isomeria também já foi dada (marcada no Guia), mas a data não está registrada: procure pelo nome na plataforma',
+'QUÍMICA · 25/fev · Frente 1 · Rogério · Isótopos — Poliedro Q43. Radioatividade em si ainda não foi dada: não adiante',
+'MATEMÁTICA · 03/mar · Frente 3 · Mario · Ângulos e triângulos (base) → 16/mar e 23/mar · Polígonos → 09/mar · Ângulos na circunferência. Unicamp Q44 e Q49, Poliedro Q68 e Q80, ENEM d2 Q165 e Q175',
+'MATEMÁTICA · 27/abr · Quadriláteros → 11/mai · Área de triângulos → 18/mai · Frente 3 · Mario · Área de círculos. ENEM d2 Q145 e Q160'],
+dom:[
+'FÍSICA · faixa de acertos: refazer as questões de termometria, estática, rotação e quantidade de movimento que você acertou sem aula. São crédito frágil — quatro acertos que podem não se repetir',
+'QUÍMICA · segunda passada em estequiometria e forças intermoleculares, só questão nova. São os dois itens de Química que mais voltaram'],
+note:'Inscrições da FUVEST encerram <b>09/10</b>. Se ainda não se inscreveu, isso vem antes de qualquer item deste roadmap.'},
+
+{n:10,d:'05 – 11/out',t:'Fechar as faixas vermelhas',
+bio:[
+'Sem cards novos a partir daqui. Só revisão espaçada de todo o baralho',
+'Reforçar os decks dos temas que voltaram a errar nos simulados de setembro',
+'Se o baralho estiver em dia, aumentar o limite de revisão diária em vez de criar cards'],
+sab:[
+'MATEMÁTICA · 15/abr · Frente 2 · Beto · Razões e proporções aplicadas e escala → 29/abr · Porcentagem com desconto → 20/mai · Frente 2 · Beto · Sequências e progressão aritmética → 03/jun · Progressões geométricas. ENEM d2 Q141, Q147, Q149, Q159, Q161, Q173 e Q177',
+'MATEMÁTICA · 26/mar e 09/abr · Frente 1 · Fabio · Função do 2º grau — ENEM d2 Q162 e Q172',
+'QUÍMICA · todo item de duas e três edições que ainda estiver sem marcação no roadmap'],
+dom:[
+'FÍSICA · todo item de duas e três edições ainda sem marcação',
+'QUÍMICA · segunda passada nos itens que voltaram a errar em setembro',
+'Se nada vermelho estiver aberto: 40 questões de exatas de provas antigas da FUVEST, cronometradas'],
+note:'Ponto de checagem: <b>nenhum item das quatro primeiras faixas deveria passar desta semana em aberto.</b> O que sobrar aqui não será resolvido em outubro.'},
+
+{n:11,d:'12 – 18/out',t:'O cursinho entra em revisão',
+bio:['Só revisão espaçada. Nenhuma teoria nova a partir daqui','Baralho fechado: o que não virou card até hoje não vira mais'],
+sab:[
+'MATEMÁTICA · geometria analítica — plano cartesiano, estudo da reta e equações da circunferência. Errou sem aula em julho e a aula veio depois: está marcada no Guia, sem data registrada. Procure na plataforma pela Frente 3',
+'QUÍMICA · faixa de erro único, tudo que ainda estiver aberto'],
+dom:[
+'Unicamp 1ª fase, se estiver inscrito',
+'Se não: bloco de 30 questões de Física e Química de prova antiga, cronometrado e corrigido no mesmo dia'],
+note:'A partir de <b>12/10</b> o cursinho é só revisão. <b>20/10 é o corte: nada de assunto novo depois disso.</b>'},
+
+{n:12,d:'19 – 25/out',t:'Só o que já foi visto',
+bio:['Revisão leve do baralho, sem meta de volume','Nada novo'],
+sab:[
+'Bloco de 45 questões só de Química, Física e Matemática, de provas antigas da FUVEST, cronometrado nas mesmas condições da prova real',
+'Nada de caderno completo: a regra vale aqui também'],
+dom:[
+'Correção do bloco de sábado',
+'Refazer no papel só o que voltou a errar. Se um item do roadmap cair duas vezes, ele volta para o topo da fila'],
+note:'Locais de prova saem em <b>21/10</b>. Confira o seu e planeje o trajeto — você fez o simulado de julho na UNIP Tatuapé, o local da prova real pode ser outro.'},
+
+{n:13,d:'26/out – 01/nov',t:'Semana da prova',mark:'FUVEST dom',
+bio:['Flashcards leves, nada novo','Dormir cedo vale mais que qualquer revisão desta semana'],
+sab:['Nada pesado. Conferir documento, local, horário e trajeto.'],
+dom:['<b>FUVEST — 1ª FASE</b>'],
+note:'Revisão leve, questões comentadas, dormir cedo. Conteúdo novo nesta semana só tira espaço do que já está consolidado. Depois: <b>08/11 e 15/11 são o ENEM</b> — formato diferente, preparo diferente.'}
+];
+
+const OBRAS=[
+ ['op','Opúsculo Humanitário','Nísia Floresta','aula 21/abr · Cris Bastos','abr Q04 erro · jul Q45 acerto chutado — não fecha'],
+ ['ne','Nebulosas','Narcisa Amália','aula 28/abr · Cris Bastos','poliedro Q73 acerto · abr Q15 erro (antes da aula)'],
+ ['me','Memórias de Martha','Júlia Lopes de Almeida','aula 19/mai · Cris Bastos','abr Q18 erro (antes da aula)'],
+ ['ca','Caminho de pedras','Rachel de Queiroz','sem aula até 04/07','abr Q43 erro → jul Q41 acerto — único acerto de obra sem chute na base'],
+ ['gh','A paixão segundo G.H.','Clarice Lispector','sem aula até 04/07','poliedro Q77 acerto · abr Q01 erro · jul Q67 erro'],
+ ['ge','Geografia','Sophia de Mello Breyner','sem aula até 04/07','poliedro Q75 acerto · jul Q73 erro'],
+ ['ba','Balada de amor ao vento','Paulina Chiziane','sem aula até 04/07','jul Q69 acerto chutado · Q70 erro'],
+ ['cn','Canção para ninar menino grande','Conceição Evaristo','sem aula até 04/07','jul Q46 acerto chutado'],
+ ['vp','A visão das plantas','Djaimilia Pereira de Almeida','sem aula até 04/07','abr Q14 erro · jul Q02 erro']
+];
+
+/* ---------------- render ---------------- */
+const $=s=>document.querySelector(s), ce=(t,c)=>{const e=document.createElement(t);if(c)e.className=c;return e};
+/* id estável por conteudo: atualizar o arquivo nao embaralha o que ja foi marcado */
+function hash(str){let h=5381;for(let i=0;i<str.length;i++)h=((h<<5)+h+str.charCodeAt(i))|0;return (h>>>0).toString(36)}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+/* régua */
+(function(){
+  const A=48.8,C=62.2,M=68.8, max=75;
+  const px=v=>Math.min(100,v/max*100);
+  $('#fill').style.width=px(A)+'%';
+  $('#gapz').style.left=px(A)+'%'; $('#gapz').style.width=(px(C)-px(A))+'%';
+  $('#cut').style.left=px(C)+'%';
+  $('#lab').style.left='calc('+px(C)+'% + 8px)'; $('#lab').textContent='corte';
+  $('#t1').style.left=px(A)+'%'; $('#t2').style.left=px(C)+'%'; $('#t3').style.left=px(M)+'%';
+})();
+
+/* tabela matérias */
+TB.forEach(r=>{
+  const tr=ce('tr'); const m=MAT[r[0]];
+  tr.innerHTML='<td><b>'+m.n+'</b><div class="bar"><i style="width:'+(parseInt(r[2])||0)+'%"></i></div></td>'+
+   '<td class="num">'+r[1]+'</td><td class="num">'+r[2]+'</td><td class="num">'+r[3]+'</td>'+
+   '<td style="color:var(--mute);font-size:12px">'+r[4]+'</td>';
+  $('#tbMat').appendChild(tr);
+});
+
+/* roadmap */
+BANDS.forEach(b=>{
+  const list=ITEMS.filter(i=>i.f===b.f);
+  const band=ce('div','band');
+  const h=ce('div','bandhead'); h.style.setProperty('--l',b.c);
+  h.innerHTML='<h2>'+b.h+'</h2><div class="why">'+b.w+'</div><div class="cnt" data-cnt="'+b.f+'"></div>'+
+    '<div class="bandbar"><i data-bar="'+b.f+'" style="width:0%"></i></div>';
+  band.appendChild(h);
+  list.forEach(it=>{
+    const id='i_'+it.tag;
+    const m=MAT[it.m], cor=MCOR[it.m]||'var(--line2)';
+    const el=ce('label','item'); el.style.setProperty('--l',b.c); el.style.setProperty('--m',cor); el.dataset.id=id;
+    let chips='';
+    if(it.base) chips+='<span class="chip" style="border-color:#8BD450;color:#8BD450">base de '+esc(it.base)+'</span>';
+    else if(it.ac) chips+='<span class="chip g">'+esc(it.ac)+'</span>';
+    else chips+='<span class="chip '+(it.ed>=3?'hot':it.ed===2?'w':'')+'">'+(it.ed?it.ed+(it.ed>1?' edições':' edição'):'sem aula no ano')+'</span>';
+    if(it.base&&it.ed) chips+='<span class="chip '+(it.ed>=3?'hot':it.ed===2?'w':'')+'">'+it.ed+(it.ed>1?' edições':' edição')+'</span>';
+    chips+='<span class="chip">peso '+String(m.p).replace('.',',')+'</span>'+
+      '<span class="chip">taxa da matéria '+m.tx+'</span>';
+    if(it.nq) chips+='<span class="chip">'+it.nq+' questões</span>';
+    if(it.pre) chips+='<span class="chip" style="border-color:#8BD450;color:#8BD450">depois de '+esc(it.pre)+'</span>';
+    if(it.ac&&it.tag!=='BIO.SIST') chips+='<span class="chip g">manutenção</span>';
+    if(it.reab) chips+='<span class="chip hot">reaberto — o acerto era chute</span>';
+    if(it.ext) chips+='<span class="chip" style="border-color:var(--violet);color:var(--violet)">fora do cursinho</span>';
+    el.innerHTML='<input type="checkbox" id="'+id+'"><div class="ibody">'+
+      '<div class="t"><span class="mbadge">'+esc(m.n)+'</span><span class="tag">'+it.tag+'</span>'+esc(it.t)+'</div>'+
+      '<div class="src">'+esc(it.q)+'</div>'+
+      '<div class="src"><em>'+esc(it.a)+'</em></div>'+
+      '<div class="chips">'+chips+'</div></div>';
+    band.appendChild(el);
+  });
+  $('#bands').appendChild(band);
+});
+
+/* legenda de cores por matéria */
+(function(){
+  const box=$('#mkey'); if(!box) return;
+  const usadas=[...new Set(ITEMS.map(i=>i.m))].sort((a,b)=>MAT[b].p-MAT[a].p);
+  usadas.forEach(k=>{
+    const s=ce('span'); s.style.background=MCOR[k]; s.textContent=MAT[k].n; box.appendChild(s);
+  });
+})();
+
+/* linhas de progresso por faixa */
+(function(){
+  const box=$('#rmRows'); if(!box) return;
+  BANDS.forEach(b=>{
+    const r=ce('div','prow');
+    r.innerHTML='<span class="nm">'+b.h.replace('Reincidente em ','')+'</span>'+
+      '<span class="pbar sm" style="--pc:'+b.c+'"><i data-row="'+b.f+'" style="width:0%"></i></span>'+
+      '<span class="val" data-rowv="'+b.f+'">0/0</span>';
+    box.appendChild(r);
+  });
+})();
+
+/* cronograma */
+WEEKS.forEach(w=>{
+  const el=ce('div','week');
+  let top='<div class="wtop"><span class="wnum">SEM '+String(w.n).padStart(2,'0')+'</span><span class="wdate">'+w.d+'</span><span class="wtitle">'+w.t+'</span>';
+  if(w.mark) top+='<span class="wmark '+(w.markc||'')+'">'+w.mark+'</span>';
+  top+='</div>';
+  const mk=(arr,pre)=>arr.map(x=>{const id='w'+w.n+pre+'_'+hash(x);
+    return '<label class="task" data-id="'+id+'"><input type="checkbox" id="'+id+'"><span>'+x+'</span></label>'}).join('');
+  el.innerHTML=top+'<div class="wgrid">'+
+    '<div class="slot bio"><h4>Semana · só flashcards de Biologia</h4>'+mk(w.bio,'b')+'</div>'+
+    '<div class="slot"><h4>Sábado · Química e Matemática</h4>'+mk(w.sab,'s')+'</div>'+
+    '<div class="slot" style="grid-column:1/-1"><h4>Domingo · Física e Química</h4>'+mk(w.dom,'d')+'</div>'+
+    '</div><div class="wnote">'+w.note+'</div>';
+  $('#weeks').appendChild(el);
+});
+
+/* aulas por importância */
+(function(){
+  const hi=ITEMS.filter(i=>(i.f===0||i.f===1)&&!i.ext), mid=ITEMS.filter(i=>i.f===2);
+  const box=$('#lessons');
+  [['Alta importância — reincidentes',hi,'var(--rose)'],['Média importância — erro único',mid,'var(--line2)']].forEach(([h,arr,c])=>{
+    const b=ce('div','band');
+    b.innerHTML='<div class="bandhead" style="--l:'+c+'"><h2>'+h+'</h2><div class="cnt">'+arr.length+' aulas</div></div>';
+    arr.forEach(it=>{
+      const d=ce('div','item'); d.style.setProperty('--l',c); d.style.paddingLeft='14px';
+      d.innerHTML='<div class="ibody"><div class="t"><span class="tag">'+it.tag+'</span>'+esc(it.t)+'</div><div class="src"><em>'+esc(it.a)+'</em></div></div>';
+      b.appendChild(d);
+    });
+    box.appendChild(b);
+  });
+})();
+
+/* obras */
+(function(){
+  const box=$('#obras');
+  OBRAS.forEach(o=>{
+    const el=ce('label','item'); el.style.setProperty('--l','var(--violet)'); el.dataset.obra='o_'+o[0];
+    el.innerHTML='<input type="checkbox" id="o_'+o[0]+'"><div class="ibody">'+
+      '<div class="t">'+esc(o[1])+' <span style="color:var(--mute);font-weight:400">— '+esc(o[2])+'</span></div>'+
+      '<div class="src">'+esc(o[3])+' · '+esc(o[4])+'</div></div>';
+    box.appendChild(el);
+  });
+})();
+
+/* ---------------- estado ---------------- */
+function paint(){
+  document.querySelectorAll('.item[data-id]').forEach(el=>{
+    const c=el.querySelector('input'); c.checked=!!state.done[el.dataset.id];
+    el.classList.toggle('done',c.checked);
+  });
+  document.querySelectorAll('.task[data-id]').forEach(el=>{
+    const c=el.querySelector('input'); c.checked=!!state.done[el.dataset.id];
+    el.classList.toggle('done',c.checked);
+  });
+  document.querySelectorAll('.item[data-obra]').forEach(el=>{
+    const c=el.querySelector('input'); c.checked=!!state.obras[el.dataset.obra];
+    el.classList.toggle('done',c.checked);
+  });
+  BANDS.forEach(b=>{
+    const l=ITEMS.filter(i=>i.f===b.f), d=l.filter(i=>state.done['i_'+i.tag]).length;
+    const p=l.length?Math.round(d/l.length*100):0;
+    const n=document.querySelector('[data-cnt="'+b.f+'"]'); if(n) n.textContent=d+' / '+l.length;
+    const bar=document.querySelector('[data-bar="'+b.f+'"]'); if(bar) bar.style.width=p+'%';
+    const row=document.querySelector('[data-row="'+b.f+'"]'); if(row) row.style.width=p+'%';
+    const rv=document.querySelector('[data-rowv="'+b.f+'"]'); if(rv) rv.textContent=d+'/'+l.length;
+  });
+  const tot=ITEMS.length, dn=ITEMS.filter(i=>state.done['i_'+i.tag]).length;
+  const pc=tot?Math.round(dn/tot*100):0;
+  $('#pctBig').textContent=pc+'%'; $('#pctSub').textContent=dn+' de '+tot+' itens';
+  const rb=$('#rmBar'); if(rb){ rb.style.width=pc+'%';
+    $('#rmPct').textContent=pc+'%'; $('#rmSub').textContent=dn+' de '+tot+' itens marcados'; }
+  const allT=document.querySelectorAll('.task[data-id]').length;
+  const allD=[...document.querySelectorAll('.task[data-id]')].filter(e=>state.done[e.dataset.id]).length;
+  const g=Math.round((dn+allD)/(tot+allT)*100);
+  $('#pgbar').style.width=g+'%'; $('#pgtxt').textContent=g+'% do plano';
+  const lidas=OBRAS.filter(o=>state.obras['o_'+o[0]]).length, falta=9-lidas;
+  const sem=13;
+  $('#obrasCalc').innerHTML= lidas===0
+    ? '<b>Nenhuma obra marcada como lida.</b> Se for esse o caso, são 9 livros em '+sem+' semanas — mais de um a cada duas semanas, no meio de tudo o resto. Marque o que já leu e este cálculo se ajusta.'
+    : falta===0 ? '<b>As nove obras lidas.</b> A partir daqui literatura é releitura de trechos e análise, não leitura — cabe no roadmap normal.'
+    : '<b>'+lidas+' lidas, '+falta+' pendentes.</b> Em '+sem+' semanas até a prova, isso é uma obra a cada '+(Math.floor(sem/falta*10)/10).toString().replace('.',',')+' semanas. Contando semanas, não horas: obra não lida não se resolve em revisão de véspera.';
+}
+const CFG='fuvest2027-sync-url';
+let syncUrl=''; try{ syncUrl=localStorage.getItem(CFG)||'' }catch(e){}
+let pushTimer=null;
+const st=t=>{$('#saveState').textContent=t};
+const hhmm=()=>new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+function localSave(){ try{ localStorage.setItem(KEY,JSON.stringify(state)) }catch(e){} }
+function localLoad(){ try{ const r=localStorage.getItem(KEY); if(r) return JSON.parse(r) }catch(e){} return null }
+
+async function remoteGet(){
+  const r=await fetch(syncUrl+(syncUrl.indexOf('?')>-1?'&':'?')+'t='+Date.now());
+  if(!r.ok) throw new Error('http '+r.status);
+  const j=await r.json(); return j.state||null;
+}
+async function remotePut(){
+  const r=await fetch(syncUrl,{method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(state)});
+  if(!r.ok) throw new Error('http '+r.status);
+}
+
+function save(){
+  state.updatedAt=Date.now();
+  localSave();
+  if(!syncUrl){ st('salvo neste navegador · sem sincronização'); return; }
+  st('salvando…');
+  clearTimeout(pushTimer);
+  pushTimer=setTimeout(async()=>{
+    try{ await remotePut(); st('sincronizado às '+hhmm()); }
+    catch(e){ st('sem conexão — salvo aqui, sincroniza sozinho depois'); }
+  },700);
+}
+
+async function load(){
+  const loc=localLoad();
+  if(loc) state={done:loc.done||{},obras:loc.obras||{},updatedAt:loc.updatedAt||0};
+  paint();
+  if(!syncUrl){ st('salvo neste navegador · clique em sincronizar para ligar a planilha'); return; }
+  st('buscando na planilha…');
+  try{
+    const rem=await remoteGet();
+    const remT=rem&&rem.updatedAt?rem.updatedAt:0, locT=state.updatedAt||0;
+    if(remT>locT){
+      state={done:rem.done||{},obras:rem.obras||{},updatedAt:remT};
+      localSave(); paint(); st('sincronizado às '+hhmm());
+    }else if(locT>remT){
+      await remotePut(); st('sincronizado às '+hhmm());
+    }else{ st('sincronizado às '+hhmm()); }
+  }catch(e){ st('planilha não respondeu — usando a cópia local'); }
+}
+
+/* reenvia sozinho quando a conexão volta */
+window.addEventListener('online',()=>{ if(syncUrl) load(); });
+document.addEventListener('change',e=>{
+  const it=e.target.closest('.item[data-id]'), tk=e.target.closest('.task[data-id]'), ob=e.target.closest('.item[data-obra]');
+  if(it){ state.done[it.dataset.id]=e.target.checked; }
+  else if(tk){ state.done[tk.dataset.id]=e.target.checked; }
+  else if(ob){ state.obras[ob.dataset.obra]=e.target.checked; }
+  else return;
+  paint(); save();
+});
+$('#reset').addEventListener('click',()=>{ state={done:{},obras:{}}; paint(); save(); });
+$('#sync').addEventListener('click',async()=>{
+  const atual=syncUrl||'';
+  const v=prompt('Cole a URL do app da web do Apps Script (termina em /exec).\n\nDeixe em branco e confirme para desligar a sincronização.',atual);
+  if(v===null) return;
+  const u=v.trim();
+  if(u && !/^https:\/\/script\.google\.com\/.*\/exec$/.test(u)){
+    st('essa URL não parece a do Apps Script — ela termina em /exec'); return;
+  }
+  syncUrl=u;
+  try{ u?localStorage.setItem(CFG,u):localStorage.removeItem(CFG) }catch(e){}
+  if(!u){ st('sincronização desligada · salvando só neste navegador'); return; }
+  st('testando conexão…');
+  try{ await remoteGet(); await load(); }
+  catch(e){ st('não consegui falar com a planilha — confira se o acesso está como "Qualquer pessoa"'); }
+});
+$('#exp').addEventListener('click',()=>{
+  const b=new Blob([JSON.stringify(state,null,1)],{type:'application/json'});
+  const a=ce('a'); a.href=URL.createObjectURL(b);
+  a.download='progresso-fuvest-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click(); URL.revokeObjectURL(a.href);
+  $('#saveState').textContent='progresso exportado';
+});
+$('#imp').addEventListener('click',()=>$('#impf').click());
+$('#impf').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{ const o=JSON.parse(r.result);
+      state={done:o.done||{},obras:o.obras||{}}; paint(); save();
+      $('#saveState').textContent='progresso importado';
+    }catch(err){ $('#saveState').textContent='arquivo inválido — exporte de novo e tente com o .json'; } };
+  r.readAsText(f); e.target.value='';
+});
+document.querySelectorAll('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('nav.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  ['painel','roadmap','crono','aulas'].forEach(id=>$('#'+id).hidden=(id!==b.dataset.t));
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+/* contagem regressiva viva */
+(function(){ const d=Math.max(0,Math.ceil((new Date(2026,10,1)-new Date())/864e5)); if(d) $('#dias').textContent=d; })();
+load();
+</script>
