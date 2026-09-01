@@ -1,0 +1,1326 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trilha FUVEST 2027 — reta final</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B121C; --card:#111C2A; --card2:#0E1723; --line:#1F3247; --line2:#2B4360;
+  --paper:#E6EDF5; --mute:#7C93AD; --mute2:#5A7392;
+  --amber:#F0A742; --jade:#45C39B; --rose:#E4685C; --violet:#9B8CF0; --blue:#56A8FF;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--ink)}
+#app{background:var(--ink);color:var(--paper);font-family:Inter,system-ui,-apple-system,sans-serif;
+  font-size:14px;line-height:1.5;padding:0 0 70px;margin:0;-webkit-font-smoothing:antialiased}
+#app h1,#app h2,#app h3,#app h4{font-family:'Bricolage Grotesque',system-ui,sans-serif;margin:0;line-height:1.06;letter-spacing:-.02em}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+a{color:var(--amber)}
+
+/* hero */
+.hero{border-bottom:1px solid var(--line);padding:26px 0 0;
+  background:radial-gradient(900px 300px at 15% -40%, rgba(240,167,66,.10), transparent 70%)}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.hero h1{font-size:clamp(25px,4.3vw,40px);font-weight:800;margin:8px 0 6px}
+.hero .sub{color:var(--mute);font-size:13px;max-width:66ch}
+.ruler{margin:26px 0 0;position:relative}
+.ruler .track{height:48px;background:var(--card2);border:1px solid var(--line);position:relative;overflow:hidden}
+.ruler .fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(228,104,92,.35),rgba(240,167,66,.45));border-right:2px solid var(--amber)}
+.ruler .cut{position:absolute;top:-8px;bottom:-8px;width:0;border-left:2px dashed var(--jade)}
+.ruler .gap{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,transparent,transparent 5px,rgba(69,195,155,.10) 5px,rgba(69,195,155,.10) 10px)}
+.mk{position:absolute;top:0;bottom:0;width:1px;background:rgba(230,237,245,.45)}
+.legend{display:flex;flex-wrap:wrap;gap:0;margin-top:1px;background:var(--line);border:1px solid var(--line);border-top:0}
+.lg{flex:1 1 132px;background:var(--card2);padding:9px 12px;margin:0 1px 0 0;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--mute)}
+.lg:last-child{margin-right:0}
+.lg b{display:block;font-size:15px;color:var(--paper);font-weight:600;margin-bottom:2px;letter-spacing:-.01em}
+.lg.j b{color:var(--jade)} .lg.a b{color:var(--amber)} .lg.r b{color:var(--rose)}
+.rulerlab{position:absolute;top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin:20px 0 0}
+.cell{background:var(--card2);padding:12px 14px}
+.cell .k{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.cell .v{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:700;margin-top:3px}
+.cell .n{font-size:11.5px;color:var(--mute)}
+
+/* tabs */
+nav.tabs{display:flex;border-bottom:1px solid var(--line);margin-top:22px;overflow-x:auto}
+nav.tabs button{background:none;border:0;border-bottom:2px solid transparent;color:var(--mute);
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+  padding:12px 15px;cursor:pointer;white-space:nowrap}
+nav.tabs button:hover{color:var(--paper)}
+nav.tabs button[aria-selected=true]{color:var(--amber);border-bottom-color:var(--amber)}
+section[hidden]{display:none}
+section{padding-top:24px}
+.lead{color:var(--mute);font-size:13px;max-width:76ch;margin:6px 0 22px}
+.lead b{color:var(--paper);font-weight:600}
+
+/* ---------- TRILHA ---------- */
+.rail{position:relative;padding-left:34px;margin-top:8px}
+.rail:before{content:'';position:absolute;left:11px;top:6px;bottom:40px;width:2px;
+  background:linear-gradient(180deg,var(--line2),var(--line2) 70%,transparent)}
+.wk{position:relative;margin:0 0 8px}
+.wk .dot{position:absolute;left:-34px;top:2px;width:24px;height:24px;border-radius:50%;
+  background:var(--ink);border:2px solid var(--line2);display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mute);font-weight:600}
+.wkhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:14px 0 6px;border-top:1px solid var(--line);margin-top:22px}
+.wkhead .dt{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--amber);letter-spacing:.05em}
+.wkhead h3{font-size:17px;font-weight:700}
+.wmark{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;
+  border:1px solid var(--line2);color:var(--mute);padding:2px 7px;border-radius:2px}
+.wmark.rest{border-color:var(--jade);color:var(--jade)}
+.wmark.hot{border-color:var(--rose);color:var(--rose)}
+.wnote{font-size:12.5px;color:var(--mute);border-left:2px solid var(--line2);padding:2px 0 2px 12px;margin:8px 0 16px;max-width:80ch}
+.wnote b{color:var(--paper);font-weight:600}
+
+/* faixa de biologia */
+.biobox{background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--jade);margin:0 0 16px}
+.biobox>h4{font-size:12px;padding:11px 14px 0;color:var(--jade);font-family:'IBM Plex Mono',monospace;
+  letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.biobox .cap{font-size:12.5px;color:var(--mute);padding:6px 14px 10px;max-width:82ch}
+.biobox .cap b{color:var(--paper)}
+.aula{display:flex;gap:11px;align-items:flex-start;padding:8px 14px;border-top:1px solid var(--line);cursor:pointer}
+.aula:hover{background:rgba(255,255,255,.02)}
+.aula input{margin:3px 0 0;accent-color:var(--jade);width:15px;height:15px;flex:none}
+.aula .dia{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--mute);flex:none;width:64px;padding-top:2px}
+.aula .txt{font-size:13px}
+.aula .obs{font-size:11.5px;color:var(--mute2);margin-top:2px}
+.aula.done .txt{text-decoration:line-through;color:var(--mute2)}
+
+/* parada */
+.parada{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--l,var(--line2));margin:0 0 14px;position:relative}
+.parada .ph{display:flex;flex-wrap:wrap;gap:9px;align-items:center;padding:12px 15px 10px}
+.pnum{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--ink);
+  background:var(--l,var(--line2));padding:3px 7px;font-weight:700;border-radius:2px}
+.pdate{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--paper)}
+.pmat{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--l);border:1px solid var(--l);padding:2px 7px;border-radius:2px}
+.parada .pt{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;width:100%;margin-top:2px}
+.bloco{border-top:1px solid var(--line);padding:11px 15px 13px}
+.bloco .bh{display:flex;gap:11px;align-items:flex-start}
+.bloco input{margin:3px 0 0;accent-color:var(--l,var(--amber));width:16px;height:16px;flex:none}
+.bloco .bn{font-size:14px;font-weight:600}
+.bloco.done .bn{text-decoration:line-through;color:var(--mute2)}
+.tagc{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mute);border:1px solid var(--line2);
+  padding:1px 5px;border-radius:2px;margin-right:7px;vertical-align:1px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0 0}
+.chip{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mute);border:1px solid var(--line2);padding:2px 6px;border-radius:2px}
+.chip.hot{border-color:var(--rose);color:var(--rose)}
+.chip.g{border-color:var(--jade);color:var(--jade)}
+.chip.a{border-color:var(--amber);color:var(--amber)}
+.step{display:flex;gap:9px;font-size:12.5px;margin:8px 0 0;padding-left:27px}
+.step .lb{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  flex:none;width:52px;padding-top:2px;color:var(--mute2)}
+.step.base .lb{color:#8BD450}.step.base{color:var(--mute)}
+.step.prova .lb{color:var(--amber)}
+.step .cont{max-width:78ch}
+
+/* ---------- tabelas ---------- */
+table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 26px}
+th{text-align:left;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--mute);border-bottom:1px solid var(--line2);padding:8px 9px}
+td{border-bottom:1px solid var(--line);padding:9px;vertical-align:top}
+td.num{text-align:right;font-family:'IBM Plex Mono',monospace;white-space:nowrap}
+.bar{height:4px;background:var(--card2);margin-top:5px;position:relative;max-width:220px}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--c,var(--amber))}
+.scroll{overflow-x:auto}
+.callout{background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--amber);
+  padding:12px 15px;font-size:13px;margin:0 0 24px;max-width:88ch}
+.callout b{color:var(--paper)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:26px}
+.box{background:var(--card2);border:1px solid var(--line);padding:14px 16px}
+.box h4{font-size:13px;margin-bottom:7px}
+.box p{font-size:12.5px;color:var(--mute);margin:0 0 7px}
+.box li{font-size:12.5px;color:var(--mute);margin-bottom:5px}
+.frente{margin:0 0 26px}
+.frente>h3{font-size:15px;margin-bottom:4px}
+.frente>p{font-size:12.5px;color:var(--mute);margin:0 0 10px;max-width:80ch}
+.li{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:12.5px}
+.li .d{font-family:'IBM Plex Mono',monospace;color:var(--mute);flex:none;width:118px}
+.obra{display:flex;gap:11px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);
+  border-left:3px solid var(--violet);background:var(--card2);margin-bottom:6px;cursor:pointer}
+.obra input{margin:3px 0 0;accent-color:var(--violet);width:15px;height:15px;flex:none}
+.obra .t{font-size:13px;font-weight:600}.obra .s{font-size:11.5px;color:var(--mute)}
+.obra.done .t{text-decoration:line-through;color:var(--mute2)}
+
+/* footer */
+.foot{position:fixed;left:0;right:0;bottom:0;background:rgba(11,18,28,.96);border-top:1px solid var(--line);
+  backdrop-filter:blur(8px);padding:9px 18px;display:flex;gap:11px;align-items:center;flex-wrap:wrap;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute);z-index:9}
+.foot button{background:none;border:1px solid var(--line2);color:var(--mute);font-family:inherit;font-size:10.5px;
+  padding:4px 9px;cursor:pointer;border-radius:2px}
+.foot button:hover{color:var(--paper);border-color:var(--paper)}
+.pg{flex:1;min-width:90px;max-width:220px;height:4px;background:var(--card2);position:relative}
+.pg i{position:absolute;left:0;top:0;bottom:0;background:var(--jade)}
+@media(max-width:640px){
+  .aula .dia{width:54px}
+  .step{padding-left:0}
+  .step .lb{width:46px}
+}
+
+/* ---------- filtros, barras por matéria, calendário, flashcards ---------- */
+[hidden]{display:none!important}
+button:focus-visible,input:focus-visible,label:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+.mstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1px;background:var(--line);
+  border:1px solid var(--line);border-top:0}
+.mb{background:var(--card2);padding:10px 14px 12px}
+.mb .t{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.mb .t b{font-size:12.5px;font-weight:600}
+.mb .t em{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute);font-style:normal}
+.mb .b{height:5px;background:var(--ink);margin-top:8px;position:relative}
+.mb .b i{position:absolute;left:0;top:0;bottom:0;background:var(--c);width:0;transition:width .25s ease}
+.mcap{font-size:11.5px;color:var(--mute2);padding:9px 0 0;max-width:78ch}
+
+.filters{position:sticky;top:0;z-index:8;margin:0 0 20px;padding:8px 0 9px}
+.filters:before{content:'';position:absolute;left:50%;transform:translateX(-50%);width:100vw;top:0;bottom:0;
+  background:rgba(11,18,28,.96);backdrop-filter:blur(8px);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);z-index:-1}
+.frow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:3px 0}
+.flab{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute2);width:56px;flex:none}
+.fchip{background:none;border:1px solid var(--line2);color:var(--mute);font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;padding:3px 8px;border-radius:2px;cursor:pointer;line-height:1.45}
+.fchip:hover{color:var(--paper)}
+.fchip[aria-pressed=true]{color:var(--ink);font-weight:700;background:var(--paper);border-color:var(--paper)}
+.fchip.k-MAT[aria-pressed=true]{background:var(--amber);border-color:var(--amber)}
+.fchip.k-QUI[aria-pressed=true]{background:#A78BFA;border-color:#A78BFA}
+.fchip.k-FIS[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+.fchip.k-BIO[aria-pressed=true]{background:var(--jade);border-color:var(--jade)}
+.fcount{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--mute2)}
+.empty{border:1px dashed var(--line2);color:var(--mute);font-size:12.5px;padding:26px 16px;text-align:center;margin:4px 0 30px}
+.wprog{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mute2);letter-spacing:.04em}
+
+/* calendário */
+.calw{margin:0 0 15px}
+.cwh{display:flex;flex-wrap:wrap;align-items:baseline;gap:9px;padding:9px 0 8px}
+.cwn{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink);background:var(--mute);
+  padding:2px 6px;font-weight:700;border-radius:2px;flex:none}
+.cwd{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--amber)}
+.cwt{font-size:12.5px;color:var(--mute)}
+.cdays{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.cday{background:var(--card2);padding:7px 10px 9px}
+.cday.off{background:var(--card2);opacity:.5}
+.cdn{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mute2);display:flex;gap:6px;align-items:baseline}
+.cdn b{color:var(--paper);font-size:12.5px;font-weight:600;letter-spacing:-.01em}
+.cday.hoje{outline:1px solid var(--amber);outline-offset:-1px}
+.cday.hoje .cdn b{color:var(--amber)}
+.cev{display:block;width:100%;text-align:left;background:none;border:0;border-left:2px solid var(--c);
+  padding:1px 0 1px 7px;margin:5px 0 0;cursor:pointer;color:var(--paper);font-family:inherit}
+.cev .m{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--c);margin-right:5px}
+.cev .x{font-size:11.5px;line-height:1.34}
+.cev .s{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--jade);margin-left:5px}
+.cev.done{border-left-color:var(--line2)}
+.cev.done .x{text-decoration:line-through;color:var(--mute2)}
+.cev.done .m{color:var(--mute2)}
+.cev.part .x{color:var(--mute)}
+.cmk{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--rose);margin-top:6px;line-height:1.35}
+.cmk.soft{color:var(--mute2)}
+.callegend{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 18px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--mute)}
+.callegend i{display:inline-block;width:9px;height:9px;background:var(--c);margin-right:5px;vertical-align:0}
+@media(min-width:780px){
+  .cdays{grid-template-columns:repeat(7,1fr)}
+  .cday{min-height:108px;padding:7px 8px 9px}
+  .cev .x{font-size:11px}
+}
+@media(max-width:779px){
+  #app{padding-bottom:120px}
+  .frow{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .frow::-webkit-scrollbar{display:none}
+  .fchip{flex:none}
+  .fcount{margin-left:8px;flex:none;align-self:center}
+}
+
+/* flashcards */
+.fcp{border:1px solid var(--line);border-left:3px solid var(--c);background:var(--card);margin:0 0 12px}
+.fcph{display:flex;flex-wrap:wrap;gap:9px;align-items:center;padding:11px 14px}
+.fci{display:flex;gap:11px;align-items:flex-start;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
+.fci:hover{background:rgba(255,255,255,.02)}
+.fci input{margin:2px 0 0;width:16px;height:16px;flex:none;accent-color:var(--c)}
+.fci .n{font-size:13.5px;font-weight:600}
+.fci .f{font-size:11.5px;color:var(--mute2);margin-top:4px;max-width:80ch;line-height:1.45}
+.fci.done .n{text-decoration:line-through;color:var(--mute2)}
+@keyframes hlp{0%,100%{box-shadow:0 0 0 0 rgba(240,167,66,0)}18%,62%{box-shadow:0 0 0 2px var(--amber)}}
+.hl{animation:hlp 1.8s ease-in-out 1}
+@media(prefers-reduced-motion:reduce){.hl{animation:none;box-shadow:0 0 0 2px var(--amber)}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">FUVEST 2027 · Sistemas de Informação · EACH noturno · carreira 322</div>
+  <h1>Faltam <span id="dias">62</span> dias. Você tem <b style="color:var(--amber)">17 dias de exatas</b> dentro deles.</h1>
+  <p class="sub">Trilha única até 01/11. A ordem não é a do cursinho nem a do seu erro bruto: é <b>incidência do tema na 1ª fase da FUVEST × o que você ainda não sabe</b> — e acerto chutado conta como não sabe.</p>
+  <div class="ruler">
+    <div class="track">
+      <div class="fill" id="fill"></div><div class="gap" id="gapz"></div><div class="cut" id="cut"></div>
+      <div class="mk" id="m0"></div><div class="mk" id="m3"></div>
+      <div class="rulerlab" id="lab" style="color:var(--jade)"></div>
+    </div>
+    <div class="legend">
+      <span class="lg r"><b>34/80</b>42,5% · seu acerto limpo em formato FUVEST</span>
+      <span class="lg a"><b>38/80</b>47,5% · bruto de 29/08, com 2 chutes dentro</span>
+      <span class="lg j"><b>50/80</b>corte histórico de SI na EACH, em 80 questões</span>
+      <span class="lg"><b>55/80</b>a meta, com folga sobre o corte</span>
+    </div>
+  </div>
+  <div class="strip">
+    <div class="cell"><div class="k">Trilha</div><div class="v" id="pctBig">0%</div><div class="n" id="pctSub">0 de 0 etapas</div></div>
+    <div class="cell"><div class="k">Aulas de Biologia</div><div class="v" id="bioBig">0</div><div class="n" id="bioSub">de 43 assistidas</div></div>
+    <div class="cell"><div class="k">Em jogo nas exatas</div><div class="v">25,4</div><div class="n">questões que hoje você perde</div></div>
+    <div class="cell"><div class="k">Paradas de exatas</div><div class="v">17</div><div class="n">6 mat · 6 quí · 5 fís</div></div>
+  </div>
+  <div class="mstrip">
+  <div class="mb" style="--c:#F0A742"><div class="t"><b>Matemática</b><em data-mn="MAT">0/0</em></div><div class="b"><i data-mi="MAT"></i></div></div>
+  <div class="mb" style="--c:#A78BFA"><div class="t"><b>Química</b><em data-mn="QUI">0/0</em></div><div class="b"><i data-mi="QUI"></i></div></div>
+  <div class="mb" style="--c:#56A8FF"><div class="t"><b>Física</b><em data-mn="FIS">0/0</em></div><div class="b"><i data-mi="FIS"></i></div></div>
+  <div class="mb" style="--c:#45C39B"><div class="t"><b>Biologia</b><em data-mn="BIO">0/0</em></div><div class="b"><i data-mi="BIO"></i></div></div>
+  </div>
+  <p class="mcap">Cada barra conta itens executados, não questões ganhas. Marcar bloco não é acertar questão — a única medida de progresso real é a taxa verificada do próximo simulado.</p>
+  <nav class="tabs">
+    <button data-t="trilha" aria-selected="true">A trilha</button>
+    <button data-t="cal">Calendário</button>
+    <button data-t="cards">Flashcards</button>
+    <button data-t="prio">Por que nesta ordem</button>
+    <button data-t="bio">Biologia</button>
+    <button data-t="outras">Outras matérias</button>
+  </nav>
+</div></div>
+<section id="trilha"><div class="wrap">
+<p class="lead">Uma linha só, de cima para baixo. Cada semana traz <b>as cinco aulas de Biologia dos dias úteis</b> e <b>as paradas de exatas</b>, uma matéria por dia — nas cinco noites do recesso e em todos os fins de semana livres. Dentro de cada bloco: a <b>base</b> (o pré-requisito, mesmo quando não vale questão), o <b>foco</b> e a <b>prova</b> — o bloco só é marcado depois do teste cronometrado, não depois da leitura.</p>
+<div class="filters" data-f="trilha">
+<div class="frow"><span class="flab">Matéria</span><button class="fchip" data-k="mat" data-v="all" aria-pressed="true">todas</button><button class="fchip k-MAT" data-k="mat" data-v="MAT" aria-pressed="false">Matemática</button><button class="fchip k-QUI" data-k="mat" data-v="QUI" aria-pressed="false">Química</button><button class="fchip k-FIS" data-k="mat" data-v="FIS" aria-pressed="false">Física</button><button class="fchip k-BIO" data-k="mat" data-v="BIO" aria-pressed="false">Biologia</button></div>
+<div class="frow"><span class="flab">Semana</span><button class="fchip" data-k="wk" data-v="all" aria-pressed="true">todas</button><button class="fchip" data-k="wk" data-v="01" aria-pressed="false">01</button><button class="fchip" data-k="wk" data-v="02" aria-pressed="false">02</button><button class="fchip" data-k="wk" data-v="03" aria-pressed="false">03</button><button class="fchip" data-k="wk" data-v="04" aria-pressed="false">04</button><button class="fchip" data-k="wk" data-v="05" aria-pressed="false">05</button><button class="fchip" data-k="wk" data-v="06" aria-pressed="false">06</button><button class="fchip" data-k="wk" data-v="07" aria-pressed="false">07</button><button class="fchip" data-k="wk" data-v="08" aria-pressed="false">08</button><button class="fchip" data-k="wk" data-v="09" aria-pressed="false">09</button></div>
+<div class="frow"><span class="flab">Estado</span><button class="fchip" data-k="st" data-v="all" aria-pressed="true">tudo</button><button class="fchip" data-k="st" data-v="todo" aria-pressed="false">pendentes</button><button class="fchip" data-k="st" data-v="done" aria-pressed="false">feitos</button><span class="fcount" data-fc-count="trilha"></span></div>
+</div>
+<div class="rail">
+<div class="wkg" data-wk="01">
+<div class="wk"><div class="dot">01</div><div class="wkhead"><span class="dt">31/08 – 06/09</span><h3>Citologia na semana; o fim de semana some inteiro</h3><span class="wmark ">Simulado 2ª fase · sáb e dom</span><span class="wprog" data-wp="01"></span></div></div>
+<div class="biobox" data-mat="BIO"><h4>Segunda a sexta · Citologia e bioquímica celular</h4><div class="cap">Bloco nº 3 do plano inteiro. Na base são 13 cobranças, 4 acertos limpos — e nas provas de formato FUVEST é 1 acerto em 4.</div>
+<label class="aula" data-id="A.BIO.CIT.1"><input type="checkbox"><span class="dia">seg 31/08</span><span><span class="txt">02/mar · Frente 01 · Davi · Composição química dos seres vivos</span><div class="obs">base de tudo que vem depois — água, sais, carboidratos, lipídios</div></span></label>
+<label class="aula" data-id="A.BIO.CIT.2"><input type="checkbox"><span class="dia">ter 01/09</span><span><span class="txt">16/mar · Frente 01 · Davi · Proteínas e Ácidos nucleicos</span><div class="obs">desnaturação saiu errada na Unicamp</div></span></label>
+<label class="aula" data-id="A.BIO.CIT.3"><input type="checkbox"><span class="dia">qua 02/09</span><span><span class="txt">30/mar · Frente 01 · Davi · Síntese de proteínas</span><div class="obs">transcrição e tradução — errado em duas provas</div></span></label>
+<label class="aula" data-id="A.BIO.CIT.4"><input type="checkbox"><span class="dia">qui 03/09</span><span><span class="txt">13/abr · Frente 01 · Davi · Tipos celulares e organelas</span><div class="obs">procarionte × eucarionte e teoria endossimbiôntica: dois erros</div></span></label>
+<label class="aula" data-id="A.BIO.CIT.5"><input type="checkbox"><span class="dia">sex 04/09</span><span><span class="txt">27/abr · Frente 01 · Davi · Envoltórios celulares</span><div class="obs">transporte pela membrana</div></span></label>
+</div>
+<div class="wnote" data-wnote="1"><b>Semana sem nenhuma sessão de exatas.</b> O simulado da 2ª fase toma sábado e domingo, e a regra é uma matéria por dia de fim de semana — então Química, Física e Matemática ficam sete dias parados. É o pior buraco do plano e ele está logo na primeira semana. A trilha de exatas começa em <b>07/09</b>, na segunda-feira do recesso.</div>
+</div>
+<div class="wkg" data-wk="02">
+<div class="wk"><div class="dot">02</div><div class="wkhead"><span class="dt">07 – 13/09</span><h3>Recesso — sete paradas em sete dias</h3><span class="wmark rest">Recesso · 7 paradas</span><span class="wprog" data-wp="02"></span></div></div>
+<div class="biobox" data-mat="BIO"><h4>Segunda a sexta · Metabolismo e divisão celular</h4><div class="cap">Fecha a Frente 01 do 1º semestre. Duas cobranças na base, dois erros — um deles com confiança declarada.</div>
+<label class="aula" data-id="A.BIO.MET.0"><input type="checkbox"><span class="dia">seg 07/09</span><span><span class="txt">09/fev · Frente 01 · Davi · Introdução a Biologia</span><div class="obs">passada rápida, é a aula de método</div></span></label>
+<label class="aula" data-id="A.BIO.MET.1"><input type="checkbox"><span class="dia">ter 08/09</span><span><span class="txt">18/mai · Frente 01 · Davi · Respiração celular aeróbica</span></span></label>
+<label class="aula" data-id="A.BIO.MET.2"><input type="checkbox"><span class="dia">qua 09/09</span><span><span class="txt">01/jun · Frente 01 · Davi · Fotossíntese e quimiossíntese</span><div class="obs">quimiossíntese saiu errada com confiança em 29/08</div></span></label>
+<label class="aula" data-id="A.BIO.MET.3"><input type="checkbox"><span class="dia">qui 10/09</span><span><span class="txt">22/jun · Frente 01 · Davi · Núcleo celular / Mitose</span></span></label>
+<label class="aula" data-id="A.BIO.MET.4"><input type="checkbox"><span class="dia">sex 11/09</span><span><span class="txt">29/jun · Frente 01 · Davi · Divisão celular - Meiose</span><div class="obs">é o pré-requisito da genética da semana que vem</div></span></label>
+</div>
+<div class="parada" data-mat="MAT" data-pn="P01" style="--l:#F0A742"><div class="ph"><span class="pnum">P01</span><span class="pdate">07/09 · segunda · noite</span><span class="pmat">Matemática</span><span class="pt">Geometria plana e trigonometria</span></div>
+<div class="bloco" data-id="T.MAT.GPLANA"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.GPLANA</span>Geometria plana: polígonos, círculo, áreas e semelhança</span><span class="chips"><span class="chip a">incidência 1,9 em 80</span><span class="chip hot">4 acertos limpos em 21 cobranças</span><span class="chip">errou em 6 edições</span><span class="chip a">1,49 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Semelhança de triângulos e Pitágoras (06/abr · Frente 3 · Mario · Semelhança de triângulos) — sem isso o resto não fecha, e não tem peso próprio na prova.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Polígonos: ângulos internos e diagonais · áreas de triângulo, quadrilátero e círculo · coroa circular · razão de áreas quando a figura é ampliada (foi erro em duas provas seguidas).</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">12 questões de geometria plana da FUVEST 1ª fase, cronometradas.</span></div>
+</div>
+<div class="bloco" data-id="T.MAT.TRIG"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.TRIG</span>Trigonometria</span><span class="chips"><span class="chip a">incidência 1,0 em 80</span><span class="chip hot">2 acertos limpos em 8 cobranças</span><span class="chip">errou em 6 edições</span><span class="chip a">0,7 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Circunferência trigonométrica e arcos (28/mai e 11/jun · Frente 1 · Fabio · Arcos e circunferência trigonométrica).</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Razões no triângulo retângulo · leis do seno e do cosseno · decomposição em ângulos de 30/45/60 · função trigonométrica lendo gráfico (o erro do ECG na prova de 29/08).</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">8 questões de trigonometria da FUVEST, cronometradas.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">A dupla mais cara da Matemática: 2,9 das 11 questões da matéria e 29 cobranças na base com 6 acertos limpos. Trigonometria errou em <b>seis</b> edições diferentes — junto com estequiometria, é o tema mais resistente da base.</div>
+</div>
+<div class="parada" data-mat="QUI" data-pn="P02" style="--l:#A78BFA"><div class="ph"><span class="pnum">P02</span><span class="pdate">08/09 · terça · noite</span><span class="pmat">Química</span><span class="pt">A base da Química inteira</span></div>
+<div class="bloco" data-id="T.QUI.ATOM"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">QUI.ATOM</span>Atomística e propriedades periódicas</span><span class="chips"><span class="chip a">incidência 0,91 em 80</span><span class="chip hot">2 acertos limpos em 10 cobranças</span><span class="chip">errou em 5 edições</span><span class="chip a">0,68 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Distribuição eletrônica e camada de valência — não vale questão sozinha, mas nada abaixo funciona sem ela.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Modelos atômicos (Thomson e Rutherford saíram errados duas vezes) · propriedades periódicas: raio, energia de ionização, eletronegatividade · isótopos e decaimento.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">8 questões de atomística e periódicas da FUVEST.</span></div>
+</div>
+<div class="bloco" data-id="T.QUI.LIG"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">QUI.LIG</span>Ligações, geometria molecular, forças intermoleculares e propriedades</span><span class="chips"><span class="chip a">incidência 1,62 em 80</span><span class="chip hot">2 acertos limpos em 11 cobranças</span><span class="chip">errou em 6 edições</span><span class="chip a">1,24 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Nox e regra do octeto.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Iônica × covalente × metálica · geometria molecular e polaridade · forças intermoleculares e a ponte com ponto de ebulição e solubilidade · a cadeia inteira erra junto: 9 erros em 11 cobranças.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">10 questões de ligações, geometria e forças intermoleculares.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Quatro erros de forças intermoleculares em quatro provas diferentes. Este é o dia que sustenta a Orgânica e a Físico-química das paradas 08, 11 e 14 — se ele falhar, elas falham juntas.</div>
+</div>
+<div class="parada" data-mat="FIS" data-pn="P03" style="--l:#56A8FF"><div class="ph"><span class="pnum">P03</span><span class="pdate">09/09 · quarta · noite</span><span class="pmat">Física</span><span class="pt">Mecânica I — cinemática e dinâmica</span></div>
+<div class="bloco" data-id="T.FIS.MEC1"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.MEC1</span>Cinemática e lançamentos</span><span class="chips"><span class="chip a">incidência 1,25 em 80</span><span class="chip hot">5 acertos limpos em 10 cobranças</span><span class="chip">errou em 5 edições</span><span class="chip a">0,62 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Unidades e conversão no SI, e vetores (13/fev · Frente 1 · Lucas Eufrásio · Vetores - Introdução à cinemática). Zero peso próprio, e três contas já foram perdidas só por unidade.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">MU e MUV · Torricelli · leitura de gráfico s×t e v×t · movimento circular · lançamentos.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">10 questões de cinemática da FUVEST, cronometradas.</span></div>
+</div>
+<div class="bloco" data-id="T.FIS.MEC2"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.MEC2</span>Dinâmica: leis de Newton, atrito e centrípeta</span><span class="chips"><span class="chip a">incidência 0,87 em 80</span><span class="chip">2 acertos limpos em 3 cobranças</span><span class="chip">errou em 1 edições</span><span class="chip a">0,35 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Diagrama de forças — sem peso na prova, e é onde o erro nasce.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Leis de Newton · atrito estático e dinâmico · plano inclinado · força centrípeta.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">8 questões de dinâmica.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Cinemática saiu errada em cinco edições diferentes, a última em 29/08 com confiança declarada.</div>
+</div>
+<div class="parada" data-mat="MAT" data-pn="P04" style="--l:#F0A742"><div class="ph"><span class="pnum">P04</span><span class="pdate">10/09 · quinta · noite</span><span class="pmat">Matemática</span><span class="pt">Aritmética e funções — a base que carrega tudo</span></div>
+<div class="bloco" data-id="T.MAT.ARIT"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.ARIT</span>Aritmética, razão, proporção e porcentagem</span><span class="chips"><span class="chip a">incidência 2,0 em 80</span><span class="chip">30 acertos limpos em 51 cobranças</span><span class="chip hot">1 acerto por chute — não conta</span><span class="chip">errou em 5 edições</span><span class="chip a">0,83 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Potenciação e notação científica (04/mar · Frente 2 · Beto · Potenciação) — sem peso na prova e é pré-requisito de logaritmo, de mol e de toda conversão de unidade.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Razão, proporção e regra de três · porcentagem, acréscimo e desconto sucessivos · MDC/MMC e divisibilidade · média ponderada (erro com confiança em 29/08) · escala.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">12 questões de matemática básica da FUVEST — o maior bloco isolado da prova, 2 questões esperadas.</span></div>
+</div>
+<div class="bloco" data-id="T.MAT.FUNC"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.FUNC</span>Funções: afim, quadrática, composta, inversa e modular</span><span class="chips"><span class="chip a">incidência 1,3 em 80</span><span class="chip hot">11 acertos limpos em 23 cobranças</span><span class="chip hot">1 acerto por chute — não conta</span><span class="chip">errou em 6 edições</span><span class="chip a">0,68 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Equação de 1º e 2º grau e sistemas (01/abr · Frente 2 · Beto) — quase nunca vale questão sozinha, e aparece dentro de metade delas.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Função afim e leitura de gráfico · função do 2º grau e vértice · composta e inversa (erro em quatro edições) · modular.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">10 questões de funções.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Aritmética tem 51 cobranças na base — a maior de todas — e 20 erros. Não é assunto difícil: é o assunto que aparece dentro dos outros.</div>
+</div>
+<div class="parada" data-mat="QUI" data-pn="P05" style="--l:#A78BFA"><div class="ph"><span class="pnum">P05</span><span class="pdate">11/09 · sexta · noite</span><span class="pmat">Química</span><span class="pt">Estequiometria e soluções</span></div>
+<div class="bloco" data-id="T.QUI.ESTEQ"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">QUI.ESTEQ</span>Estequiometria, fórmulas e gases</span><span class="chips"><span class="chip a">incidência 1,41 em 80</span><span class="chip hot">7 acertos limpos em 23 cobranças</span><span class="chip">errou em 7 edições</span><span class="chip a">0,96 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Mol, massa molar e volume molar — a conta que aparece em 16 das 23 cobranças erradas.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Balanceamento · cálculo estequiométrico · rendimento, pureza, excesso e limitante · gases: equação de estado, densidade e efusão.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">12 questões de estequiometria e gases da FUVEST, cronometradas.</span></div>
+</div>
+<div class="bloco" data-id="T.QUI.SOL"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">QUI.SOL</span>Soluções, concentração e coligativas</span><span class="chips"><span class="chip a">incidência 0,81 em 80</span><span class="chip hot">1 acerto limpo em 5 cobranças</span><span class="chip">errou em 3 edições</span><span class="chip a">0,58 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Concentração comum, molaridade e diluição.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Titulação · mistura de soluções · propriedades coligativas: crioscopia, ebulioscopia e osmose (erradas nas duas cobranças da base).</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">8 questões de soluções.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Estequiometria tem 16 erros em 23 cobranças, em 6 edições diferentes — nenhum outro bloco de Química foi cobrado tantas vezes na sua base.</div>
+</div>
+<div class="parada" data-mat="FIS" data-pn="P06" style="--l:#56A8FF"><div class="ph"><span class="pnum">P06</span><span class="pdate">12/09 · sábado</span><span class="pmat">Física</span><span class="pt">Mecânica II — trabalho, energia e fluidos</span></div>
+<div class="bloco" data-id="T.FIS.MEC3"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.MEC3</span>Trabalho, energia e quantidade de movimento</span><span class="chips"><span class="chip a">incidência 1,54 em 80</span><span class="chip hot">3 acertos limpos em 9 cobranças</span><span class="chip hot">2 acertos por chute — não conta</span><span class="chip">errou em 4 edições</span><span class="chip a">0,98 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Depende da parada 03 (cinemática e dinâmica), de anteontem.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Trabalho de força constante e variável · energia cinética, potencial e conservação · potência e rendimento · quantidade de movimento e colisões.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">12 questões de trabalho e energia da FUVEST — o bloco de maior incidência da Física inteira.</span></div>
+</div>
+<div class="bloco" data-id="T.FIS.MEC4"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.MEC4</span>Estática e hidrostática</span><span class="chips"><span class="chip a">incidência 0,67 em 80</span><span class="chip hot">1 acerto limpo em 4 cobranças</span><span class="chip hot">1 acerto por chute — não conta</span><span class="chip">errou em 2 edições</span><span class="chip a">0,45 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Equilíbrio de corpo rígido e torque.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Teorema de Stevin · princípio de Pascal · empuxo e flutuação.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">8 questões de estática e hidrostática.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)"><b>Trabalho e energia apareceu nas quatro provas de formato FUVEST da base — 7 cobranças — e nunca teve aula no ano.</b> É o maior descompasso entre o que a banca cobra e o que você viu.</div>
+</div>
+<div class="parada" data-mat="MAT" data-pn="P07" style="--l:#F0A742"><div class="ph"><span class="pnum">P07</span><span class="pdate">13/09 · domingo</span><span class="pmat">Matemática</span><span class="pt">Exponencial, logaritmo e contagem</span></div>
+<div class="bloco" data-id="T.MAT.EXPLOG"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.EXPLOG</span>Exponencial e logaritmo</span><span class="chips"><span class="chip a">incidência 1,1 em 80</span><span class="chip hot">3 acertos limpos em 12 cobranças</span><span class="chip hot">1 acerto por chute — não conta</span><span class="chip">errou em 5 edições</span><span class="chip a">0,79 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Propriedades de potência e a definição de logaritmo — depende da parada 04.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Equação exponencial · propriedades operatórias do log · mudança de base · escala logarítmica: dB, pH e papel di-log (três erros da base são exatamente isso).</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">10 questões de exponencial e logaritmo.</span></div>
+</div>
+<div class="bloco" data-id="T.MAT.CONT"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.CONT</span>Contagem e probabilidade</span><span class="chips"><span class="chip a">incidência 1,2 em 80</span><span class="chip hot">2 acertos limpos em 6 cobranças</span><span class="chip">errou em 3 edições</span><span class="chip a">0,75 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Princípio multiplicativo — a única coisa que precisa estar firme.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Permutação, arranjo e combinação · permutação com repetição e com restrição · probabilidade em espaço equiprovável · probabilidade condicional.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">10 questões de contagem e probabilidade da FUVEST.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Log é pré-requisito do pH da parada 14 — por isso vem cedo. Fecha a semana do recesso com sete sessões de exatas: <b>é a semana mais pesada do plano, de propósito.</b></div>
+</div>
+<div class="wnote" data-wnote="1">Sem cursinho a semana toda. <b>As cinco noites viram dias de exatas</b>, com uma matéria cada, e Biologia roda de dia. São sete paradas em sete dias — 41% de todas as exatas do plano acontecem nesta semana. Se alguma noite cair, a que menos custa é a P05 (estequiometria), porque ela reaparece no bloco cronometrado de 25/10.</div>
+</div>
+<div class="wkg" data-wk="03">
+<div class="wk"><div class="dot">03</div><div class="wkhead"><span class="dt">14 – 20/09</span><h3>Revisão Vunesp · S-5 ENEM Dia 1</h3><span class="wmark ">Simulado sáb</span><span class="wprog" data-wp="03"></span></div></div>
+<div class="biobox" data-mat="BIO"><h4>Segunda a sexta · Genética</h4><div class="cap">1,1 questão esperada na 1ª fase e a Frente 01 do 2º semestre inteira. As duas cobranças da base — heredograma mitocondrial e alelo letal — saíram erradas, as duas na FUVEST oficial de julho.</div>
+<label class="aula" data-id="A.BIO.GEN.1"><input type="checkbox"><span class="dia">seg 14/09</span><span><span class="txt">Frente 01 · Davi · 1ª lei de Mendel e monoibridismo</span><div class="obs">sem data registrada — procure pelo nome na plataforma</div></span></label>
+<label class="aula" data-id="A.BIO.GEN.2"><input type="checkbox"><span class="dia">ter 15/09</span><span><span class="txt">Frente 01 · Davi · 2ª lei de Mendel e diibridismo</span><div class="obs">sem data registrada</div></span></label>
+<label class="aula" data-id="A.BIO.GEN.3"><input type="checkbox"><span class="dia">qua 16/09</span><span><span class="txt">Frente 01 · Davi · Alelos múltiplos, grupos sanguíneos e alelos letais</span><div class="obs">sem data registrada — o alelo letal é exatamente a questão errada em julho</div></span></label>
+<label class="aula" data-id="A.BIO.GEN.4"><input type="checkbox"><span class="dia">qui 17/09</span><span><span class="txt">Frente 01 · Davi · Ligação gênica, permutação e mapas</span><div class="obs">sem data registrada</div></span></label>
+<label class="aula" data-id="A.BIO.GEN.5"><input type="checkbox"><span class="dia">sex 18/09</span><span><span class="txt">Frente 01 · Davi · Herança ligada ao sexo e heredogramas</span><div class="obs">sem data registrada — heredograma é o formato favorito da banca</div></span></label>
+</div>
+<div class="parada" data-mat="QUI" data-pn="P08" style="--l:#A78BFA"><div class="ph"><span class="pnum">P08</span><span class="pdate">20/09 · domingo</span><span class="pmat">Química</span><span class="pt">Química orgânica — o dia inteiro</span></div>
+<div class="bloco" data-id="T.QUI.ORG"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">QUI.ORG</span>Orgânica: funções, nomenclatura, isomeria e reações</span><span class="chips"><span class="chip a">incidência 2,12 em 80</span><span class="chip hot">1 acerto limpo em 8 cobranças</span><span class="chip">errou em 4 edições</span><span class="chip a">1,7 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Cadeias carbônicas e classificação do carbono — depende das ligações da parada 02.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Funções orgânicas e nomenclatura · isomeria plana e espacial, cis/trans e óptica · reações: adição, substituição, eliminação, esterificação e hidrólise · polímeros.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">15 questões de orgânica da FUVEST, cronometradas — o bloco recebe o dia inteiro.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)"><b>Maior bloco isolado do plano: 2,1 questões esperadas e 7 erros em 8 cobranças, três deles chutados.</b> É a única parada de um bloco só, porque a matéria não cabe em meio dia. Sábado 19/09 é o S-5 ENEM Dia 1: faça, confira o gabarito na mesma noite e não escreva relatório.</div>
+</div>
+<div class="wnote" data-wnote="1">A Revisão Vunesp roda de 14 a 18/09 em horário diferenciado — confira a grade da semana. Sábado 19/09 é simulado ENEM: faça, confira o gabarito na mesma noite e não escreva relatório. Domingo é parada de Física.</div>
+</div>
+<div class="wkg" data-wk="04">
+<div class="wk"><div class="dot">04</div><div class="wkhead"><span class="dt">21 – 27/09</span><h3>S-5 ENEM Dia 2</h3><span class="wmark ">Simulado sáb</span><span class="wprog" data-wp="04"></span></div></div>
+<div class="biobox" data-mat="BIO"><h4>Segunda a sexta · Fisiologia humana</h4><div class="cap">O maior bloco da Frente 03 e o 6º do plano inteiro: 1,3 questão esperada, 8 erros em 11 cobranças, e <b>7 dessas cobranças estão em prova de formato FUVEST</b>. É o assunto de Biologia que a banca mais cobra depois de citologia.</div>
+<label class="aula" data-id="A.BIO.FIS.1"><input type="checkbox"><span class="dia">seg 21/09</span><span><span class="txt">09/jun · Frente 03 · Tchelo · Cordados II / Sistema digestório</span></span></label>
+<label class="aula" data-id="A.BIO.FIS.2"><input type="checkbox"><span class="dia">ter 22/09</span><span><span class="txt">Frente 03 · Tchelo · Sistema circulatório</span><div class="obs">sem data registrada</div></span></label>
+<label class="aula" data-id="A.BIO.FIS.3"><input type="checkbox"><span class="dia">qua 23/09</span><span><span class="txt">Frente 03 · Tchelo · Sistema respiratório e trocas gasosas</span><div class="obs">sem data registrada — fluxo contracorrente saiu errado em 29/08</div></span></label>
+<label class="aula" data-id="A.BIO.FIS.4"><input type="checkbox"><span class="dia">qui 24/09</span><span><span class="txt">Frente 03 · Tchelo · Sistema excretor e osmorregulação</span><div class="obs">sem data registrada</div></span></label>
+<label class="aula" data-id="A.BIO.FIS.5"><input type="checkbox"><span class="dia">sex 25/09</span><span><span class="txt">Frente 03 · Tchelo · Sistema nervoso e potencial de ação</span><div class="obs">sem data registrada — despolarização saiu errada com confiança</div></span></label>
+</div>
+<div class="parada" data-mat="FIS" data-pn="P09" style="--l:#56A8FF"><div class="ph"><span class="pnum">P09</span><span class="pdate">27/09 · domingo</span><span class="pmat">Física</span><span class="pt">O que a FUVEST cobra e você nunca viu</span></div>
+<div class="bloco" data-id="T.FIS.OND"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.OND</span>Ondulatória e acústica</span><span class="chips"><span class="chip a">incidência 0,77 em 80</span><span class="chip hot">1 acerto limpo em 3 cobranças</span><span class="chip">errou em 2 edições</span><span class="chip a">0,46 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Período, frequência e velocidade de propagação.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Reflexão, refração e difração de ondas · cordas e tubos sonoros · efeito Doppler (o erro de abril).</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">8 questões de ondulatória.</span></div>
+</div>
+<div class="bloco" data-id="T.FIS.MAG"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.MAG</span>Magnetismo e indução</span><span class="chips"><span class="chip a">incidência 0,29 em 80</span><span class="chip hot">0 acertos limpos em 2 cobranças</span><span class="chip">errou em 2 edições</span><span class="chip a">0,22 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Regra da mão direita.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Campo magnético em fio e espira · força magnética · indução e lei de Faraday-Lenz (o aerogerador que saiu errado com confiança).</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">6 questões de magnetismo.</span></div>
+</div>
+<div class="bloco" data-id="T.FIS.MOD"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.MOD</span>Física moderna</span><span class="chips"><span class="chip a">incidência 0,48 em 80</span><span class="chip hot">2 acertos limpos em 4 cobranças</span><span class="chip">errou em 2 edições</span><span class="chip a">0,24 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Elétron-volt e ordem de grandeza — foi exatamente onde errou em 29/08.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Efeito fotoelétrico · quantização e níveis de energia · dualidade onda-partícula · noções de partículas.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">6 questões de física moderna.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Os três blocos de Física sem aula no ano, no mesmo dia e bem antes do corte de 20/10. Sábado 26/09 é o S-5 ENEM Dia 2 — último simulado do cursinho.</div>
+</div>
+<div class="wnote" data-wnote="1">Último simulado do cursinho antes do período de revisão. Depois daqui, prova cronometrada é por sua conta — e ela está embutida em cada parada da trilha.</div>
+</div>
+<div class="wkg" data-wk="05">
+<div class="wk"><div class="dot">05</div><div class="wkhead"><span class="dt">28/09 – 04/10</span><h3>Espacial, estatística e físico-química</h3><span class="wmark rest">Sáb + dom</span><span class="wprog" data-wp="05"></span></div></div>
+<div class="biobox" data-mat="BIO"><h4>Segunda a sexta · Fisiologia — fecho — e entrada na Ecologia</h4><div class="cap">Termina a fisiologia e abre o bloco de Ecologia, que é 1,7 questão esperada.</div>
+<label class="aula" data-id="A.BIO.FIS.6"><input type="checkbox"><span class="dia">seg 28/09</span><span><span class="txt">Frente 03 · Tchelo · Sistema endócrino e hormônios</span><div class="obs">sem data registrada — o gráfico de insulina e glucagon de julho</div></span></label>
+<label class="aula" data-id="A.BIO.FIS.7"><input type="checkbox"><span class="dia">ter 29/09</span><span><span class="txt">Frente 03 · Tchelo · Imunologia, vacinas e soros</span><div class="obs">sem data registrada; o Guia de 04/08 marca "Circulação e imunidade"</div></span></label>
+<label class="aula" data-id="A.BIO.ECO.1"><input type="checkbox"><span class="dia">qua 30/09</span><span><span class="txt">20/mar · Frente 02 · Renata · Formação de novas espécies; Ecologia (conceitos gerais)</span></span></label>
+<label class="aula" data-id="A.BIO.ECO.2"><input type="checkbox"><span class="dia">qui 01/10</span><span><span class="txt">10/abr · Frente 02 · Renata · Ecologia - Fluxo de energia e ciclos biogeoquímicos</span><div class="obs">o ciclo do nitrogênio saiu errado</div></span></label>
+<label class="aula" data-id="A.BIO.ECO.3"><input type="checkbox"><span class="dia">sex 02/10</span><span><span class="txt">30/abr · Frente 02 · Renata · Ecologia - dinâmica populacional, relações ecológicas e sucessão ecológica</span></span></label>
+</div>
+<div class="parada" data-mat="MAT" data-pn="P10" style="--l:#F0A742"><div class="ph"><span class="pnum">P10</span><span class="pdate">03/10 · sábado</span><span class="pmat">Matemática</span><span class="pt">Geometria espacial e estatística</span></div>
+<div class="bloco" data-id="T.MAT.GE"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.GE</span>Geometria espacial</span><span class="chips"><span class="chip a">incidência 0,9 em 80</span><span class="chip hot">3 acertos limpos em 7 cobranças</span><span class="chip hot">1 acerto por chute — não conta</span><span class="chip">errou em 2 edições</span><span class="chip a">0,5 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Áreas planas da parada 01 — sem elas não há volume.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Prisma, cilindro, pirâmide, cone e esfera: área e volume · seções · sólidos inscritos e circunscritos · otimização de embalagem (erro chutado em 29/08).</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">10 questões de geometria espacial da FUVEST.</span></div>
+</div>
+<div class="bloco" data-id="T.MAT.EST"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.EST</span>Estatística descritiva</span><span class="chips"><span class="chip a">incidência 0,4 em 80</span><span class="chip hot">3 acertos limpos em 6 cobranças</span><span class="chip">errou em 3 edições</span><span class="chip a">0,2 em jogo</span></span></span></label>
+<div class="step"><span class="lb">foco</span><span class="cont">Média, mediana e moda · média ponderada · leitura de tabela e gráfico.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">6 questões de estatística.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Os dois blocos de Matemática que o Guia marca como "ainda por vir" entram aqui, com 17 dias de folga sobre o corte.</div>
+</div>
+<div class="parada" data-mat="QUI" data-pn="P11" style="--l:#A78BFA"><div class="ph"><span class="pnum">P11</span><span class="pdate">04/10 · domingo</span><span class="pmat">Química</span><span class="pt">Oxirredução, termoquímica e cinética</span></div>
+<div class="bloco" data-id="T.QUI.REDOX"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">QUI.REDOX</span>Oxirredução e eletroquímica</span><span class="chips"><span class="chip a">incidência 0,51 em 80</span><span class="chip hot">0 acertos limpos em 2 cobranças</span><span class="chip">errou em 2 edições</span><span class="chip a">0,38 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Determinação de nox — sem isso o resto é chute.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Balanceamento por oxirredução · pilha, potencial e polos · eletrólise · corrosão.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">8 questões de eletroquímica.</span></div>
+</div>
+<div class="bloco" data-id="T.QUI.TERMO"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">QUI.TERMO</span>Termoquímica</span><span class="chips"><span class="chip a">incidência 0,61 em 80</span><span class="chip">3 acertos limpos em 4 cobranças</span><span class="chip hot">1 acerto por chute — não conta</span><span class="chip a">0,2 em jogo</span></span></span></label>
+<div class="step"><span class="lb">foco</span><span class="cont">Entalpia, Lei de Hess e energia de ligação. Você acertou as duas cobranças da base, mas uma foi chute — refazer sem gabarito.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">6 questões de termoquímica.</span></div>
+</div>
+<div class="bloco" data-id="T.QUI.CIN"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">QUI.CIN</span>Cinética química</span><span class="chips"><span class="chip a">incidência 0,4 em 80</span><span class="chip">2 acertos limpos em 3 cobranças</span><span class="chip hot">1 acerto por chute — não conta</span><span class="chip a">0,16 em jogo</span></span></span></label>
+<div class="step"><span class="lb">foco</span><span class="cont">Velocidade média, energia de ativação e fatores que alteram a velocidade. Mesmo caso: acerto com chute em julho.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">5 questões de cinética.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Oxirredução entra antes do corte porque a aula pode não sair até outubro: <b>0 acertos em 2 cobranças</b>. Domingo é o 1º turno das eleições — se for votar, vote de manhã.</div>
+</div>
+<div class="wnote" data-wnote="1"><b>Inscrições da FUVEST encerram em 09/10.</b> Se ainda não se inscreveu, isso vem antes de qualquer item desta trilha. Domingo 04/10 é o 1º turno das eleições — se for votar, vote de manhã e mantenha a parada à tarde.</div>
+</div>
+<div class="wkg" data-wk="06">
+<div class="wk"><div class="dot">06</div><div class="wkhead"><span class="dt">05 – 11/10</span><h3>Revisão de termologia, óptica, analítica e progressões</h3><span class="wmark rest">Sáb + dom</span><span class="wprog" data-wp="06"></span></div></div>
+<div class="biobox" data-mat="BIO"><h4>Segunda a sexta · Ecologia e Botânica</h4><div class="cap">Ecologia é o assunto de maior peso da Biologia na FUVEST em qualquer levantamento público. Botânica entra aqui porque é conteúdo novo e precisa caber antes do corte de 20/10.</div>
+<label class="aula" data-id="A.BIO.ECO.4"><input type="checkbox"><span class="dia">seg 05/10</span><span><span class="txt">08/mai · Frente 02 · Renata · Ecologia - Biomas mundiais e biomas brasileiros</span><div class="obs">Pantanal e Cerrado saíram errados em duas provas</div></span></label>
+<label class="aula" data-id="A.BIO.ECO.5"><input type="checkbox"><span class="dia">ter 06/10</span><span><span class="txt">22/mai · Frente 02 · Renata · Ecologia - Alterações ambientais</span><div class="obs">2 erros, um com confiança</div></span></label>
+<label class="aula" data-id="A.BIO.BOT.1"><input type="checkbox"><span class="dia">qua 07/10</span><span><span class="txt">Frente 03 · Grupos vegetais, ciclos reprodutivos e adaptações</span><div class="obs">sem data registrada</div></span></label>
+<label class="aula" data-id="A.BIO.BOT.2"><input type="checkbox"><span class="dia">qui 08/10</span><span><span class="txt">Frente 03 · Fisiologia vegetal: condução, hormônios e fotoperiodismo</span><div class="obs">sem data registrada</div></span></label>
+<label class="aula" data-id="A.BIO.ECO.R"><input type="checkbox"><span class="dia">sex 09/10</span><span><span class="txt">Revisão ativa — refazer FUVEST abr Q69 e Q73, FUVEST jul Q05 e a Q22 de 29/08</span><div class="obs">sem aula: é questão no papel</div></span></label>
+</div>
+<div class="parada" data-mat="FIS" data-pn="P12" style="--l:#56A8FF"><div class="ph"><span class="pnum">P12</span><span class="pdate">10/10 · sábado</span><span class="pmat">Física</span><span class="pt">Termologia e óptica — revisão</span></div>
+<div class="bloco" data-id="T.FIS.TERMO"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.TERMO</span>Termologia: calorimetria, mudança de estado e termodinâmica</span><span class="chips"><span class="chip a">incidência 1,44 em 80</span><span class="chip hot">6 acertos limpos em 13 cobranças</span><span class="chip">errou em 4 edições</span><span class="chip a">0,77 em jogo</span></span></span></label>
+<div class="step"><span class="lb">foco</span><span class="cont">Calorimetria e equilíbrio térmico · calor latente e mudança de estado · transferência de calor · dilatação · termodinâmica e máquinas térmicas. Sete erros em 13 cobranças, tudo com aula dada.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">10 questões de termologia.</span></div>
+</div>
+<div class="bloco" data-id="T.FIS.OPT"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.OPT</span>Óptica geométrica: reflexão, refração e espelhos</span><span class="chips"><span class="chip a">incidência 1,06 em 80</span><span class="chip hot">2 acertos limpos em 6 cobranças</span><span class="chip">errou em 2 edições</span><span class="chip a">0,66 em jogo</span></span></span></label>
+<div class="step"><span class="lb">foco</span><span class="cont">Reflexão e espelhos · refração, índice e reflexão total · lentes. Quatro erros em 6 cobranças.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">8 questões de óptica.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Tudo aqui já teve aula (14/fev, 14/mar, 28/mar, 01/mai, 02/mai, 30/mai, 20/jun, 04/jul). Aqui é questão nova e correção, não releitura de aula.</div>
+</div>
+<div class="parada" data-mat="MAT" data-pn="P13" style="--l:#F0A742"><div class="ph"><span class="pnum">P13</span><span class="pdate">11/10 · domingo</span><span class="pmat">Matemática</span><span class="pt">Geometria analítica e progressões</span></div>
+<div class="bloco" data-id="T.MAT.GA"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.GA</span>Geometria analítica</span><span class="chips"><span class="chip a">incidência 0,7 em 80</span><span class="chip hot">0 acertos limpos em 3 cobranças</span><span class="chip">errou em 3 edições</span><span class="chip a">0,56 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Plano cartesiano e distância entre pontos.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Equação da reta, paralelismo e perpendicularismo · distância de ponto a reta · equação da circunferência e posições relativas (as engrenagens de 29/08).</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">8 questões de geometria analítica.</span></div>
+</div>
+<div class="bloco" data-id="T.MAT.SEQ"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.SEQ</span>Sequências, PA e PG</span><span class="chips"><span class="chip a">incidência 0,5 em 80</span><span class="chip hot">3 acertos limpos em 7 cobranças</span><span class="chip hot">1 acerto por chute — não conta</span><span class="chip">errou em 3 edições</span><span class="chip a">0,28 em jogo</span></span></span></label>
+<div class="step"><span class="lb">foco</span><span class="cont">PA e PG: termo geral e soma · soma infinita da PG.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">6 questões.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Os dois já tiveram aula (25/mai a 29/jun · Frente 3 · Mario; 20/mai e 03/jun · Frente 2 · Beto). <b>Inscrições da FUVEST encerram em 09/10</b> — se ainda não se inscreveu, isso vem antes de qualquer item desta trilha.</div>
+</div>
+<div class="wnote" data-wnote="1">A partir de <b>12/10</b> o cursinho entra em Revisão 1ª Fase. O que não estiver na trilha até aqui não entra mais.</div>
+</div>
+<div class="wkg" data-wk="07">
+<div class="wk"><div class="dot">07</div><div class="wkhead"><span class="dt">12 – 18/10</span><h3>O corte de conteúdo novo</h3><span class="wmark ">Corte em 20/10</span><span class="wprog" data-wp="07"></span></div></div>
+<div class="biobox" data-mat="BIO"><h4>Segunda a sexta · Microbiologia e parasitoses</h4><div class="cap">Fecha a Frente 02 do 1º semestre. Microbiologia é 10,2% da Biologia da FUVEST em levantamento público e você tem 3 erros em 6 cobranças.</div>
+<label class="aula" data-id="A.BIO.MIC.1"><input type="checkbox"><span class="dia">seg 12/10</span><span><span class="txt">12/jun · Frente 02 · Renata · Vírus e doenças virais</span><div class="obs">ISTs saíram erradas em 29/08</div></span></label>
+<label class="aula" data-id="A.BIO.MIC.2"><input type="checkbox"><span class="dia">ter 13/10</span><span><span class="txt">26/jun · Frente 02 · Renata · Procariontes e doenças bacterianas</span></span></label>
+<label class="aula" data-id="A.BIO.MIC.3"><input type="checkbox"><span class="dia">qua 14/10</span><span><span class="txt">10/mar · Frente 03 · Tchelo · Protozooses / Desenvolvimento embrionário</span><div class="obs">leishmaniose saiu errada na Unicamp</div></span></label>
+<label class="aula" data-id="A.BIO.MIC.4"><input type="checkbox"><span class="dia">qui 15/10</span><span><span class="txt">07/abr · Frente 03 · Tchelo · Vermes e verminoses I e II</span><div class="obs">ciclo do parasita: erro com confiança em agosto</div></span></label>
+<label class="aula" data-id="A.BIO.MIC.5"><input type="checkbox"><span class="dia">sex 16/10</span><span><span class="txt">Frente 02 · Fungos</span><div class="obs">sem data registrada; o Guia de 04/08 marca este tópico</div></span></label>
+</div>
+<div class="parada" data-mat="QUI" data-pn="P14" style="--l:#A78BFA"><div class="ph"><span class="pnum">P14</span><span class="pdate">17/10 · sábado</span><span class="pmat">Química</span><span class="pt">Equilíbrio químico e pH</span></div>
+<div class="bloco" data-id="T.QUI.EQUI"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">QUI.EQUI</span>Equilíbrio químico, pH, ácidos e bases</span><span class="chips"><span class="chip a">incidência 1,62 em 80</span><span class="chip hot">2 acertos limpos em 10 cobranças</span><span class="chip hot">1 acerto por chute — não conta</span><span class="chip">errou em 4 edições</span><span class="chip a">1,21 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Ácidos e bases de Arrhenius e Kw (02/mai e 16/mai · Frente 2 · Bruno Arruda) e o logaritmo da parada 07.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Constante de equilíbrio e Kc/Kp · princípio de Le Chatelier · pH, pOH e hidrólise salina · Kps e precipitação (chute em 29/08).</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">12 questões de equilíbrio e pH da FUVEST, cronometradas.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Segundo maior bloco da Química: 1,62 questão esperada, 7 erros em 10 cobranças. Recebe o dia inteiro e vem depois do log, que é pré-requisito do pH.</div>
+</div>
+<div class="parada" data-mat="FIS" data-pn="P15" style="--l:#56A8FF"><div class="ph"><span class="pnum">P15</span><span class="pdate">18/10 · domingo</span><span class="pmat">Física</span><span class="pt">Eletricidade — fecho da Física</span></div>
+<div class="bloco" data-id="T.FIS.ELET"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.ELET</span>Eletrostática: carga, campo e potencial</span><span class="chips"><span class="chip a">incidência 0,67 em 80</span><span class="chip">4 acertos limpos em 7 cobranças</span><span class="chip">errou em 2 edições</span><span class="chip a">0,3 em jogo</span></span></span></label>
+<div class="step"><span class="lb">foco</span><span class="cont">Eletrização, força de Coulomb, campo e potencial. É a base do bloco seguinte.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">entra junto no bloco de eletrodinâmica.</span></div>
+</div>
+<div class="bloco" data-id="T.FIS.EDIN"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">FIS.EDIN</span>Eletrodinâmica: Ohm, resistores, circuitos e geradores</span><span class="chips"><span class="chip a">incidência 0,96 em 80</span><span class="chip hot">5 acertos limpos em 10 cobranças</span><span class="chip">errou em 4 edições</span><span class="chip a">0,48 em jogo</span></span></span></label>
+<div class="step base"><span class="lb">base</span><span class="cont">Eletrostática, logo acima.</span></div>
+<div class="step"><span class="lb">foco</span><span class="cont">Lei de Ohm · associação de resistores · potência e energia elétrica · circuitos com medidores · geradores.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">12 questões de eletricidade da FUVEST, cronometradas — última parada de Física.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)"><b>18/10 é a 1ª fase da Unicamp.</b> Se você se inscreveu, esta parada não acontece e a Física fecha sem eletricidade — decida até 11/10. É também o último domingo antes do corte de 20/10.</div>
+</div>
+<div class="wnote" data-wnote="1"><b>20/10 é o corte: nada de assunto novo depois disso.</b> Por isso a parada 09 concentra ondulatória, magnetismo e física moderna, e a 10 fecha geometria espacial. Domingo 18/10 é a 1ª fase da Unicamp — se você fez inscrição, a parada 10 não acontece e o conteúdo dela se perde.</div>
+</div>
+<div class="wkg" data-wk="08">
+<div class="wk"><div class="dot">08</div><div class="wkhead"><span class="dt">19 – 25/10</span><h3>Só revisão do que já teve aula</h3><span class="wmark ">Locais de prova 21/10</span><span class="wprog" data-wp="08"></span></div></div>
+<div class="biobox" data-mat="BIO"><h4>Segunda a sexta · Sistemática e Evolução</h4><div class="cap">Tudo aqui já teve aula, então nada viola o corte de 20/10. Sistemática é o único item da base com três confirmações seguidas — vem por último de propósito.</div>
+<label class="aula" data-id="A.BIO.SIS.1"><input type="checkbox"><span class="dia">seg 19/10</span><span><span class="txt">10/fev · Frente 03 · Tchelo · Sistemática</span><div class="obs">cladograma e homologia × analogia</div></span></label>
+<label class="aula" data-id="A.BIO.SIS.2"><input type="checkbox"><span class="dia">ter 20/10</span><span><span class="txt">24/fev · Frente 03 · Tchelo · Sistemática / Protozoários</span></span></label>
+<label class="aula" data-id="A.BIO.SIS.3"><input type="checkbox"><span class="dia">qua 21/10</span><span><span class="txt">24/mar · Frente 03 · Tchelo · Classificação embriológica</span><div class="obs">organogênese saiu certa por chute em 29/08 — não conta</div></span></label>
+<label class="aula" data-id="A.BIO.EVO.1"><input type="checkbox"><span class="dia">qui 22/10</span><span><span class="txt">20/fev · Frente 02 · Renata · Evolução biológica</span></span></label>
+<label class="aula" data-id="A.BIO.EVO.2"><input type="checkbox"><span class="dia">sex 23/10</span><span><span class="txt">06/mar · Frente 02 · Renata · Teoria moderna da evolução</span><div class="obs">especiação errada em quatro edições — inclusive com confiança em 29/08</div></span></label>
+</div>
+<div class="parada" data-mat="MAT" data-pn="P16" style="--l:#F0A742"><div class="ph"><span class="pnum">P16</span><span class="pdate">24/10 · sábado</span><span class="pmat">Matemática</span><span class="pt">Matemática — bloco cronometrado, sem conteúdo novo</span></div>
+<div class="bloco" data-id="T.MAT.SIMU"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">MAT.SIMU</span>Matemática inteira — 45 questões cronometradas</span><span class="chips"><span class="chip a">incidência 11 em 80</span><span class="chip hot">61 acertos limpos em 144 cobranças</span><span class="chip hot">5 acertos por chute — não conta</span><span class="chip a">6,77 em jogo</span></span></span></label>
+<div class="step"><span class="lb">foco</span><span class="cont">Simulado de matéria: 45 questões de Matemática de provas antigas da FUVEST, nas condições da prova real, cobrindo os dez blocos. Corrigir no mesmo dia. O que voltar a errar vira a lista da semana da prova.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">a própria sessão é a prova.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Depois de 20/10 só entra revisão. Matemática ganha o dia porque é a matéria com mais questões em jogo da prova inteira — 16,3% de acerto limpo no formato FUVEST.</div>
+</div>
+<div class="parada" data-mat="QUI" data-pn="P17" style="--l:#A78BFA"><div class="ph"><span class="pnum">P17</span><span class="pdate">25/10 · domingo</span><span class="pmat">Química</span><span class="pt">Química — bloco cronometrado, sem conteúdo novo</span></div>
+<div class="bloco" data-id="T.QUI.SIMU"><label class="bh"><input type="checkbox"><span><span class="bn"><span class="tagc">QUI.SIMU</span>Química inteira — 45 questões cronometradas</span><span class="chips"><span class="chip a">incidência 10 em 80</span><span class="chip hot">20 acertos limpos em 76 cobranças</span><span class="chip hot">3 acertos por chute — não conta</span><span class="chip a">7,12 em jogo</span></span></span></label>
+<div class="step"><span class="lb">foco</span><span class="cont">Simulado de matéria: 45 questões de Química de provas antigas da FUVEST, cronometradas, cobrindo os nove blocos. Corrigir no mesmo dia.</span></div>
+<div class="step prova"><span class="lb">prova</span><span class="cont">a própria sessão é a prova.</span></div>
+</div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Química é a pior matéria da base desde março: 21,6% de acerto limpo. Este é o único dia do plano em que ela é medida inteira de uma vez. Domingo é o 2º turno das eleições.</div>
+</div>
+<div class="wnote" data-wnote="1">Locais de prova saem em <b>21/10</b>. Confira o seu e planeje o trajeto — o simulado de julho foi na UNIP Tatuapé, o local real pode ser outro. Domingo 25/10 é o 2º turno das eleições.</div>
+</div>
+<div class="wkg" data-wk="09">
+<div class="wk"><div class="dot">09</div><div class="wkhead"><span class="dt">26/10 – 01/11</span><h3>Semana da prova</h3><span class="wmark hot">FUVEST domingo</span><span class="wprog" data-wp="09"></span></div></div>
+<div class="biobox" data-mat="BIO"><h4>Segunda a sexta · Semana da prova — nada novo</h4><div class="cap">Sem aula nova. Só o que ficou pendurado.</div>
+<label class="aula" data-id="A.BIO.FIM.1"><input type="checkbox"><span class="dia">seg 26/10</span><span><span class="txt">Reassistir a aula que ficou pendente na trilha, se houver</span></span></label>
+<label class="aula" data-id="A.BIO.FIM.2"><input type="checkbox"><span class="dia">ter 27/10</span><span><span class="txt">Refazer no papel os erros de Citologia e Fisiologia humana</span></span></label>
+<label class="aula" data-id="A.BIO.FIM.3"><input type="checkbox"><span class="dia">qua 28/10</span><span><span class="txt">Refazer no papel os erros de Ecologia e Genética</span></span></label>
+</div>
+<div class="parada" data-mat="GERAL" data-pn="P18" style="--l:var(--line2)"><div class="ph"><span class="pnum">P18</span><span class="pdate">31/10 · sábado</span><span class="pt">Véspera — nada novo</span></div>
+<div class="wnote" style="margin:0;padding:11px 15px;border-left:0;border-top:1px solid var(--line)">Conferir documento, local de prova, horário e trajeto. Refazer só as questões que você errou nos blocos cronometrados das paradas anteriores. Dormir cedo vale mais que qualquer revisão desta semana.</div>
+</div>
+<div class="wnote" data-wnote="1">Revisão leve e questões já comentadas. Conteúdo novo nesta semana só tira espaço do que já está consolidado. Depois: <b>08/11 e 15/11 são o ENEM</b> — você chega nele preparado pelo caminho da FUVEST, sem plano separado.</div>
+</div>
+<div class="empty" data-empty="trilha" hidden>Nenhum item com esses filtros. Solte a matéria ou a semana.</div>
+</div></div></section>
+<section id="prio" hidden><div class="wrap">
+<p class="lead">A conta é uma só: <b>questões em jogo = quanto o tema cai na 1ª fase da FUVEST × a chance de você errar</b>. A incidência vem do levantamento público da banca cruzado com as 320 questões de formato FUVEST da sua base. A chance de errar vem dos seus erros mais os acertos que você marcou como chute — <b>acerto chutado entra como erro</b>. Temas nunca cobrados na sua base entram com risco de 50%, não com risco zero.</p>
+<div class="callout"><b>Por que a ordem mudou.</b> A régua antiga ordenava por aula dada e não dada. Esta ordena por prova: um tema que a FUVEST cobra duas vezes por edição e que você erra vale mais do que um tema que você erra mais vezes e a banca quase não pede. Foi isso que tirou Aritmética do topo — 20 erros, mas 30 acertos limpos — e colocou Orgânica, que tem 7 erros em 8 cobranças e 2,1 questões esperadas.</div>
+<div class="scroll"><table>
+<thead><tr><th>#</th><th>Bloco</th><th>Cai</th><th>Cobranças</th><th>Acertos</th><th>Chutes</th><th>Erros</th><th>Em jogo</th><th>Onde entra</th></tr></thead>
+<tbody><tr><td class="num" style="color:var(--mute)">1</td><td><span class="tagc">QUI.ORG</span><b>Orgânica: funções, nomenclatura, isomeria e reações</b><div class="bar" style="--c:#A78BFA"><i style="width:100%"></i></div></td><td class="num">2,12</td><td class="num">8</td><td class="num">1</td><td class="num" style="color:var(--mute2)">0</td><td class="num">7</td><td class="num"><b>1,7</b></td><td class="num" style="color:var(--mute)">P08 · 20/09</td></tr><tr><td class="num" style="color:var(--mute)">2</td><td><span class="tagc">MAT.GPLANA</span><b>Geometria plana: polígonos, círculo, áreas e semelhança</b><div class="bar" style="--c:#F0A742"><i style="width:87%"></i></div></td><td class="num">1,9</td><td class="num">21</td><td class="num">4</td><td class="num" style="color:var(--mute2)">0</td><td class="num">17</td><td class="num"><b>1,49</b></td><td class="num" style="color:var(--mute)">P01 · 07/09</td></tr><tr><td class="num" style="color:var(--mute)">3</td><td><span class="tagc">BIO.CIT</span><b>Citologia, bioquímica celular e membranas</b><div class="bar" style="--c:#45C39B"><i style="width:73%"></i></div></td><td class="num">1,87</td><td class="num">13</td><td class="num">4</td><td class="num" style="color:var(--mute2)">0</td><td class="num">9</td><td class="num"><b>1,25</b></td><td class="num" style="color:var(--mute)">semana, Bio</td></tr><tr><td class="num" style="color:var(--mute)">4</td><td><span class="tagc">QUI.LIG</span><b>Ligações, geometria molecular, forças intermoleculares e propriedades</b><div class="bar" style="--c:#A78BFA"><i style="width:73%"></i></div></td><td class="num">1,62</td><td class="num">11</td><td class="num">2</td><td class="num" style="color:var(--mute2)">0</td><td class="num">9</td><td class="num"><b>1,24</b></td><td class="num" style="color:var(--mute)">P02 · 08/09</td></tr><tr><td class="num" style="color:var(--mute)">5</td><td><span class="tagc">QUI.EQUI</span><b>Equilíbrio químico, pH, ácidos e bases</b><div class="bar" style="--c:#A78BFA"><i style="width:71%"></i></div></td><td class="num">1,62</td><td class="num">10</td><td class="num">2</td><td class="num" style="color:var(--rose)">1</td><td class="num">7</td><td class="num"><b>1,21</b></td><td class="num" style="color:var(--mute)">P14 · 17/10</td></tr><tr><td class="num" style="color:var(--mute)">6</td><td><span class="tagc">BIO.FIS</span><b>Fisiologia humana</b><div class="bar" style="--c:#45C39B"><i style="width:59%"></i></div></td><td class="num">1,31</td><td class="num">11</td><td class="num">2</td><td class="num" style="color:var(--rose)">1</td><td class="num">8</td><td class="num"><b>1,01</b></td><td class="num" style="color:var(--mute)">semana, Bio</td></tr><tr><td class="num" style="color:var(--mute)">7</td><td><span class="tagc">FIS.MEC3</span><b>Trabalho, energia e quantidade de movimento</b><div class="bar" style="--c:#56A8FF"><i style="width:58%"></i></div></td><td class="num">1,54</td><td class="num">9</td><td class="num">3</td><td class="num" style="color:var(--rose)">2</td><td class="num">4</td><td class="num"><b>0,98</b></td><td class="num" style="color:var(--mute)">P06 · 12/09</td></tr><tr><td class="num" style="color:var(--mute)">8</td><td><span class="tagc">QUI.ESTEQ</span><b>Estequiometria, fórmulas e gases</b><div class="bar" style="--c:#A78BFA"><i style="width:57%"></i></div></td><td class="num">1,41</td><td class="num">23</td><td class="num">7</td><td class="num" style="color:var(--mute2)">0</td><td class="num">16</td><td class="num"><b>0,96</b></td><td class="num" style="color:var(--mute)">P05 · 11/09</td></tr><tr><td class="num" style="color:var(--mute)">9</td><td><span class="tagc">BIO.ECO</span><b>Ecologia: relações, ciclos, biomas, sucessão e impacto ambiental</b><div class="bar" style="--c:#45C39B"><i style="width:53%"></i></div></td><td class="num">1,68</td><td class="num">13</td><td class="num">6</td><td class="num" style="color:var(--mute2)">0</td><td class="num">7</td><td class="num"><b>0,9</b></td><td class="num" style="color:var(--mute)">semana, Bio</td></tr><tr><td class="num" style="color:var(--mute)">10</td><td><span class="tagc">MAT.ARIT</span><b>Aritmética, razão, proporção e porcentagem</b><div class="bar" style="--c:#F0A742"><i style="width:49%"></i></div></td><td class="num">2,0</td><td class="num">51</td><td class="num">30</td><td class="num" style="color:var(--rose)">1</td><td class="num">20</td><td class="num"><b>0,83</b></td><td class="num" style="color:var(--mute)">P04 · 10/09</td></tr><tr><td class="num" style="color:var(--mute)">11</td><td><span class="tagc">MAT.EXPLOG</span><b>Exponencial e logaritmo</b><div class="bar" style="--c:#F0A742"><i style="width:46%"></i></div></td><td class="num">1,1</td><td class="num">12</td><td class="num">3</td><td class="num" style="color:var(--rose)">1</td><td class="num">8</td><td class="num"><b>0,79</b></td><td class="num" style="color:var(--mute)">P07 · 13/09</td></tr><tr><td class="num" style="color:var(--mute)">12</td><td><span class="tagc">FIS.TERMO</span><b>Termologia: calorimetria, mudança de estado e termodinâmica</b><div class="bar" style="--c:#56A8FF"><i style="width:45%"></i></div></td><td class="num">1,44</td><td class="num">13</td><td class="num">6</td><td class="num" style="color:var(--mute2)">0</td><td class="num">7</td><td class="num"><b>0,77</b></td><td class="num" style="color:var(--mute)">P12 · 10/10</td></tr><tr><td class="num" style="color:var(--mute)">13</td><td><span class="tagc">MAT.CONT</span><b>Contagem e probabilidade</b><div class="bar" style="--c:#F0A742"><i style="width:44%"></i></div></td><td class="num">1,2</td><td class="num">6</td><td class="num">2</td><td class="num" style="color:var(--mute2)">0</td><td class="num">4</td><td class="num"><b>0,75</b></td><td class="num" style="color:var(--mute)">P07 · 13/09</td></tr><tr><td class="num" style="color:var(--mute)">14</td><td><span class="tagc">MAT.TRIG</span><b>Trigonometria</b><div class="bar" style="--c:#F0A742"><i style="width:41%"></i></div></td><td class="num">1,0</td><td class="num">8</td><td class="num">2</td><td class="num" style="color:var(--mute2)">0</td><td class="num">6</td><td class="num"><b>0,7</b></td><td class="num" style="color:var(--mute)">P01 · 07/09</td></tr><tr><td class="num" style="color:var(--mute)">15</td><td><span class="tagc">QUI.ATOM</span><b>Atomística e propriedades periódicas</b><div class="bar" style="--c:#A78BFA"><i style="width:40%"></i></div></td><td class="num">0,91</td><td class="num">10</td><td class="num">2</td><td class="num" style="color:var(--mute2)">0</td><td class="num">8</td><td class="num"><b>0,68</b></td><td class="num" style="color:var(--mute)">P02 · 08/09</td></tr><tr><td class="num" style="color:var(--mute)">16</td><td><span class="tagc">MAT.FUNC</span><b>Funções: afim, quadrática, composta, inversa e modular</b><div class="bar" style="--c:#F0A742"><i style="width:40%"></i></div></td><td class="num">1,3</td><td class="num">23</td><td class="num">11</td><td class="num" style="color:var(--rose)">1</td><td class="num">11</td><td class="num"><b>0,68</b></td><td class="num" style="color:var(--mute)">P04 · 10/09</td></tr><tr><td class="num" style="color:var(--mute)">17</td><td><span class="tagc">FIS.OPT</span><b>Óptica geométrica: reflexão, refração e espelhos</b><div class="bar" style="--c:#56A8FF"><i style="width:39%"></i></div></td><td class="num">1,06</td><td class="num">6</td><td class="num">2</td><td class="num" style="color:var(--mute2)">0</td><td class="num">4</td><td class="num"><b>0,66</b></td><td class="num" style="color:var(--mute)">P12 · 10/10</td></tr><tr><td class="num" style="color:var(--mute)">18</td><td><span class="tagc">BIO.MET</span><b>Metabolismo: respiração, fotossíntese e divisão celular</b><div class="bar" style="--c:#45C39B"><i style="width:37%"></i></div></td><td class="num">0,84</td><td class="num">2</td><td class="num">0</td><td class="num" style="color:var(--mute2)">0</td><td class="num">2</td><td class="num"><b>0,63</b></td><td class="num" style="color:var(--mute)">semana, Bio</td></tr><tr><td class="num" style="color:var(--mute)">19</td><td><span class="tagc">FIS.MEC1</span><b>Cinemática e lançamentos</b><div class="bar" style="--c:#56A8FF"><i style="width:37%"></i></div></td><td class="num">1,25</td><td class="num">10</td><td class="num">5</td><td class="num" style="color:var(--mute2)">0</td><td class="num">5</td><td class="num"><b>0,62</b></td><td class="num" style="color:var(--mute)">P03 · 09/09</td></tr><tr><td class="num" style="color:var(--mute)">20</td><td><span class="tagc">QUI.SOL</span><b>Soluções, concentração e coligativas</b><div class="bar" style="--c:#A78BFA"><i style="width:34%"></i></div></td><td class="num">0,81</td><td class="num">5</td><td class="num">1</td><td class="num" style="color:var(--mute2)">0</td><td class="num">4</td><td class="num"><b>0,58</b></td><td class="num" style="color:var(--mute)">P05 · 11/09</td></tr><tr><td class="num" style="color:var(--mute)">21</td><td><span class="tagc">BIO.GEN</span><b>Genética e biotecnologia</b><div class="bar" style="--c:#45C39B"><i style="width:33%"></i></div></td><td class="num">1,12</td><td class="num">4</td><td class="num">2</td><td class="num" style="color:var(--mute2)">0</td><td class="num">2</td><td class="num"><b>0,56</b></td><td class="num" style="color:var(--mute)">semana, Bio</td></tr><tr><td class="num" style="color:var(--mute)">22</td><td><span class="tagc">MAT.GA</span><b>Geometria analítica</b><div class="bar" style="--c:#F0A742"><i style="width:33%"></i></div></td><td class="num">0,7</td><td class="num">3</td><td class="num">0</td><td class="num" style="color:var(--mute2)">0</td><td class="num">3</td><td class="num"><b>0,56</b></td><td class="num" style="color:var(--mute)">P13 · 11/10</td></tr><tr><td class="num" style="color:var(--mute)">23</td><td><span class="tagc">MAT.GE</span><b>Geometria espacial</b><div class="bar" style="--c:#F0A742"><i style="width:29%"></i></div></td><td class="num">0,9</td><td class="num">7</td><td class="num">3</td><td class="num" style="color:var(--rose)">1</td><td class="num">3</td><td class="num"><b>0,5</b></td><td class="num" style="color:var(--mute)">P10 · 03/10</td></tr><tr><td class="num" style="color:var(--mute)">24</td><td><span class="tagc">FIS.EDIN</span><b>Eletrodinâmica: Ohm, resistores, circuitos e geradores</b><div class="bar" style="--c:#56A8FF"><i style="width:28%"></i></div></td><td class="num">0,96</td><td class="num">10</td><td class="num">5</td><td class="num" style="color:var(--mute2)">0</td><td class="num">5</td><td class="num"><b>0,48</b></td><td class="num" style="color:var(--mute)">P15 · 18/10</td></tr><tr><td class="num" style="color:var(--mute)">25</td><td><span class="tagc">BIO.MICRO</span><b>Microbiologia, parasitoses e fungos</b><div class="bar" style="--c:#45C39B"><i style="width:27%"></i></div></td><td class="num">0,93</td><td class="num">6</td><td class="num">3</td><td class="num" style="color:var(--mute2)">0</td><td class="num">3</td><td class="num"><b>0,47</b></td><td class="num" style="color:var(--mute)">semana, Bio</td></tr><tr><td class="num" style="color:var(--mute)">26</td><td><span class="tagc">FIS.OND</span><b>Ondulatória e acústica</b><div class="bar" style="--c:#56A8FF"><i style="width:27%"></i></div></td><td class="num">0,77</td><td class="num">3</td><td class="num">1</td><td class="num" style="color:var(--mute2)">0</td><td class="num">2</td><td class="num"><b>0,46</b></td><td class="num" style="color:var(--mute)">P09 · 27/09</td></tr><tr><td class="num" style="color:var(--mute)">27</td><td><span class="tagc">FIS.MEC4</span><b>Estática e hidrostática</b><div class="bar" style="--c:#56A8FF"><i style="width:26%"></i></div></td><td class="num">0,67</td><td class="num">4</td><td class="num">1</td><td class="num" style="color:var(--rose)">1</td><td class="num">2</td><td class="num"><b>0,45</b></td><td class="num" style="color:var(--mute)">P06 · 12/09</td></tr><tr><td class="num" style="color:var(--mute)">28</td><td><span class="tagc">BIO.BOT</span><b>Botânica</b><div class="bar" style="--c:#45C39B"><i style="width:26%"></i></div></td><td class="num">0,65</td><td class="num">1</td><td class="num">0</td><td class="num" style="color:var(--mute2)">0</td><td class="num">1</td><td class="num"><b>0,44</b></td><td class="num" style="color:var(--mute)">semana, Bio</td></tr><tr><td class="num" style="color:var(--mute)">29</td><td><span class="tagc">BIO.SIST</span><b>Sistemática, zoologia e embriologia</b><div class="bar" style="--c:#45C39B"><i style="width:23%"></i></div></td><td class="num">0,93</td><td class="num">10</td><td class="num">6</td><td class="num" style="color:var(--rose)">1</td><td class="num">3</td><td class="num"><b>0,39</b></td><td class="num" style="color:var(--mute)">semana, Bio</td></tr><tr><td class="num" style="color:var(--mute)">30</td><td><span class="tagc">QUI.REDOX</span><b>Oxirredução e eletroquímica</b><div class="bar" style="--c:#A78BFA"><i style="width:22%"></i></div></td><td class="num">0,51</td><td class="num">2</td><td class="num">0</td><td class="num" style="color:var(--mute2)">0</td><td class="num">2</td><td class="num"><b>0,38</b></td><td class="num" style="color:var(--mute)">P11 · 04/10</td></tr><tr><td class="num" style="color:var(--mute)">31</td><td><span class="tagc">BIO.EVO</span><b>Evolução e origem da vida</b><div class="bar" style="--c:#45C39B"><i style="width:21%"></i></div></td><td class="num">0,65</td><td class="num">11</td><td class="num">5</td><td class="num" style="color:var(--rose)">1</td><td class="num">5</td><td class="num"><b>0,35</b></td><td class="num" style="color:var(--mute)">semana, Bio</td></tr><tr><td class="num" style="color:var(--mute)">32</td><td><span class="tagc">FIS.MEC2</span><b>Dinâmica: leis de Newton, atrito e centrípeta</b><div class="bar" style="--c:#56A8FF"><i style="width:20%"></i></div></td><td class="num">0,87</td><td class="num">3</td><td class="num">2</td><td class="num" style="color:var(--mute2)">0</td><td class="num">1</td><td class="num"><b>0,35</b></td><td class="num" style="color:var(--mute)">P03 · 09/09</td></tr><tr><td class="num" style="color:var(--mute)">33</td><td><span class="tagc">FIS.ELET</span><b>Eletrostática: carga, campo e potencial</b><div class="bar" style="--c:#56A8FF"><i style="width:18%"></i></div></td><td class="num">0,67</td><td class="num">7</td><td class="num">4</td><td class="num" style="color:var(--mute2)">0</td><td class="num">3</td><td class="num"><b>0,3</b></td><td class="num" style="color:var(--mute)">P15 · 18/10</td></tr><tr><td class="num" style="color:var(--mute)">34</td><td><span class="tagc">MAT.SEQ</span><b>Sequências, PA e PG</b><div class="bar" style="--c:#F0A742"><i style="width:16%"></i></div></td><td class="num">0,5</td><td class="num">7</td><td class="num">3</td><td class="num" style="color:var(--rose)">1</td><td class="num">3</td><td class="num"><b>0,28</b></td><td class="num" style="color:var(--mute)">P13 · 11/10</td></tr><tr><td class="num" style="color:var(--mute)">35</td><td><span class="tagc">FIS.MOD</span><b>Física moderna</b><div class="bar" style="--c:#56A8FF"><i style="width:14%"></i></div></td><td class="num">0,48</td><td class="num">4</td><td class="num">2</td><td class="num" style="color:var(--mute2)">0</td><td class="num">2</td><td class="num"><b>0,24</b></td><td class="num" style="color:var(--mute)">P09 · 27/09</td></tr><tr><td class="num" style="color:var(--mute)">36</td><td><span class="tagc">FIS.MAG</span><b>Magnetismo e indução</b><div class="bar" style="--c:#56A8FF"><i style="width:13%"></i></div></td><td class="num">0,29</td><td class="num">2</td><td class="num">0</td><td class="num" style="color:var(--mute2)">0</td><td class="num">2</td><td class="num"><b>0,22</b></td><td class="num" style="color:var(--mute)">P09 · 27/09</td></tr><tr><td class="num" style="color:var(--mute)">37</td><td><span class="tagc">QUI.TERMO</span><b>Termoquímica</b><div class="bar" style="--c:#A78BFA"><i style="width:12%"></i></div></td><td class="num">0,61</td><td class="num">4</td><td class="num">3</td><td class="num" style="color:var(--rose)">1</td><td class="num">0</td><td class="num"><b>0,2</b></td><td class="num" style="color:var(--mute)">P11 · 04/10</td></tr><tr><td class="num" style="color:var(--mute)">38</td><td><span class="tagc">MAT.EST</span><b>Estatística descritiva</b><div class="bar" style="--c:#F0A742"><i style="width:12%"></i></div></td><td class="num">0,4</td><td class="num">6</td><td class="num">3</td><td class="num" style="color:var(--mute2)">0</td><td class="num">3</td><td class="num"><b>0,2</b></td><td class="num" style="color:var(--mute)">P10 · 03/10</td></tr><tr><td class="num" style="color:var(--mute)">39</td><td><span class="tagc">QUI.CIN</span><b>Cinética química</b><div class="bar" style="--c:#A78BFA"><i style="width:10%"></i></div></td><td class="num">0,4</td><td class="num">3</td><td class="num">2</td><td class="num" style="color:var(--rose)">1</td><td class="num">0</td><td class="num"><b>0,16</b></td><td class="num" style="color:var(--mute)">P11 · 04/10</td></tr></tbody></table></div>
+<div class="grid2">
+ <div class="box"><h4>Como ler a coluna "Cai"</h4><p>Quantas das 80 questões da 1ª fase esse bloco costuma ocupar. Matemática soma 11, Física 10, Química 10, Biologia 10 — os pesos oficiais de 2027.</p><p>Fontes: levantamento de 2011–2021 sobre mais de 97% das questões da 1ª fase, levantamento por tema publicado para a Fuvest 2027, e a contagem das 320 questões de formato FUVEST da sua própria base.</p></div>
+ <div class="box"><h4>Como ler "Em jogo"</h4><p>É quantas questões esse bloco hoje te custa, em média, numa prova de 80. Somando os 39 blocos: <b>25,4 questões</b> nas quatro matérias da trilha.</p><p>Somando as doze matérias com a mesma conta, são <b>54,5 de 80</b>. Ou seja: quase metade do que você perde está nestas quatro — e é onde a trilha inteira está apontada.</p></div>
+</div></div></section>
+<section id="bio" hidden><div class="wrap">
+<p class="lead">Você pediu <b>todas as aulas das Frentes 01 e 02</b> mais um recorte da Frente 03. São <b>43 sessões</b>, uma por dia útil, de 31/08 a 28/10. Sem flashcards: a lista é de aula para assistir. A ordem segue a mesma régua da trilha — citologia e fisiologia primeiro, sistemática e evolução por último.</p>
+<div class="callout"><b>Uma lacuna, dita na cara:</b> o cronograma do cursinho depois de 04/07 não está no projeto. As aulas do 2º semestre aparecem aqui pelo nome do assunto, sem data — procure pelo nome na plataforma. E a <b>Frente 02 depois de 26/06</b> é o único trecho em que eu não sei nem os assuntos: quando souber, encaixe nas semanas 6 e 7.</div>
+<div class="frente"><h3>Semana 1 · Citologia e bioquímica celular</h3><p>Bloco nº 3 do plano inteiro. Na base são 13 cobranças, 4 acertos limpos — e nas provas de formato FUVEST é 1 acerto em 4.</p>
+<div class="li"><span class="d">seg 31/08</span><span>02/mar · Frente 01 · Davi · Composição química dos seres vivos<div class="obs" style="color:var(--mute2);font-size:11.5px">base de tudo que vem depois — água, sais, carboidratos, lipídios</div></span></div>
+<div class="li"><span class="d">ter 01/09</span><span>16/mar · Frente 01 · Davi · Proteínas e Ácidos nucleicos<div class="obs" style="color:var(--mute2);font-size:11.5px">desnaturação saiu errada na Unicamp</div></span></div>
+<div class="li"><span class="d">qua 02/09</span><span>30/mar · Frente 01 · Davi · Síntese de proteínas<div class="obs" style="color:var(--mute2);font-size:11.5px">transcrição e tradução — errado em duas provas</div></span></div>
+<div class="li"><span class="d">qui 03/09</span><span>13/abr · Frente 01 · Davi · Tipos celulares e organelas<div class="obs" style="color:var(--mute2);font-size:11.5px">procarionte × eucarionte e teoria endossimbiôntica: dois erros</div></span></div>
+<div class="li"><span class="d">sex 04/09</span><span>27/abr · Frente 01 · Davi · Envoltórios celulares<div class="obs" style="color:var(--mute2);font-size:11.5px">transporte pela membrana</div></span></div>
+</div>
+<div class="frente"><h3>Semana 2 · Metabolismo e divisão celular</h3><p>Fecha a Frente 01 do 1º semestre. Duas cobranças na base, dois erros — um deles com confiança declarada.</p>
+<div class="li"><span class="d">seg 07/09</span><span>09/fev · Frente 01 · Davi · Introdução a Biologia<div class="obs" style="color:var(--mute2);font-size:11.5px">passada rápida, é a aula de método</div></span></div>
+<div class="li"><span class="d">ter 08/09</span><span>18/mai · Frente 01 · Davi · Respiração celular aeróbica</span></div>
+<div class="li"><span class="d">qua 09/09</span><span>01/jun · Frente 01 · Davi · Fotossíntese e quimiossíntese<div class="obs" style="color:var(--mute2);font-size:11.5px">quimiossíntese saiu errada com confiança em 29/08</div></span></div>
+<div class="li"><span class="d">qui 10/09</span><span>22/jun · Frente 01 · Davi · Núcleo celular / Mitose</span></div>
+<div class="li"><span class="d">sex 11/09</span><span>29/jun · Frente 01 · Davi · Divisão celular - Meiose<div class="obs" style="color:var(--mute2);font-size:11.5px">é o pré-requisito da genética da semana que vem</div></span></div>
+</div>
+<div class="frente"><h3>Semana 3 · Genética</h3><p>1,1 questão esperada na 1ª fase e a Frente 01 do 2º semestre inteira. As duas cobranças da base — heredograma mitocondrial e alelo letal — saíram erradas, as duas na FUVEST oficial de julho.</p>
+<div class="li"><span class="d">seg 14/09</span><span>Frente 01 · Davi · 1ª lei de Mendel e monoibridismo<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada — procure pelo nome na plataforma</div></span></div>
+<div class="li"><span class="d">ter 15/09</span><span>Frente 01 · Davi · 2ª lei de Mendel e diibridismo<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada</div></span></div>
+<div class="li"><span class="d">qua 16/09</span><span>Frente 01 · Davi · Alelos múltiplos, grupos sanguíneos e alelos letais<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada — o alelo letal é exatamente a questão errada em julho</div></span></div>
+<div class="li"><span class="d">qui 17/09</span><span>Frente 01 · Davi · Ligação gênica, permutação e mapas<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada</div></span></div>
+<div class="li"><span class="d">sex 18/09</span><span>Frente 01 · Davi · Herança ligada ao sexo e heredogramas<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada — heredograma é o formato favorito da banca</div></span></div>
+</div>
+<div class="frente"><h3>Semana 4 · Fisiologia humana</h3><p>O maior bloco da Frente 03 e o 6º do plano inteiro: 1,3 questão esperada, 8 erros em 11 cobranças, e <b>7 dessas cobranças estão em prova de formato FUVEST</b>. É o assunto de Biologia que a banca mais cobra depois de citologia.</p>
+<div class="li"><span class="d">seg 21/09</span><span>09/jun · Frente 03 · Tchelo · Cordados II / Sistema digestório</span></div>
+<div class="li"><span class="d">ter 22/09</span><span>Frente 03 · Tchelo · Sistema circulatório<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada</div></span></div>
+<div class="li"><span class="d">qua 23/09</span><span>Frente 03 · Tchelo · Sistema respiratório e trocas gasosas<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada — fluxo contracorrente saiu errado em 29/08</div></span></div>
+<div class="li"><span class="d">qui 24/09</span><span>Frente 03 · Tchelo · Sistema excretor e osmorregulação<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada</div></span></div>
+<div class="li"><span class="d">sex 25/09</span><span>Frente 03 · Tchelo · Sistema nervoso e potencial de ação<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada — despolarização saiu errada com confiança</div></span></div>
+</div>
+<div class="frente"><h3>Semana 5 · Fisiologia — fecho — e entrada na Ecologia</h3><p>Termina a fisiologia e abre o bloco de Ecologia, que é 1,7 questão esperada.</p>
+<div class="li"><span class="d">seg 28/09</span><span>Frente 03 · Tchelo · Sistema endócrino e hormônios<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada — o gráfico de insulina e glucagon de julho</div></span></div>
+<div class="li"><span class="d">ter 29/09</span><span>Frente 03 · Tchelo · Imunologia, vacinas e soros<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada; o Guia de 04/08 marca "Circulação e imunidade"</div></span></div>
+<div class="li"><span class="d">qua 30/09</span><span>20/mar · Frente 02 · Renata · Formação de novas espécies; Ecologia (conceitos gerais)</span></div>
+<div class="li"><span class="d">qui 01/10</span><span>10/abr · Frente 02 · Renata · Ecologia - Fluxo de energia e ciclos biogeoquímicos<div class="obs" style="color:var(--mute2);font-size:11.5px">o ciclo do nitrogênio saiu errado</div></span></div>
+<div class="li"><span class="d">sex 02/10</span><span>30/abr · Frente 02 · Renata · Ecologia - dinâmica populacional, relações ecológicas e sucessão ecológica</span></div>
+</div>
+<div class="frente"><h3>Semana 6 · Ecologia e Botânica</h3><p>Ecologia é o assunto de maior peso da Biologia na FUVEST em qualquer levantamento público. Botânica entra aqui porque é conteúdo novo e precisa caber antes do corte de 20/10.</p>
+<div class="li"><span class="d">seg 05/10</span><span>08/mai · Frente 02 · Renata · Ecologia - Biomas mundiais e biomas brasileiros<div class="obs" style="color:var(--mute2);font-size:11.5px">Pantanal e Cerrado saíram errados em duas provas</div></span></div>
+<div class="li"><span class="d">ter 06/10</span><span>22/mai · Frente 02 · Renata · Ecologia - Alterações ambientais<div class="obs" style="color:var(--mute2);font-size:11.5px">2 erros, um com confiança</div></span></div>
+<div class="li"><span class="d">qua 07/10</span><span>Frente 03 · Grupos vegetais, ciclos reprodutivos e adaptações<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada</div></span></div>
+<div class="li"><span class="d">qui 08/10</span><span>Frente 03 · Fisiologia vegetal: condução, hormônios e fotoperiodismo<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada</div></span></div>
+<div class="li"><span class="d">sex 09/10</span><span>Revisão ativa — refazer FUVEST abr Q69 e Q73, FUVEST jul Q05 e a Q22 de 29/08<div class="obs" style="color:var(--mute2);font-size:11.5px">sem aula: é questão no papel</div></span></div>
+</div>
+<div class="frente"><h3>Semana 7 · Microbiologia e parasitoses</h3><p>Fecha a Frente 02 do 1º semestre. Microbiologia é 10,2% da Biologia da FUVEST em levantamento público e você tem 3 erros em 6 cobranças.</p>
+<div class="li"><span class="d">seg 12/10</span><span>12/jun · Frente 02 · Renata · Vírus e doenças virais<div class="obs" style="color:var(--mute2);font-size:11.5px">ISTs saíram erradas em 29/08</div></span></div>
+<div class="li"><span class="d">ter 13/10</span><span>26/jun · Frente 02 · Renata · Procariontes e doenças bacterianas</span></div>
+<div class="li"><span class="d">qua 14/10</span><span>10/mar · Frente 03 · Tchelo · Protozooses / Desenvolvimento embrionário<div class="obs" style="color:var(--mute2);font-size:11.5px">leishmaniose saiu errada na Unicamp</div></span></div>
+<div class="li"><span class="d">qui 15/10</span><span>07/abr · Frente 03 · Tchelo · Vermes e verminoses I e II<div class="obs" style="color:var(--mute2);font-size:11.5px">ciclo do parasita: erro com confiança em agosto</div></span></div>
+<div class="li"><span class="d">sex 16/10</span><span>Frente 02 · Fungos<div class="obs" style="color:var(--mute2);font-size:11.5px">sem data registrada; o Guia de 04/08 marca este tópico</div></span></div>
+</div>
+<div class="frente"><h3>Semana 8 · Sistemática e Evolução</h3><p>Tudo aqui já teve aula, então nada viola o corte de 20/10. Sistemática é o único item da base com três confirmações seguidas — vem por último de propósito.</p>
+<div class="li"><span class="d">seg 19/10</span><span>10/fev · Frente 03 · Tchelo · Sistemática<div class="obs" style="color:var(--mute2);font-size:11.5px">cladograma e homologia × analogia</div></span></div>
+<div class="li"><span class="d">ter 20/10</span><span>24/fev · Frente 03 · Tchelo · Sistemática / Protozoários</span></div>
+<div class="li"><span class="d">qua 21/10</span><span>24/mar · Frente 03 · Tchelo · Classificação embriológica<div class="obs" style="color:var(--mute2);font-size:11.5px">organogênese saiu certa por chute em 29/08 — não conta</div></span></div>
+<div class="li"><span class="d">qui 22/10</span><span>20/fev · Frente 02 · Renata · Evolução biológica</span></div>
+<div class="li"><span class="d">sex 23/10</span><span>06/mar · Frente 02 · Renata · Teoria moderna da evolução<div class="obs" style="color:var(--mute2);font-size:11.5px">especiação errada em quatro edições — inclusive com confiança em 29/08</div></span></div>
+</div>
+<div class="frente"><h3>Semana 9 · Semana da prova — nada novo</h3><p>Sem aula nova. Só o que ficou pendurado.</p>
+<div class="li"><span class="d">seg 26/10</span><span>Reassistir a aula que ficou pendente na trilha, se houver</span></div>
+<div class="li"><span class="d">ter 27/10</span><span>Refazer no papel os erros de Citologia e Fisiologia humana</span></div>
+<div class="li"><span class="d">qua 28/10</span><span>Refazer no papel os erros de Ecologia e Genética</span></div>
+</div>
+<div class="frente"><h3>Aulas da Frente 03 que ficaram de fora — e por quê</h3><p>A FUVEST cobra fisiologia comparada e filogenia; taxonomia descritiva de invertebrado quase não aparece. Na sua base inteira, zoologia de invertebrados e de vertebrados soma 2 cobranças, sem nenhum erro. Estas três aulas custariam três dias e devolveriam pouco:</p>
+<div class="li"><span class="d" style="color:var(--rose)">fora</span><span>21/abr · Frente 03 · Tchelo · Moluscos, anelídeos e artrópodes<div style="color:var(--mute2);font-size:11.5px">zoologia descritiva de invertebrados</div></span></div>
+<div class="li"><span class="d" style="color:var(--rose)">fora</span><span>12/mai · Frente 03 · Tchelo · Artrópodes e Equinodermes<div style="color:var(--mute2);font-size:11.5px">idem</div></span></div>
+<div class="li"><span class="d" style="color:var(--rose)">fora</span><span>26/mai · Frente 03 · Tchelo · Cordados I e II - Répteis, aves e mamíferos<div style="color:var(--mute2);font-size:11.5px">taxonomia de vertebrados</div></span></div>
+<p style="margin-top:10px">Se sobrar dia na semana 9, elas são o primeiro extra a entrar.</p></div>
+</div></section>
+<section id="outras" hidden><div class="wrap">
+<p class="lead">Os dados continuam aqui — só não entram no cronograma. A tabela é sobre as <b>320 questões de formato FUVEST</b> da base (as quatro provas de 1ª fase), porque comparar com caderno de ENEM distorce. <b>Acerto chutado não conta como acerto.</b></p>
+<div class="callout">Nas quatro provas de formato FUVEST você tem <b>136 acertos limpos em 320 — 42,5%</b>, mais 16 acertos que foram chute. A meta de 55/80 é 68,8%. A distância é de <b>26 questões</b>, e 25,4 delas estão em Matemática, Física, Química e Biologia. É por isso que a trilha ignora o resto sem culpa.</div>
+<div class="scroll"><table>
+<thead><tr><th>Matéria</th><th>Peso</th><th>Questões</th><th>Acertos</th><th>Chutes</th><th>Erros</th><th>Limpo</th><th>Em jogo</th><th>Leitura</th></tr></thead>
+<tbody><tr><td><b>Português e Literatura</b><div class="bar"><i style="width:47%"></i></div></td><td class="num">17</td><td class="num">51</td><td class="num">24</td><td class="num" style="color:var(--rose)">3</td><td class="num">24</td><td class="num">47%</td><td class="num"><b>9,0</b></td><td style="color:var(--mute);font-size:12px">A segunda maior fatia da prova e a sua melhor matéria em volume: 24 acertos limpos em 51 no formato FUVEST. As cinco obras de 29/08 saíram 4 em 5, nenhuma chutada. Fora do cronograma por decisão sua — mas leitura de obra não se resolve em véspera.</td></tr><tr><td><b>Matemática</b><div class="bar"><i style="width:16%"></i></div></td><td class="num">11</td><td class="num">43</td><td class="num">7</td><td class="num" style="color:var(--rose)">4</td><td class="num">32</td><td class="num">16%</td><td class="num"><b>9,21</b></td><td style="color:var(--mute);font-size:12px">16,3% de acerto limpo em formato FUVEST. É a matéria com mais questões em jogo da prova inteira. Na trilha: paradas 01, 04, 07 e 10.</td></tr><tr><td><b>História</b><div class="bar"><i style="width:43%"></i></div></td><td class="num">10</td><td class="num">28</td><td class="num">12</td><td class="num" style="color:var(--rose)">1</td><td class="num">15</td><td class="num">43%</td><td class="num"><b>5,71</b></td><td style="color:var(--mute);font-size:12px">42,9% limpo. Fora do cronograma por decisão sua. Antiguidade e expansão marítima fecharam; Idade Média e imperialismo seguem abertos.</td></tr><tr><td><b>Geografia</b><div class="bar"><i style="width:68%"></i></div></td><td class="num">10</td><td class="num">37</td><td class="num">25</td><td class="num" style="color:var(--mute2)">0</td><td class="num">12</td><td class="num">68%</td><td class="num"><b>3,24</b></td><td style="color:var(--mute);font-size:12px">67,6% limpo no formato FUVEST — a sua melhor matéria de peso 10, e 8 em 9 na prova de 29/08. Não pede nada agora.</td></tr><tr><td><b>Biologia</b><div class="bar"><i style="width:31%"></i></div></td><td class="num">10</td><td class="num">35</td><td class="num">11</td><td class="num" style="color:var(--rose)">3</td><td class="num">21</td><td class="num">31%</td><td class="num"><b>6,86</b></td><td style="color:var(--mute);font-size:12px">31,4% limpo. Vai inteira para os dias úteis: 43 aulas.</td></tr><tr><td><b>Química</b><div class="bar"><i style="width:22%"></i></div></td><td class="num">10</td><td class="num">37</td><td class="num">8</td><td class="num" style="color:var(--rose)">3</td><td class="num">26</td><td class="num">22%</td><td class="num"><b>7,84</b></td><td style="color:var(--mute);font-size:12px">21,6% limpo — a pior da base em qualquer corte, em qualquer tipo de prova, desde março. Na trilha: paradas 02, 05, 08 e 11.</td></tr><tr><td><b>Física</b><div class="bar"><i style="width:43%"></i></div></td><td class="num">10</td><td class="num">35</td><td class="num">15</td><td class="num" style="color:var(--rose)">2</td><td class="num">18</td><td class="num">43%</td><td class="num"><b>5,71</b></td><td style="color:var(--mute);font-size:12px">42,9% limpo. Na trilha: paradas 03, 06, 09 e 12.</td></tr><tr><td><b>Inglês</b><div class="bar"><i style="width:60%"></i></div></td><td class="num">8</td><td class="num">30</td><td class="num">18</td><td class="num" style="color:var(--mute2)">0</td><td class="num">12</td><td class="num">60%</td><td class="num"><b>3,2</b></td><td style="color:var(--mute);font-size:12px">60% limpo, sem nenhuma aula no ano. São 3,2 questões em jogo — mais que Filosofia, Sociologia e Artes somadas. Fora do cronograma, mas um texto de prova por semana custa 20 minutos.</td></tr><tr><td><b>Artes</b><div class="bar"><i style="width:71%"></i></div></td><td class="num">4</td><td class="num">7</td><td class="num">5</td><td class="num" style="color:var(--mute2)">0</td><td class="num">2</td><td class="num">71%</td><td class="num"><b>1,14</b></td><td style="color:var(--mute);font-size:12px">71,4% limpo sobre 7 questões. Amostra pequena: não é domínio, é desconhecido.</td></tr><tr><td><b>Filosofia</b><div class="bar"><i style="width:71%"></i></div></td><td class="num">2,5</td><td class="num">7</td><td class="num">5</td><td class="num" style="color:var(--mute2)">0</td><td class="num">2</td><td class="num">71%</td><td class="num"><b>0,71</b></td><td style="color:var(--mute);font-size:12px">n pequeno em todas as edições.</td></tr><tr><td><b>Sociologia</b><div class="bar"><i style="width:67%"></i></div></td><td class="num">2,5</td><td class="num">6</td><td class="num">4</td><td class="num" style="color:var(--mute2)">0</td><td class="num">2</td><td class="num">67%</td><td class="num"><b>0,83</b></td><td style="color:var(--mute);font-size:12px">idem.</td></tr><tr><td><b>Educação Física</b><div class="bar"><i style="width:50%"></i></div></td><td class="num">2</td><td class="num">4</td><td class="num">2</td><td class="num" style="color:var(--mute2)">0</td><td class="num">2</td><td class="num">50%</td><td class="num"><b>1,0</b></td><td style="color:var(--mute);font-size:12px">Nenhuma aula e nenhuma frente no Guia.</td></tr></tbody></table></div>
+<h3 style="margin:6px 0 4px">As nove obras — marque o que já leu</h3>
+<p class="lead" style="margin-bottom:12px">Fora do cronograma, e mesmo assim o item de prazo mais rígido que existe: obra não lida não se resolve em revisão de véspera. Em 29/08 as cinco últimas questões do caderno cobraram cinco obras e saíram 4 em 5, nenhuma chutada — o quadro melhorou.</p>
+<label class="obra" data-obra="o_op"><input type="checkbox"><span><span class="t">Opúsculo Humanitário</span> <span class="s">— Nísia Floresta</span><div class="s">abr Q04 erro · jul Q45 acerto chutado — não fecha</div></span></label><label class="obra" data-obra="o_ne"><input type="checkbox"><span><span class="t">Nebulosas</span> <span class="s">— Narcisa Amália</span><div class="s">Q73 acerto · abr Q15 erro · 29/08 Q76 acerto com dúvida</div></span></label><label class="obra" data-obra="o_me"><input type="checkbox"><span><span class="t">Memórias de Martha</span> <span class="s">— Júlia Lopes de Almeida</span><div class="s">abr Q18 erro · 29/08 Q79 erro com confiança — erro de leitura do comando</div></span></label><label class="obra" data-obra="o_ca"><input type="checkbox"><span><span class="t">Caminho de pedras</span> <span class="s">— Rachel de Queiroz</span><div class="s">abr Q43 erro → jul Q41 acerto limpo</div></span></label><label class="obra" data-obra="o_gh"><input type="checkbox"><span><span class="t">A paixão segundo G.H.</span> <span class="s">— Clarice Lispector</span><div class="s">abr Q01 e jul Q67 erro · 29/08 Q80 acerto com confiança</div></span></label><label class="obra" data-obra="o_ge"><input type="checkbox"><span><span class="t">Geografia</span> <span class="s">— Sophia de Mello Breyner</span><div class="s">jul Q73 erro · 29/08 Q77 acerto com confiança</div></span></label><label class="obra" data-obra="o_ba"><input type="checkbox"><span><span class="t">Balada de amor ao vento</span> <span class="s">— Paulina Chiziane</span><div class="s">jul Q69 acerto chutado e Q70 erro · 29/08 Q78 acerto com confiança</div></span></label><label class="obra" data-obra="o_cn"><input type="checkbox"><span><span class="t">Canção para ninar menino grande</span> <span class="s">— Conceição Evaristo</span><div class="s">jul Q46 acerto chutado — não fecha</div></span></label><label class="obra" data-obra="o_vp"><input type="checkbox"><span><span class="t">A visão das plantas</span> <span class="s">— Djaimilia P. de Almeida</span><div class="s">abr Q14 e jul Q02 erro — nunca acertada</div></span></label>
+<div id="obrasCalc" class="callout" style="margin-top:14px"></div>
+</div></section>
+<section id="cal" hidden><div class="wrap">
+<p class="lead">As <b>11 semanas até o ENEM</b>, dia a dia. Biologia de segunda a sexta, as paradas de exatas nos fins de semana e nas noites do recesso. O que você já marcou na trilha aparece riscado aqui — <b>clique em qualquer dia para pular direto para ele</b>.</p>
+<div class="callegend"><span style="--c:#F0A742"><i></i>Matemática</span><span style="--c:#A78BFA"><i></i>Química</span><span style="--c:#56A8FF"><i></i>Física</span><span style="--c:#45C39B"><i></i>Biologia</span><span style="color:var(--mute2)">riscado = já marcado na trilha</span><span style="color:var(--rose)">vermelho = data dura</span></div>
+<div class="calw" data-wk="01"><div class="cwh"><span class="cwn">01</span><span class="cwd">31/08 – 06/09</span><span class="cwt">Citologia na semana; o fim de semana some inteiro</span><span class="wmark ">Simulado 2ª fase · sáb e dom</span></div><div class="cdays">
+<div class="cday" data-date="2026-08-31">
+<div class="cdn"><b>31</b><span>seg</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.CIT.1" data-goto="A.BIO.CIT.1" data-wk="01"><span class="m">BIO</span><span class="x">Composição química dos seres vivos</span></button>
+</div>
+<div class="cday" data-date="2026-09-01">
+<div class="cdn"><b>01</b><span>ter</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.CIT.2" data-goto="A.BIO.CIT.2" data-wk="01"><span class="m">BIO</span><span class="x">Proteínas e Ácidos nucleicos</span></button>
+</div>
+<div class="cday" data-date="2026-09-02">
+<div class="cdn"><b>02</b><span>qua</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.CIT.3" data-goto="A.BIO.CIT.3" data-wk="01"><span class="m">BIO</span><span class="x">Síntese de proteínas</span></button>
+</div>
+<div class="cday" data-date="2026-09-03">
+<div class="cdn"><b>03</b><span>qui</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.CIT.4" data-goto="A.BIO.CIT.4" data-wk="01"><span class="m">BIO</span><span class="x">Tipos celulares e organelas</span></button>
+</div>
+<div class="cday" data-date="2026-09-04">
+<div class="cdn"><b>04</b><span>sex</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.CIT.5" data-goto="A.BIO.CIT.5" data-wk="01"><span class="m">BIO</span><span class="x">Envoltórios celulares</span></button>
+</div>
+<div class="cday" data-date="2026-09-05">
+<div class="cdn"><b>05</b><span>sáb</span></div>
+<div class="cmk">Simulado da 2ª fase</div>
+</div>
+<div class="cday" data-date="2026-09-06">
+<div class="cdn"><b>06</b><span>dom</span></div>
+<div class="cmk">Simulado da 2ª fase</div>
+</div>
+</div></div>
+<div class="calw" data-wk="02"><div class="cwh"><span class="cwn">02</span><span class="cwd">07 – 13/09</span><span class="cwt">Recesso — sete paradas em sete dias</span><span class="wmark rest">Recesso · 7 paradas</span></div><div class="cdays">
+<div class="cday" data-date="2026-09-07">
+<div class="cdn"><b>07</b><span>seg</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.MET.0" data-goto="A.BIO.MET.0" data-wk="02"><span class="m">BIO</span><span class="x">Introdução a Biologia</span></button>
+<button class="cev" style="--c:#F0A742" data-ids="T.MAT.GPLANA|T.MAT.TRIG" data-goto="T.MAT.GPLANA" data-wk="02"><span class="m">MAT</span><span class="x">Geometria plana e trigonometria</span></button>
+</div>
+<div class="cday" data-date="2026-09-08">
+<div class="cdn"><b>08</b><span>ter</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.MET.1" data-goto="A.BIO.MET.1" data-wk="02"><span class="m">BIO</span><span class="x">Respiração celular aeróbica</span></button>
+<button class="cev" style="--c:#A78BFA" data-ids="T.QUI.ATOM|T.QUI.LIG" data-goto="T.QUI.ATOM" data-wk="02"><span class="m">QUÍ</span><span class="x">A base da Química inteira</span></button>
+</div>
+<div class="cday" data-date="2026-09-09">
+<div class="cdn"><b>09</b><span>qua</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.MET.2" data-goto="A.BIO.MET.2" data-wk="02"><span class="m">BIO</span><span class="x">Fotossíntese e quimiossíntese</span></button>
+<button class="cev" style="--c:#56A8FF" data-ids="T.FIS.MEC1|T.FIS.MEC2" data-goto="T.FIS.MEC1" data-wk="02"><span class="m">FÍS</span><span class="x">Mecânica I — cinemática e dinâmica</span></button>
+</div>
+<div class="cday" data-date="2026-09-10">
+<div class="cdn"><b>10</b><span>qui</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.MET.3" data-goto="A.BIO.MET.3" data-wk="02"><span class="m">BIO</span><span class="x">Núcleo celular / Mitose</span></button>
+<button class="cev" style="--c:#F0A742" data-ids="T.MAT.ARIT|T.MAT.FUNC" data-goto="T.MAT.ARIT" data-wk="02"><span class="m">MAT</span><span class="x">Aritmética e funções — a base que carrega tudo</span></button>
+</div>
+<div class="cday" data-date="2026-09-11">
+<div class="cdn"><b>11</b><span>sex</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.MET.4" data-goto="A.BIO.MET.4" data-wk="02"><span class="m">BIO</span><span class="x">Divisão celular - Meiose</span></button>
+<button class="cev" style="--c:#A78BFA" data-ids="T.QUI.ESTEQ|T.QUI.SOL" data-goto="T.QUI.ESTEQ" data-wk="02"><span class="m">QUÍ</span><span class="x">Estequiometria e soluções</span></button>
+</div>
+<div class="cday" data-date="2026-09-12">
+<div class="cdn"><b>12</b><span>sáb</span></div>
+<button class="cev" style="--c:#56A8FF" data-ids="T.FIS.MEC3|T.FIS.MEC4" data-goto="T.FIS.MEC3" data-wk="02"><span class="m">FÍS</span><span class="x">Mecânica II — trabalho, energia e fluidos</span></button>
+</div>
+<div class="cday" data-date="2026-09-13">
+<div class="cdn"><b>13</b><span>dom</span></div>
+<button class="cev" style="--c:#F0A742" data-ids="T.MAT.EXPLOG|T.MAT.CONT" data-goto="T.MAT.EXPLOG" data-wk="02"><span class="m">MAT</span><span class="x">Exponencial, logaritmo e contagem</span></button>
+</div>
+</div></div>
+<div class="calw" data-wk="03"><div class="cwh"><span class="cwn">03</span><span class="cwd">14 – 20/09</span><span class="cwt">Revisão Vunesp · S-5 ENEM Dia 1</span><span class="wmark ">Simulado sáb</span></div><div class="cdays">
+<div class="cday" data-date="2026-09-14">
+<div class="cdn"><b>14</b><span>seg</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.GEN.1" data-goto="A.BIO.GEN.1" data-wk="03"><span class="m">BIO</span><span class="x">1ª lei de Mendel e monoibridismo</span></button>
+</div>
+<div class="cday" data-date="2026-09-15">
+<div class="cdn"><b>15</b><span>ter</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.GEN.2" data-goto="A.BIO.GEN.2" data-wk="03"><span class="m">BIO</span><span class="x">2ª lei de Mendel e diibridismo</span></button>
+</div>
+<div class="cday" data-date="2026-09-16">
+<div class="cdn"><b>16</b><span>qua</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.GEN.3" data-goto="A.BIO.GEN.3" data-wk="03"><span class="m">BIO</span><span class="x">Alelos múltiplos, grupos sanguíneos e alelos letais</span></button>
+</div>
+<div class="cday" data-date="2026-09-17">
+<div class="cdn"><b>17</b><span>qui</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.GEN.4" data-goto="A.BIO.GEN.4" data-wk="03"><span class="m">BIO</span><span class="x">Ligação gênica, permutação e mapas</span></button>
+</div>
+<div class="cday" data-date="2026-09-18">
+<div class="cdn"><b>18</b><span>sex</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.GEN.5" data-goto="A.BIO.GEN.5" data-wk="03"><span class="m">BIO</span><span class="x">Herança ligada ao sexo e heredogramas</span></button>
+</div>
+<div class="cday" data-date="2026-09-19">
+<div class="cdn"><b>19</b><span>sáb</span></div>
+<div class="cmk">Simulado ENEM · dia 1</div>
+</div>
+<div class="cday" data-date="2026-09-20">
+<div class="cdn"><b>20</b><span>dom</span></div>
+<button class="cev" style="--c:#A78BFA" data-ids="T.QUI.ORG" data-goto="T.QUI.ORG" data-wk="03"><span class="m">QUÍ</span><span class="x">Química orgânica — o dia inteiro</span></button>
+</div>
+</div></div>
+<div class="calw" data-wk="04"><div class="cwh"><span class="cwn">04</span><span class="cwd">21 – 27/09</span><span class="cwt">S-5 ENEM Dia 2</span><span class="wmark ">Simulado sáb</span></div><div class="cdays">
+<div class="cday" data-date="2026-09-21">
+<div class="cdn"><b>21</b><span>seg</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.FIS.1" data-goto="A.BIO.FIS.1" data-wk="04"><span class="m">BIO</span><span class="x">Cordados II / Sistema digestório</span></button>
+</div>
+<div class="cday" data-date="2026-09-22">
+<div class="cdn"><b>22</b><span>ter</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.FIS.2" data-goto="A.BIO.FIS.2" data-wk="04"><span class="m">BIO</span><span class="x">Sistema circulatório</span></button>
+</div>
+<div class="cday" data-date="2026-09-23">
+<div class="cdn"><b>23</b><span>qua</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.FIS.3" data-goto="A.BIO.FIS.3" data-wk="04"><span class="m">BIO</span><span class="x">Sistema respiratório e trocas gasosas</span></button>
+</div>
+<div class="cday" data-date="2026-09-24">
+<div class="cdn"><b>24</b><span>qui</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.FIS.4" data-goto="A.BIO.FIS.4" data-wk="04"><span class="m">BIO</span><span class="x">Sistema excretor e osmorregulação</span></button>
+</div>
+<div class="cday" data-date="2026-09-25">
+<div class="cdn"><b>25</b><span>sex</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.FIS.5" data-goto="A.BIO.FIS.5" data-wk="04"><span class="m">BIO</span><span class="x">Sistema nervoso e potencial de ação</span></button>
+</div>
+<div class="cday" data-date="2026-09-26">
+<div class="cdn"><b>26</b><span>sáb</span></div>
+<div class="cmk">Simulado ENEM · dia 2 — último do cursinho</div>
+</div>
+<div class="cday" data-date="2026-09-27">
+<div class="cdn"><b>27</b><span>dom</span></div>
+<button class="cev" style="--c:#56A8FF" data-ids="T.FIS.OND|T.FIS.MAG|T.FIS.MOD" data-goto="T.FIS.OND" data-wk="04"><span class="m">FÍS</span><span class="x">O que a FUVEST cobra e você nunca viu</span></button>
+</div>
+</div></div>
+<div class="calw" data-wk="05"><div class="cwh"><span class="cwn">05</span><span class="cwd">28/09 – 04/10</span><span class="cwt">Espacial, estatística e físico-química</span><span class="wmark rest">Sáb + dom</span></div><div class="cdays">
+<div class="cday" data-date="2026-09-28">
+<div class="cdn"><b>28</b><span>seg</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.FIS.6" data-goto="A.BIO.FIS.6" data-wk="05"><span class="m">BIO</span><span class="x">Sistema endócrino e hormônios</span></button>
+</div>
+<div class="cday" data-date="2026-09-29">
+<div class="cdn"><b>29</b><span>ter</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.FIS.7" data-goto="A.BIO.FIS.7" data-wk="05"><span class="m">BIO</span><span class="x">Imunologia, vacinas e soros</span></button>
+</div>
+<div class="cday" data-date="2026-09-30">
+<div class="cdn"><b>30</b><span>qua</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.ECO.1" data-goto="A.BIO.ECO.1" data-wk="05"><span class="m">BIO</span><span class="x">Formação de novas espécies; Ecologia (conceitos gerais)</span></button>
+</div>
+<div class="cday" data-date="2026-10-01">
+<div class="cdn"><b>01</b><span>qui</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.ECO.2" data-goto="A.BIO.ECO.2" data-wk="05"><span class="m">BIO</span><span class="x">Ecologia - Fluxo de energia e ciclos biogeoquímicos</span></button>
+</div>
+<div class="cday" data-date="2026-10-02">
+<div class="cdn"><b>02</b><span>sex</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.ECO.3" data-goto="A.BIO.ECO.3" data-wk="05"><span class="m">BIO</span><span class="x">Ecologia - dinâmica populacional, relações ecológicas e sucessão ecológica</span></button>
+</div>
+<div class="cday" data-date="2026-10-03">
+<div class="cdn"><b>03</b><span>sáb</span></div>
+<button class="cev" style="--c:#F0A742" data-ids="T.MAT.GE|T.MAT.EST" data-goto="T.MAT.GE" data-wk="05"><span class="m">MAT</span><span class="x">Geometria espacial e estatística</span></button>
+</div>
+<div class="cday" data-date="2026-10-04">
+<div class="cdn"><b>04</b><span>dom</span></div>
+<button class="cev" style="--c:#A78BFA" data-ids="T.QUI.REDOX|T.QUI.TERMO|T.QUI.CIN" data-goto="T.QUI.REDOX" data-wk="05"><span class="m">QUÍ</span><span class="x">Oxirredução, termoquímica e cinética</span></button>
+<div class="cmk">1º turno das eleições — vote de manhã</div>
+</div>
+</div></div>
+<div class="calw" data-wk="06"><div class="cwh"><span class="cwn">06</span><span class="cwd">05 – 11/10</span><span class="cwt">Revisão de termologia, óptica, analítica e progressões</span><span class="wmark rest">Sáb + dom</span></div><div class="cdays">
+<div class="cday" data-date="2026-10-05">
+<div class="cdn"><b>05</b><span>seg</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.ECO.4" data-goto="A.BIO.ECO.4" data-wk="06"><span class="m">BIO</span><span class="x">Ecologia - Biomas mundiais e biomas brasileiros</span></button>
+</div>
+<div class="cday" data-date="2026-10-06">
+<div class="cdn"><b>06</b><span>ter</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.ECO.5" data-goto="A.BIO.ECO.5" data-wk="06"><span class="m">BIO</span><span class="x">Ecologia - Alterações ambientais</span></button>
+</div>
+<div class="cday" data-date="2026-10-07">
+<div class="cdn"><b>07</b><span>qua</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.BOT.1" data-goto="A.BIO.BOT.1" data-wk="06"><span class="m">BIO</span><span class="x">Grupos vegetais, ciclos reprodutivos e adaptações</span></button>
+</div>
+<div class="cday" data-date="2026-10-08">
+<div class="cdn"><b>08</b><span>qui</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.BOT.2" data-goto="A.BIO.BOT.2" data-wk="06"><span class="m">BIO</span><span class="x">Fisiologia vegetal: condução, hormônios e fotoperiodismo</span></button>
+</div>
+<div class="cday" data-date="2026-10-09">
+<div class="cdn"><b>09</b><span>sex</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.ECO.R" data-goto="A.BIO.ECO.R" data-wk="06"><span class="m">BIO</span><span class="x">Revisão ativa — refazer FUVEST abr Q69 e Q73, FUVEST jul Q05 e a Q22 de 29/08</span></button>
+<div class="cmk">Inscrições da FUVEST encerram</div>
+</div>
+<div class="cday" data-date="2026-10-10">
+<div class="cdn"><b>10</b><span>sáb</span></div>
+<button class="cev" style="--c:#56A8FF" data-ids="T.FIS.TERMO|T.FIS.OPT" data-goto="T.FIS.TERMO" data-wk="06"><span class="m">FÍS</span><span class="x">Termologia e óptica — revisão</span></button>
+</div>
+<div class="cday" data-date="2026-10-11">
+<div class="cdn"><b>11</b><span>dom</span></div>
+<button class="cev" style="--c:#F0A742" data-ids="T.MAT.GA|T.MAT.SEQ" data-goto="T.MAT.GA" data-wk="06"><span class="m">MAT</span><span class="x">Geometria analítica e progressões</span></button>
+</div>
+</div></div>
+<div class="calw" data-wk="07"><div class="cwh"><span class="cwn">07</span><span class="cwd">12 – 18/10</span><span class="cwt">O corte de conteúdo novo</span><span class="wmark ">Corte em 20/10</span></div><div class="cdays">
+<div class="cday" data-date="2026-10-12">
+<div class="cdn"><b>12</b><span>seg</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.MIC.1" data-goto="A.BIO.MIC.1" data-wk="07"><span class="m">BIO</span><span class="x">Vírus e doenças virais</span></button>
+</div>
+<div class="cday" data-date="2026-10-13">
+<div class="cdn"><b>13</b><span>ter</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.MIC.2" data-goto="A.BIO.MIC.2" data-wk="07"><span class="m">BIO</span><span class="x">Procariontes e doenças bacterianas</span></button>
+</div>
+<div class="cday" data-date="2026-10-14">
+<div class="cdn"><b>14</b><span>qua</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.MIC.3" data-goto="A.BIO.MIC.3" data-wk="07"><span class="m">BIO</span><span class="x">Protozooses / Desenvolvimento embrionário</span></button>
+</div>
+<div class="cday" data-date="2026-10-15">
+<div class="cdn"><b>15</b><span>qui</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.MIC.4" data-goto="A.BIO.MIC.4" data-wk="07"><span class="m">BIO</span><span class="x">Vermes e verminoses I e II</span></button>
+</div>
+<div class="cday" data-date="2026-10-16">
+<div class="cdn"><b>16</b><span>sex</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.MIC.5" data-goto="A.BIO.MIC.5" data-wk="07"><span class="m">BIO</span><span class="x">Fungos</span></button>
+</div>
+<div class="cday" data-date="2026-10-17">
+<div class="cdn"><b>17</b><span>sáb</span></div>
+<button class="cev" style="--c:#A78BFA" data-ids="T.QUI.EQUI" data-goto="T.QUI.EQUI" data-wk="07"><span class="m">QUÍ</span><span class="x">Equilíbrio químico e pH</span></button>
+</div>
+<div class="cday" data-date="2026-10-18">
+<div class="cdn"><b>18</b><span>dom</span></div>
+<button class="cev" style="--c:#56A8FF" data-ids="T.FIS.ELET|T.FIS.EDIN" data-goto="T.FIS.ELET" data-wk="07"><span class="m">FÍS</span><span class="x">Eletricidade — fecho da Física</span></button>
+<div class="cmk">1ª fase da Unicamp — decida até 11/10</div>
+</div>
+</div></div>
+<div class="calw" data-wk="08"><div class="cwh"><span class="cwn">08</span><span class="cwd">19 – 25/10</span><span class="cwt">Só revisão do que já teve aula</span><span class="wmark ">Locais de prova 21/10</span></div><div class="cdays">
+<div class="cday" data-date="2026-10-19">
+<div class="cdn"><b>19</b><span>seg</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.SIS.1" data-goto="A.BIO.SIS.1" data-wk="08"><span class="m">BIO</span><span class="x">Sistemática</span></button>
+</div>
+<div class="cday" data-date="2026-10-20">
+<div class="cdn"><b>20</b><span>ter</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.SIS.2" data-goto="A.BIO.SIS.2" data-wk="08"><span class="m">BIO</span><span class="x">Sistemática / Protozoários</span></button>
+<div class="cmk">Corte: nada de assunto novo depois daqui</div>
+</div>
+<div class="cday" data-date="2026-10-21">
+<div class="cdn"><b>21</b><span>qua</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.SIS.3" data-goto="A.BIO.SIS.3" data-wk="08"><span class="m">BIO</span><span class="x">Classificação embriológica</span></button>
+<div class="cmk soft">Saem os locais de prova</div>
+</div>
+<div class="cday" data-date="2026-10-22">
+<div class="cdn"><b>22</b><span>qui</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.EVO.1" data-goto="A.BIO.EVO.1" data-wk="08"><span class="m">BIO</span><span class="x">Evolução biológica</span></button>
+</div>
+<div class="cday" data-date="2026-10-23">
+<div class="cdn"><b>23</b><span>sex</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.EVO.2" data-goto="A.BIO.EVO.2" data-wk="08"><span class="m">BIO</span><span class="x">Teoria moderna da evolução</span></button>
+</div>
+<div class="cday" data-date="2026-10-24">
+<div class="cdn"><b>24</b><span>sáb</span></div>
+<button class="cev" style="--c:#F0A742" data-ids="T.MAT.SIMU" data-goto="T.MAT.SIMU" data-wk="08"><span class="m">MAT</span><span class="x">Matemática — bloco cronometrado, sem conteúdo novo</span></button>
+</div>
+<div class="cday" data-date="2026-10-25">
+<div class="cdn"><b>25</b><span>dom</span></div>
+<button class="cev" style="--c:#A78BFA" data-ids="T.QUI.SIMU" data-goto="T.QUI.SIMU" data-wk="08"><span class="m">QUÍ</span><span class="x">Química — bloco cronometrado, sem conteúdo novo</span></button>
+<div class="cmk soft">2º turno das eleições</div>
+</div>
+</div></div>
+<div class="calw" data-wk="09"><div class="cwh"><span class="cwn">09</span><span class="cwd">26/10 – 01/11</span><span class="cwt">Semana da prova</span><span class="wmark hot">FUVEST domingo</span></div><div class="cdays">
+<div class="cday" data-date="2026-10-26">
+<div class="cdn"><b>26</b><span>seg</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.FIM.1" data-goto="A.BIO.FIM.1" data-wk="09"><span class="m">BIO</span><span class="x">Reassistir a aula que ficou pendente na trilha, se houver</span></button>
+</div>
+<div class="cday" data-date="2026-10-27">
+<div class="cdn"><b>27</b><span>ter</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.FIM.2" data-goto="A.BIO.FIM.2" data-wk="09"><span class="m">BIO</span><span class="x">Refazer no papel os erros de Citologia e Fisiologia humana</span></button>
+</div>
+<div class="cday" data-date="2026-10-28">
+<div class="cdn"><b>28</b><span>qua</span></div>
+<button class="cev" style="--c:#45C39B" data-ids="A.BIO.FIM.3" data-goto="A.BIO.FIM.3" data-wk="09"><span class="m">BIO</span><span class="x">Refazer no papel os erros de Ecologia e Genética</span></button>
+</div>
+<div class="cday off" data-date="2026-10-29">
+<div class="cdn"><b>29</b><span>qui</span></div>
+</div>
+<div class="cday off" data-date="2026-10-30">
+<div class="cdn"><b>30</b><span>sex</span></div>
+</div>
+<div class="cday" data-date="2026-10-31">
+<div class="cdn"><b>31</b><span>sáb</span></div>
+<button class="cev" style="--c:#5A7392" data-ids="" data-goto="" data-wk="09"><span class="m">—</span><span class="x">Véspera — nada novo</span></button>
+</div>
+<div class="cday" data-date="2026-11-01">
+<div class="cdn"><b>01</b><span>dom</span></div>
+<div class="cmk">FUVEST — 1ª fase</div>
+</div>
+</div></div>
+<div class="calw" data-wk="10"><div class="cwh"><span class="cwn">10</span><span class="cwd">02 – 08/11</span><span class="cwt">Entre a 1ª fase e a redação do ENEM</span><span class="wmark hot">ENEM domingo</span></div><div class="cdays">
+<div class="cday off" data-date="2026-11-02">
+<div class="cdn"><b>02</b><span>seg</span></div>
+</div>
+<div class="cday off" data-date="2026-11-03">
+<div class="cdn"><b>03</b><span>ter</span></div>
+</div>
+<div class="cday off" data-date="2026-11-04">
+<div class="cdn"><b>04</b><span>qua</span></div>
+</div>
+<div class="cday off" data-date="2026-11-05">
+<div class="cdn"><b>05</b><span>qui</span></div>
+</div>
+<div class="cday off" data-date="2026-11-06">
+<div class="cdn"><b>06</b><span>sex</span></div>
+</div>
+<div class="cday off" data-date="2026-11-07">
+<div class="cdn"><b>07</b><span>sáb</span></div>
+</div>
+<div class="cday" data-date="2026-11-08">
+<div class="cdn"><b>08</b><span>dom</span></div>
+<div class="cmk">ENEM — dia 1</div>
+</div>
+</div></div>
+<div class="calw" data-wk="11"><div class="cwh"><span class="cwn">11</span><span class="cwd">09 – 15/11</span><span class="cwt">Natureza e Matemática no domingo</span><span class="wmark hot">ENEM domingo</span></div><div class="cdays">
+<div class="cday off" data-date="2026-11-09">
+<div class="cdn"><b>09</b><span>seg</span></div>
+</div>
+<div class="cday off" data-date="2026-11-10">
+<div class="cdn"><b>10</b><span>ter</span></div>
+</div>
+<div class="cday off" data-date="2026-11-11">
+<div class="cdn"><b>11</b><span>qua</span></div>
+</div>
+<div class="cday off" data-date="2026-11-12">
+<div class="cdn"><b>12</b><span>qui</span></div>
+</div>
+<div class="cday off" data-date="2026-11-13">
+<div class="cdn"><b>13</b><span>sex</span></div>
+</div>
+<div class="cday off" data-date="2026-11-14">
+<div class="cdn"><b>14</b><span>sáb</span></div>
+</div>
+<div class="cday" data-date="2026-11-15">
+<div class="cdn"><b>15</b><span>dom</span></div>
+<div class="cmk">ENEM — dia 2</div>
+</div>
+</div></div>
+<div class="callout" style="margin-top:20px"><b>Depois de 01/11.</b> As duas últimas semanas não têm parada de exatas porque não há mais o que adiantar: 02 a 15/11 é ajuste de formato ENEM — interpretação, interdisciplinaridade e redação. Elas estão aqui só para você ver o fim da linha.</div>
+</div></section>
+<section id="cards" hidden><div class="wrap">
+<p class="lead">Os mesmos <b>32 blocos de exatas</b> da trilha, aqui só para você saber se o baralho existe. Marcar aqui <b>não mexe em nenhuma barra de progresso</b> — fazer o card não é ter estudado o bloco, e misturar as duas coisas estragaria a leitura da trilha.</p>
+<div class="callout"><b>O que entra no baralho.</b> Em Matemática, Física e Química o card é memória bruta: fórmula com legenda, constante, unidade, valor notável, identidade, grupo funcional. Reconhecer o problema e montar a conta se treina na lista de exercícios, não no Anki — card de "como resolver" não é revisável e infla o baralho.</div>
+<div class="filters" data-f="cards">
+<div class="frow"><span class="flab">Matéria</span><button class="fchip" data-k="mat" data-v="all" aria-pressed="true">todas</button><button class="fchip k-MAT" data-k="mat" data-v="MAT" aria-pressed="false">Matemática</button><button class="fchip k-QUI" data-k="mat" data-v="QUI" aria-pressed="false">Química</button><button class="fchip k-FIS" data-k="mat" data-v="FIS" aria-pressed="false">Física</button></div>
+<div class="frow"><span class="flab">Semana</span><button class="fchip" data-k="wk" data-v="all" aria-pressed="true">todas</button><button class="fchip" data-k="wk" data-v="02" aria-pressed="false">02</button><button class="fchip" data-k="wk" data-v="03" aria-pressed="false">03</button><button class="fchip" data-k="wk" data-v="04" aria-pressed="false">04</button><button class="fchip" data-k="wk" data-v="05" aria-pressed="false">05</button><button class="fchip" data-k="wk" data-v="06" aria-pressed="false">06</button><button class="fchip" data-k="wk" data-v="07" aria-pressed="false">07</button><button class="fchip" data-k="wk" data-v="08" aria-pressed="false">08</button></div>
+<div class="frow"><span class="flab">Estado</span><button class="fchip" data-k="st" data-v="all" aria-pressed="true">tudo</button><button class="fchip" data-k="st" data-v="todo" aria-pressed="false">pendentes</button><button class="fchip" data-k="st" data-v="done" aria-pressed="false">feitos</button><span class="fcount" data-fc-count="cards"></span></div>
+</div>
+<p class="mcap" id="fcStat" style="margin:-8px 0 16px"></p>
+<div class="fcp" style="--c:#F0A742" data-mat="MAT" data-wk="02"><div class="fcph"><span class="pnum" style="background:#F0A742">P01</span><span class="pdate">07/09 · segunda · noite</span><span class="pmat" style="--l:#F0A742">Matemática</span></div>
+<label class="fci" data-fc="T.MAT.GPLANA"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.GPLANA</span>Geometria plana: polígonos, círculo, áreas e semelhança</span><div class="f">Polígonos: ângulos internos e diagonais · áreas de triângulo, quadrilátero e círculo · coroa circular · razão de áreas quando a figura é ampliada (foi erro em duas provas seguidas).</div></span></label>
+<label class="fci" data-fc="T.MAT.TRIG"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.TRIG</span>Trigonometria</span><div class="f">Razões no triângulo retângulo · leis do seno e do cosseno · decomposição em ângulos de 30/45/60 · função trigonométrica lendo gráfico (o erro do ECG na prova de 29/08).</div></span></label>
+</div>
+<div class="fcp" style="--c:#A78BFA" data-mat="QUI" data-wk="02"><div class="fcph"><span class="pnum" style="background:#A78BFA">P02</span><span class="pdate">08/09 · terça · noite</span><span class="pmat" style="--l:#A78BFA">Química</span></div>
+<label class="fci" data-fc="T.QUI.ATOM"><input type="checkbox"><span><span class="n"><span class="tagc">QUI.ATOM</span>Atomística e propriedades periódicas</span><div class="f">Modelos atômicos (Thomson e Rutherford saíram errados duas vezes) · propriedades periódicas: raio, energia de ionização, eletronegatividade · isótopos e decaimento.</div></span></label>
+<label class="fci" data-fc="T.QUI.LIG"><input type="checkbox"><span><span class="n"><span class="tagc">QUI.LIG</span>Ligações, geometria molecular, forças intermoleculares e propriedades</span><div class="f">Iônica × covalente × metálica · geometria molecular e polaridade · forças intermoleculares e a ponte com ponto de ebulição e solubilidade · a cadeia inteira erra junto: 9 erros em 11 cobranças.</div></span></label>
+</div>
+<div class="fcp" style="--c:#56A8FF" data-mat="FIS" data-wk="02"><div class="fcph"><span class="pnum" style="background:#56A8FF">P03</span><span class="pdate">09/09 · quarta · noite</span><span class="pmat" style="--l:#56A8FF">Física</span></div>
+<label class="fci" data-fc="T.FIS.MEC1"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.MEC1</span>Cinemática e lançamentos</span><div class="f">MU e MUV · Torricelli · leitura de gráfico s×t e v×t · movimento circular · lançamentos.</div></span></label>
+<label class="fci" data-fc="T.FIS.MEC2"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.MEC2</span>Dinâmica: leis de Newton, atrito e centrípeta</span><div class="f">Leis de Newton · atrito estático e dinâmico · plano inclinado · força centrípeta.</div></span></label>
+</div>
+<div class="fcp" style="--c:#F0A742" data-mat="MAT" data-wk="02"><div class="fcph"><span class="pnum" style="background:#F0A742">P04</span><span class="pdate">10/09 · quinta · noite</span><span class="pmat" style="--l:#F0A742">Matemática</span></div>
+<label class="fci" data-fc="T.MAT.ARIT"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.ARIT</span>Aritmética, razão, proporção e porcentagem</span><div class="f">Razão, proporção e regra de três · porcentagem, acréscimo e desconto sucessivos · MDC/MMC e divisibilidade · média ponderada (erro com confiança em 29/08) · escala.</div></span></label>
+<label class="fci" data-fc="T.MAT.FUNC"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.FUNC</span>Funções: afim, quadrática, composta, inversa e modular</span><div class="f">Função afim e leitura de gráfico · função do 2º grau e vértice · composta e inversa (erro em quatro edições) · modular.</div></span></label>
+</div>
+<div class="fcp" style="--c:#A78BFA" data-mat="QUI" data-wk="02"><div class="fcph"><span class="pnum" style="background:#A78BFA">P05</span><span class="pdate">11/09 · sexta · noite</span><span class="pmat" style="--l:#A78BFA">Química</span></div>
+<label class="fci" data-fc="T.QUI.ESTEQ"><input type="checkbox"><span><span class="n"><span class="tagc">QUI.ESTEQ</span>Estequiometria, fórmulas e gases</span><div class="f">Balanceamento · cálculo estequiométrico · rendimento, pureza, excesso e limitante · gases: equação de estado, densidade e efusão.</div></span></label>
+<label class="fci" data-fc="T.QUI.SOL"><input type="checkbox"><span><span class="n"><span class="tagc">QUI.SOL</span>Soluções, concentração e coligativas</span><div class="f">Titulação · mistura de soluções · propriedades coligativas: crioscopia, ebulioscopia e osmose (erradas nas duas cobranças da base).</div></span></label>
+</div>
+<div class="fcp" style="--c:#56A8FF" data-mat="FIS" data-wk="02"><div class="fcph"><span class="pnum" style="background:#56A8FF">P06</span><span class="pdate">12/09 · sábado</span><span class="pmat" style="--l:#56A8FF">Física</span></div>
+<label class="fci" data-fc="T.FIS.MEC3"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.MEC3</span>Trabalho, energia e quantidade de movimento</span><div class="f">Trabalho de força constante e variável · energia cinética, potencial e conservação · potência e rendimento · quantidade de movimento e colisões.</div></span></label>
+<label class="fci" data-fc="T.FIS.MEC4"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.MEC4</span>Estática e hidrostática</span><div class="f">Teorema de Stevin · princípio de Pascal · empuxo e flutuação.</div></span></label>
+</div>
+<div class="fcp" style="--c:#F0A742" data-mat="MAT" data-wk="02"><div class="fcph"><span class="pnum" style="background:#F0A742">P07</span><span class="pdate">13/09 · domingo</span><span class="pmat" style="--l:#F0A742">Matemática</span></div>
+<label class="fci" data-fc="T.MAT.EXPLOG"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.EXPLOG</span>Exponencial e logaritmo</span><div class="f">Equação exponencial · propriedades operatórias do log · mudança de base · escala logarítmica: dB, pH e papel di-log (três erros da base são exatamente isso).</div></span></label>
+<label class="fci" data-fc="T.MAT.CONT"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.CONT</span>Contagem e probabilidade</span><div class="f">Permutação, arranjo e combinação · permutação com repetição e com restrição · probabilidade em espaço equiprovável · probabilidade condicional.</div></span></label>
+</div>
+<div class="fcp" style="--c:#A78BFA" data-mat="QUI" data-wk="03"><div class="fcph"><span class="pnum" style="background:#A78BFA">P08</span><span class="pdate">20/09 · domingo</span><span class="pmat" style="--l:#A78BFA">Química</span></div>
+<label class="fci" data-fc="T.QUI.ORG"><input type="checkbox"><span><span class="n"><span class="tagc">QUI.ORG</span>Orgânica: funções, nomenclatura, isomeria e reações</span><div class="f">Funções orgânicas e nomenclatura · isomeria plana e espacial, cis/trans e óptica · reações: adição, substituição, eliminação, esterificação e hidrólise · polímeros.</div></span></label>
+</div>
+<div class="fcp" style="--c:#56A8FF" data-mat="FIS" data-wk="04"><div class="fcph"><span class="pnum" style="background:#56A8FF">P09</span><span class="pdate">27/09 · domingo</span><span class="pmat" style="--l:#56A8FF">Física</span></div>
+<label class="fci" data-fc="T.FIS.OND"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.OND</span>Ondulatória e acústica</span><div class="f">Reflexão, refração e difração de ondas · cordas e tubos sonoros · efeito Doppler (o erro de abril).</div></span></label>
+<label class="fci" data-fc="T.FIS.MAG"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.MAG</span>Magnetismo e indução</span><div class="f">Campo magnético em fio e espira · força magnética · indução e lei de Faraday-Lenz (o aerogerador que saiu errado com confiança).</div></span></label>
+<label class="fci" data-fc="T.FIS.MOD"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.MOD</span>Física moderna</span><div class="f">Efeito fotoelétrico · quantização e níveis de energia · dualidade onda-partícula · noções de partículas.</div></span></label>
+</div>
+<div class="fcp" style="--c:#F0A742" data-mat="MAT" data-wk="05"><div class="fcph"><span class="pnum" style="background:#F0A742">P10</span><span class="pdate">03/10 · sábado</span><span class="pmat" style="--l:#F0A742">Matemática</span></div>
+<label class="fci" data-fc="T.MAT.GE"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.GE</span>Geometria espacial</span><div class="f">Prisma, cilindro, pirâmide, cone e esfera: área e volume · seções · sólidos inscritos e circunscritos · otimização de embalagem (erro chutado em 29/08).</div></span></label>
+<label class="fci" data-fc="T.MAT.EST"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.EST</span>Estatística descritiva</span><div class="f">Média, mediana e moda · média ponderada · leitura de tabela e gráfico.</div></span></label>
+</div>
+<div class="fcp" style="--c:#A78BFA" data-mat="QUI" data-wk="05"><div class="fcph"><span class="pnum" style="background:#A78BFA">P11</span><span class="pdate">04/10 · domingo</span><span class="pmat" style="--l:#A78BFA">Química</span></div>
+<label class="fci" data-fc="T.QUI.REDOX"><input type="checkbox"><span><span class="n"><span class="tagc">QUI.REDOX</span>Oxirredução e eletroquímica</span><div class="f">Balanceamento por oxirredução · pilha, potencial e polos · eletrólise · corrosão.</div></span></label>
+<label class="fci" data-fc="T.QUI.TERMO"><input type="checkbox"><span><span class="n"><span class="tagc">QUI.TERMO</span>Termoquímica</span><div class="f">Entalpia, Lei de Hess e energia de ligação. Você acertou as duas cobranças da base, mas uma foi chute — refazer sem gabarito.</div></span></label>
+<label class="fci" data-fc="T.QUI.CIN"><input type="checkbox"><span><span class="n"><span class="tagc">QUI.CIN</span>Cinética química</span><div class="f">Velocidade média, energia de ativação e fatores que alteram a velocidade. Mesmo caso: acerto com chute em julho.</div></span></label>
+</div>
+<div class="fcp" style="--c:#56A8FF" data-mat="FIS" data-wk="06"><div class="fcph"><span class="pnum" style="background:#56A8FF">P12</span><span class="pdate">10/10 · sábado</span><span class="pmat" style="--l:#56A8FF">Física</span></div>
+<label class="fci" data-fc="T.FIS.TERMO"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.TERMO</span>Termologia: calorimetria, mudança de estado e termodinâmica</span><div class="f">Calorimetria e equilíbrio térmico · calor latente e mudança de estado · transferência de calor · dilatação · termodinâmica e máquinas térmicas. Sete erros em 13 cobranças, tudo com aula dada.</div></span></label>
+<label class="fci" data-fc="T.FIS.OPT"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.OPT</span>Óptica geométrica: reflexão, refração e espelhos</span><div class="f">Reflexão e espelhos · refração, índice e reflexão total · lentes. Quatro erros em 6 cobranças.</div></span></label>
+</div>
+<div class="fcp" style="--c:#F0A742" data-mat="MAT" data-wk="06"><div class="fcph"><span class="pnum" style="background:#F0A742">P13</span><span class="pdate">11/10 · domingo</span><span class="pmat" style="--l:#F0A742">Matemática</span></div>
+<label class="fci" data-fc="T.MAT.GA"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.GA</span>Geometria analítica</span><div class="f">Equação da reta, paralelismo e perpendicularismo · distância de ponto a reta · equação da circunferência e posições relativas (as engrenagens de 29/08).</div></span></label>
+<label class="fci" data-fc="T.MAT.SEQ"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.SEQ</span>Sequências, PA e PG</span><div class="f">PA e PG: termo geral e soma · soma infinita da PG.</div></span></label>
+</div>
+<div class="fcp" style="--c:#A78BFA" data-mat="QUI" data-wk="07"><div class="fcph"><span class="pnum" style="background:#A78BFA">P14</span><span class="pdate">17/10 · sábado</span><span class="pmat" style="--l:#A78BFA">Química</span></div>
+<label class="fci" data-fc="T.QUI.EQUI"><input type="checkbox"><span><span class="n"><span class="tagc">QUI.EQUI</span>Equilíbrio químico, pH, ácidos e bases</span><div class="f">Constante de equilíbrio e Kc/Kp · princípio de Le Chatelier · pH, pOH e hidrólise salina · Kps e precipitação (chute em 29/08).</div></span></label>
+</div>
+<div class="fcp" style="--c:#56A8FF" data-mat="FIS" data-wk="07"><div class="fcph"><span class="pnum" style="background:#56A8FF">P15</span><span class="pdate">18/10 · domingo</span><span class="pmat" style="--l:#56A8FF">Física</span></div>
+<label class="fci" data-fc="T.FIS.ELET"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.ELET</span>Eletrostática: carga, campo e potencial</span><div class="f">Eletrização, força de Coulomb, campo e potencial. É a base do bloco seguinte.</div></span></label>
+<label class="fci" data-fc="T.FIS.EDIN"><input type="checkbox"><span><span class="n"><span class="tagc">FIS.EDIN</span>Eletrodinâmica: Ohm, resistores, circuitos e geradores</span><div class="f">Lei de Ohm · associação de resistores · potência e energia elétrica · circuitos com medidores · geradores.</div></span></label>
+</div>
+<div class="fcp" style="--c:#F0A742" data-mat="MAT" data-wk="08"><div class="fcph"><span class="pnum" style="background:#F0A742">P16</span><span class="pdate">24/10 · sábado</span><span class="pmat" style="--l:#F0A742">Matemática</span></div>
+<label class="fci" data-fc="T.MAT.SIMU"><input type="checkbox"><span><span class="n"><span class="tagc">MAT.SIMU</span>Matemática inteira — 45 questões cronometradas</span><div class="f">Simulado de matéria: 45 questões de Matemática de provas antigas da FUVEST, nas condições da prova real, cobrindo os dez blocos. Corrigir no mesmo dia. O que voltar a errar vira a lista da semana da prova.</div></span></label>
+</div>
+<div class="fcp" style="--c:#A78BFA" data-mat="QUI" data-wk="08"><div class="fcph"><span class="pnum" style="background:#A78BFA">P17</span><span class="pdate">25/10 · domingo</span><span class="pmat" style="--l:#A78BFA">Química</span></div>
+<label class="fci" data-fc="T.QUI.SIMU"><input type="checkbox"><span><span class="n"><span class="tagc">QUI.SIMU</span>Química inteira — 45 questões cronometradas</span><div class="f">Simulado de matéria: 45 questões de Química de provas antigas da FUVEST, cronometradas, cobrindo os nove blocos. Corrigir no mesmo dia.</div></span></label>
+</div>
+<div class="empty" data-empty="cards" hidden>Nenhum bloco com esses filtros.</div>
+</div></section>
+<div class="wrap" style="margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:var(--mute2);font-size:11.5px" class="mono">
+Trilha FUVEST 2027 · dados de 31/08/2026 · 9 simulados, 752 questões · 320 delas em formato FUVEST 1ª fase. Interface de 31/08/2026: filtros, barras por matéria, calendário e checklist de flashcards.
+</div>
+<div class="foot">
+  <span id="saveState">carregando…</span>
+  <div class="pg"><i id="pgbar" style="width:0%"></i></div>
+  <span id="pgtxt" class="mono">0%</span>
+  <button id="sync">sincronizar</button><button id="exp">exportar</button>
+  <button id="imp">importar</button><input type="file" id="impf" accept=".json" hidden>
+  <button id="reset">zerar progresso</button>
+</div>
+</div>
+<script>
+const KEY='fuvest2027-roadmap-v1', CFG='fuvest2027-sync-url', UIK='fuvest2027-ui-v1';
+const IDX={"blocos":[{"id":"T.MAT.GPLANA","mat":"MAT","wk":"02"},{"id":"T.MAT.TRIG","mat":"MAT","wk":"02"},{"id":"T.QUI.ATOM","mat":"QUI","wk":"02"},{"id":"T.QUI.LIG","mat":"QUI","wk":"02"},{"id":"T.FIS.MEC1","mat":"FIS","wk":"02"},{"id":"T.FIS.MEC2","mat":"FIS","wk":"02"},{"id":"T.MAT.ARIT","mat":"MAT","wk":"02"},{"id":"T.MAT.FUNC","mat":"MAT","wk":"02"},{"id":"T.QUI.ESTEQ","mat":"QUI","wk":"02"},{"id":"T.QUI.SOL","mat":"QUI","wk":"02"},{"id":"T.FIS.MEC3","mat":"FIS","wk":"02"},{"id":"T.FIS.MEC4","mat":"FIS","wk":"02"},{"id":"T.MAT.EXPLOG","mat":"MAT","wk":"02"},{"id":"T.MAT.CONT","mat":"MAT","wk":"02"},{"id":"T.QUI.ORG","mat":"QUI","wk":"03"},{"id":"T.FIS.OND","mat":"FIS","wk":"04"},{"id":"T.FIS.MAG","mat":"FIS","wk":"04"},{"id":"T.FIS.MOD","mat":"FIS","wk":"04"},{"id":"T.MAT.GE","mat":"MAT","wk":"05"},{"id":"T.MAT.EST","mat":"MAT","wk":"05"},{"id":"T.QUI.REDOX","mat":"QUI","wk":"05"},{"id":"T.QUI.TERMO","mat":"QUI","wk":"05"},{"id":"T.QUI.CIN","mat":"QUI","wk":"05"},{"id":"T.FIS.TERMO","mat":"FIS","wk":"06"},{"id":"T.FIS.OPT","mat":"FIS","wk":"06"},{"id":"T.MAT.GA","mat":"MAT","wk":"06"},{"id":"T.MAT.SEQ","mat":"MAT","wk":"06"},{"id":"T.QUI.EQUI","mat":"QUI","wk":"07"},{"id":"T.FIS.ELET","mat":"FIS","wk":"07"},{"id":"T.FIS.EDIN","mat":"FIS","wk":"07"},{"id":"T.MAT.SIMU","mat":"MAT","wk":"08"},{"id":"T.QUI.SIMU","mat":"QUI","wk":"08"}],"aulas":[{"id":"A.BIO.CIT.1","wk":"01"},{"id":"A.BIO.CIT.2","wk":"01"},{"id":"A.BIO.CIT.3","wk":"01"},{"id":"A.BIO.CIT.4","wk":"01"},{"id":"A.BIO.CIT.5","wk":"01"},{"id":"A.BIO.MET.0","wk":"02"},{"id":"A.BIO.MET.1","wk":"02"},{"id":"A.BIO.MET.2","wk":"02"},{"id":"A.BIO.MET.3","wk":"02"},{"id":"A.BIO.MET.4","wk":"02"},{"id":"A.BIO.GEN.1","wk":"03"},{"id":"A.BIO.GEN.2","wk":"03"},{"id":"A.BIO.GEN.3","wk":"03"},{"id":"A.BIO.GEN.4","wk":"03"},{"id":"A.BIO.GEN.5","wk":"03"},{"id":"A.BIO.FIS.1","wk":"04"},{"id":"A.BIO.FIS.2","wk":"04"},{"id":"A.BIO.FIS.3","wk":"04"},{"id":"A.BIO.FIS.4","wk":"04"},{"id":"A.BIO.FIS.5","wk":"04"},{"id":"A.BIO.FIS.6","wk":"05"},{"id":"A.BIO.FIS.7","wk":"05"},{"id":"A.BIO.ECO.1","wk":"05"},{"id":"A.BIO.ECO.2","wk":"05"},{"id":"A.BIO.ECO.3","wk":"05"},{"id":"A.BIO.ECO.4","wk":"06"},{"id":"A.BIO.ECO.5","wk":"06"},{"id":"A.BIO.BOT.1","wk":"06"},{"id":"A.BIO.BOT.2","wk":"06"},{"id":"A.BIO.ECO.R","wk":"06"},{"id":"A.BIO.MIC.1","wk":"07"},{"id":"A.BIO.MIC.2","wk":"07"},{"id":"A.BIO.MIC.3","wk":"07"},{"id":"A.BIO.MIC.4","wk":"07"},{"id":"A.BIO.MIC.5","wk":"07"},{"id":"A.BIO.SIS.1","wk":"08"},{"id":"A.BIO.SIS.2","wk":"08"},{"id":"A.BIO.SIS.3","wk":"08"},{"id":"A.BIO.EVO.1","wk":"08"},{"id":"A.BIO.EVO.2","wk":"08"},{"id":"A.BIO.FIM.1","wk":"09"},{"id":"A.BIO.FIM.2","wk":"09"},{"id":"A.BIO.FIM.3","wk":"09"}]};
+const TABS=['trilha','cal','cards','prio','bio','outras'];
+let state={done:{},obras:{},flash:{}};
+let ui={trilha:{mat:'all',wk:'all',st:'all'},cards:{mat:'all',wk:'all',st:'all'},tab:'trilha'};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const ce=(t,c)=>{const e=document.createElement(t);if(c)e.className=c;return e};
+const norm=o=>({done:(o&&o.done)||{},obras:(o&&o.obras)||{},flash:(o&&o.flash)||{},updatedAt:(o&&o.updatedAt)||0});
+
+/* régua: 0 a 75 acertos */
+(function(){const max=75,px=v=>Math.min(100,v/max*100);
+ const L=34,A=38,C=50,M=55;
+ $('#fill').style.width=px(A)+'%';
+ $('#gapz').style.left=px(A)+'%';$('#gapz').style.width=(px(C)-px(A))+'%';
+ $('#cut').style.left=px(C)+'%';
+ $('#lab').style.left='calc('+px(C)+'% + 8px)';$('#lab').textContent='corte';
+ $('#m0').style.left=px(L)+'%';$('#m3').style.left=px(M)+'%';
+})();
+
+/* ---- ui local (filtros e aba): não vai para o backend ---- */
+function uiSave(){try{localStorage.setItem(UIK,JSON.stringify(ui))}catch(e){}}
+function uiLoad(){try{const r=localStorage.getItem(UIK);if(r){const o=JSON.parse(r);
+  ui={trilha:Object.assign({mat:'all',wk:'all',st:'all'},o.trilha),
+      cards:Object.assign({mat:'all',wk:'all',st:'all'},o.cards),
+      tab:TABS.indexOf(o.tab)>-1?o.tab:'trilha'}}}catch(e){}}
+
+/* ---- painel ---- */
+function paint(){
+  $$('[data-id]').forEach(el=>{const c=el.querySelector('input');if(!c)return;
+    c.checked=!!state.done[el.dataset.id];el.classList.toggle('done',c.checked);});
+  $$('[data-obra]').forEach(el=>{const c=el.querySelector('input');
+    c.checked=!!state.obras[el.dataset.obra];el.classList.toggle('done',c.checked);});
+  $$('[data-fc]').forEach(el=>{const c=el.querySelector('input');
+    c.checked=!!state.flash[el.dataset.fc];el.classList.toggle('done',c.checked);});
+
+  const bl=$$('.bloco[data-id]'), bd=bl.filter(e=>state.done[e.dataset.id]).length;
+  const pc=bl.length?Math.round(bd/bl.length*100):0;
+  $('#pctBig').textContent=pc+'%';$('#pctSub').textContent=bd+' de '+bl.length+' etapas';
+  const au=$$('.aula[data-id]'), ad=au.filter(e=>state.done[e.dataset.id]).length;
+  $('#bioBig').textContent=ad;$('#bioSub').textContent='de '+au.length+' assistidas';
+  const tot=bl.length+au.length, dn=bd+ad;
+  const g=tot?Math.round(dn/tot*100):0;
+  $('#pgbar').style.width=g+'%';$('#pgtxt').textContent=g+'% do plano';
+
+  /* barras por matéria — flashcards ficam de fora de propósito */
+  const acc={MAT:[0,0],QUI:[0,0],FIS:[0,0],BIO:[0,0]}, wkacc={};
+  IDX.blocos.forEach(b=>{const d=state.done[b.id]?1:0;
+    acc[b.mat][0]+=d;acc[b.mat][1]++;
+    (wkacc[b.wk]=wkacc[b.wk]||{a:[0,0],b:[0,0]}).b[0]+=d;wkacc[b.wk].b[1]++;});
+  IDX.aulas.forEach(a=>{const d=state.done[a.id]?1:0;
+    acc.BIO[0]+=d;acc.BIO[1]++;
+    (wkacc[a.wk]=wkacc[a.wk]||{a:[0,0],b:[0,0]}).a[0]+=d;wkacc[a.wk].a[1]++;});
+  Object.keys(acc).forEach(k=>{const[v,t]=acc[k];
+    const n=$('[data-mn="'+k+'"]');if(n)n.textContent=v+'/'+t;
+    const i=$('[data-mi="'+k+'"]');if(i)i.style.width=(t?v/t*100:0)+'%';});
+  $$('[data-wp]').forEach(el=>{const w=wkacc[el.dataset.wp];if(!w){el.textContent='';return}
+    const p=[];if(w.a[1])p.push('aulas '+w.a[0]+'/'+w.a[1]);
+    if(w.b[1])p.push('blocos '+w.b[0]+'/'+w.b[1]);el.textContent=p.join(' · ')});
+
+  /* calendário: risca o que já foi marcado na trilha */
+  $$('.cev[data-ids]').forEach(el=>{const ids=el.dataset.ids?el.dataset.ids.split('|'):[];
+    const n=ids.filter(i=>state.done[i]).length;
+    el.classList.toggle('done',ids.length>0&&n===ids.length);
+    el.classList.toggle('part',n>0&&n<ids.length);});
+
+  /* flashcards: contagem em texto, nunca em barra */
+  const fc=$$('[data-fc]'), fd=fc.filter(e=>state.flash[e.dataset.fc]).length;
+  const fs=$('#fcStat');if(fs)fs.textContent=fd+' dos '+fc.length+' blocos com baralho feito. '
+    +'Este número não entra em nenhuma barra de progresso.';
+
+  const lidas=$$('[data-obra]').filter(e=>state.obras[e.dataset.obra]).length, falta=9-lidas;
+  const sem=9, box=$('#obrasCalc'); if(box) box.innerHTML = lidas===0
+   ? '<b>Nenhuma obra marcada como lida.</b> Se for esse o caso, são 9 livros em '+sem+' semanas, no meio de tudo o resto. Marque o que já leu e a conta se ajusta.'
+   : falta===0 ? '<b>As nove lidas.</b> A partir daqui literatura é releitura de trecho e análise — cabe em qualquer buraco de agenda.'
+   : '<b>'+lidas+' lidas, '+falta+' pendentes.</b> Em '+sem+' semanas isso é uma obra a cada '+(Math.floor(sem/falta*10)/10).toString().replace('.',',')+' semanas. Conte semanas, não horas.';
+
+  applyFilters();
+}
+
+/* ---- filtros ---- */
+function matchSt(done,st){return st==='all'||(st==='todo'?!done:done)}
+function applyFilters(){
+  /* trilha */
+  const f=ui.trilha; let visT=0, nT=0;
+  $$('#trilha .wkg').forEach(gp=>{
+    const wkOK=f.wk==='all'||gp.dataset.wk===f.wk; let any=false, n=0;
+    gp.querySelectorAll('.biobox,.parada').forEach(box=>{
+      if(!wkOK||(f.mat!=='all'&&box.dataset.mat!==f.mat)){box.hidden=true;return}
+      const items=[...box.querySelectorAll('[data-id]')];
+      if(!items.length){box.hidden=(f.st!=='all');if(!box.hidden)any=true;return}
+      let seen=0;
+      items.forEach(it=>{const ok=matchSt(!!state.done[it.dataset.id],f.st);
+        it.hidden=!ok;if(ok)seen++});
+      box.hidden=!seen; if(seen){any=true;n+=seen}
+    });
+    gp.querySelectorAll('[data-wnote]').forEach(x=>{x.hidden=!(wkOK&&any)});
+    gp.hidden=!(wkOK&&any); if(!gp.hidden){visT++;nT+=n}
+  });
+  $('[data-empty="trilha"]').hidden=visT>0;
+  const cT=$('[data-fc-count="trilha"]');
+  if(cT)cT.textContent=nT+(nT===1?' item à vista':' itens à vista');
+
+  /* flashcards */
+  const c=ui.cards; let visC=0, nC=0;
+  $$('#cards .fcp').forEach(p=>{
+    if((c.mat!=='all'&&p.dataset.mat!==c.mat)||(c.wk!=='all'&&p.dataset.wk!==c.wk)){p.hidden=true;return}
+    const items=[...p.querySelectorAll('[data-fc]')]; let seen=0;
+    items.forEach(it=>{const ok=matchSt(!!state.flash[it.dataset.fc],c.st);
+      it.hidden=!ok;if(ok)seen++});
+    p.hidden=!seen; if(seen){visC++;nC+=seen}
+  });
+  $('[data-empty="cards"]').hidden=visC>0;
+  const cC=$('[data-fc-count="cards"]');
+  if(cC)cC.textContent=nC+(nC===1?' bloco à vista':' blocos à vista');
+
+  $$('.filters').forEach(bar=>{const sc=bar.dataset.f;
+    bar.querySelectorAll('.fchip').forEach(b=>
+      b.setAttribute('aria-pressed', String(ui[sc][b.dataset.k]===b.dataset.v)))});
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.fchip');if(!b)return;
+  const sc=b.closest('.filters').dataset.f;
+  ui[sc][b.dataset.k]=b.dataset.v; uiSave(); applyFilters();});
+
+/* ---- ir do calendário para a trilha ---- */
+function goto(id,wk){
+  if(!id)return;
+  ui.trilha={mat:'all',wk:wk||'all',st:'all'}; uiSave();
+  setTab('trilha'); applyFilters();
+  const el=document.querySelector('[data-id="'+id+'"]');
+  if(!el)return;
+  el.scrollIntoView({block:'center',behavior:'smooth'});
+  const box=el.closest('.parada,.biobox')||el;
+  box.classList.remove('hl'); void box.offsetWidth; box.classList.add('hl');
+  setTimeout(()=>box.classList.remove('hl'),2200);
+}
+document.addEventListener('click',e=>{const c=e.target.closest('.cev');if(!c)return;
+  goto(c.dataset.goto,c.dataset.wk)});
+
+/* ---- abas ---- */
+function setTab(t){ui.tab=t;uiSave();
+  $$('nav.tabs button').forEach(x=>x.setAttribute('aria-selected',String(x.dataset.t===t)));
+  TABS.forEach(id=>{const s=$('#'+id);if(s)s.hidden=(id!==t)});}
+$$('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{
+  setTab(b.dataset.t);window.scrollTo({top:0,behavior:'smooth'})}));
+
+/* ---- persistência ---- */
+let syncUrl='';try{syncUrl=localStorage.getItem(CFG)||''}catch(e){}
+let pushTimer=null;
+const st=t=>{$('#saveState').textContent=t};
+const hhmm=()=>new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+function localSave(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function localLoad(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return null}
+async function remoteGet(){const r=await fetch(syncUrl+(syncUrl.indexOf('?')>-1?'&':'?')+'t='+Date.now());
+  if(!r.ok)throw new Error('http '+r.status);const j=await r.json();return j.state||null}
+async function remotePut(){const r=await fetch(syncUrl,{method:'POST',
+  headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(state)});
+  if(!r.ok)throw new Error('http '+r.status)}
+function save(){state.updatedAt=Date.now();localSave();
+  if(!syncUrl){st('salvo neste navegador · sem sincronização');return}
+  st('salvando…');clearTimeout(pushTimer);
+  pushTimer=setTimeout(async()=>{try{await remotePut();st('sincronizado às '+hhmm())}
+    catch(e){st('sem conexão — salvo aqui, sincroniza sozinho depois')}},700)}
+async function load(){const loc=localLoad();
+  if(loc)state=norm(loc);
+  paint();
+  if(!syncUrl){st('salvo neste navegador · clique em sincronizar para ligar o backend');return}
+  st('buscando no servidor…');
+  try{const rem=await remoteGet();const rt=rem&&rem.updatedAt?rem.updatedAt:0,lt=state.updatedAt||0;
+    if(rt>lt){state=norm(rem);localSave();paint();st('sincronizado às '+hhmm())}
+    else if(lt>rt){await remotePut();st('sincronizado às '+hhmm())}else{st('sincronizado às '+hhmm())}}
+  catch(e){st('servidor não respondeu — usando a cópia local')}}
+window.addEventListener('online',()=>{if(syncUrl)load()});
+document.addEventListener('change',e=>{
+  const fc=e.target.closest('[data-fc]'), it=e.target.closest('[data-id]'), ob=e.target.closest('[data-obra]');
+  if(fc){state.flash[fc.dataset.fc]=e.target.checked}
+  else if(ob){state.obras[ob.dataset.obra]=e.target.checked}
+  else if(it){state.done[it.dataset.id]=e.target.checked}
+  else return;
+  paint();save();});
+$('#reset').addEventListener('click',()=>{
+  if(!confirm('Zerar tudo — trilha, obras e flashcards? Exporte antes.'))return;
+  state={done:{},obras:{},flash:{}};paint();save()});
+$('#sync').addEventListener('click',async()=>{
+  const v=prompt('Cole a URL do app da web do Apps Script (termina em /exec).\n\nDeixe em branco para desligar a sincronização.',syncUrl||'');
+  if(v===null)return;const u=v.trim();
+  if(u&&!/^https:\/\/script\.google\.com\/.*\/exec$/.test(u)){st('essa URL não parece a do Apps Script — ela termina em /exec');return}
+  syncUrl=u;try{u?localStorage.setItem(CFG,u):localStorage.removeItem(CFG)}catch(e){}
+  if(!u){st('sincronização desligada · salvando só neste navegador');return}
+  st('testando conexão…');
+  try{await remoteGet();await load()}catch(e){st('não consegui falar com o servidor — confira se o acesso está como "Qualquer pessoa"')}});
+$('#exp').addEventListener('click',()=>{const b=new Blob([JSON.stringify(state,null,1)],{type:'application/json'});
+  const a=ce('a');a.href=URL.createObjectURL(b);a.download='progresso-fuvest-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();URL.revokeObjectURL(a.href);st('progresso exportado')});
+$('#imp').addEventListener('click',()=>$('#impf').click());
+$('#impf').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const o=JSON.parse(r.result);const n=norm(o);
+    if(!o.flash)n.flash=state.flash; /* backup antigo não apaga os flashcards */
+    state=n;paint();save();st('progresso importado')}
+    catch(err){st('arquivo inválido — exporte de novo e tente com o .json')}};
+  r.readAsText(f);e.target.value=''});
+(function(){const d=Math.max(0,Math.ceil((new Date(2026,10,1)-new Date())/864e5));if(d)$('#dias').textContent=d})();
+(function(){const t=new Date(),iso=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+  const c=document.querySelector('.cday[data-date="'+iso+'"]');if(c)c.classList.add('hoje')})();
+uiLoad(); setTab(ui.tab); load();
+</script>
+</body>
+</html>
